@@ -1,0 +1,346 @@
+
+
+
+<div ng-controller="detailViewController as view" class="page-set" >
+  <md-fab-speed-dial md-direction="left" md-open="isOpen"
+                       class="md-scale md-fab-top-right"
+                       ng-mouseenter="isOpen=true" ng-mouseleave="isOpen=false">
+    <md-fab-trigger>
+        <md-button  aria-label="share" class="md-fab md-warn">
+          <md-tooltip md-direction="top" md-visible="tooltipVisible">Share on</md-tooltip>
+          <md-icon> share</md-icon>
+        </md-button>
+      </md-fab-trigger>
+      <md-fab-actions>
+        <div>
+          <md-button aria-label="facebook" class="md-fab md-raised md-mini"
+                     ng-click="">
+            <md-tooltip md-direction="top" md-visible="tooltipVisible"
+                        md-autohide="false">
+              facebook
+            </md-tooltip>
+
+            <md-icon aria-label="facebook">facebook</md-icon>
+          </md-button>
+        </div>
+        <div>
+          <md-button aria-label="twitter" class="md-fab md-raised md-mini"
+                     ng-click="">
+            <md-tooltip md-direction="top" md-visible="tooltipVisible"
+                        md-autohide="false">
+              twitter
+            </md-tooltip>divd-icon aria-label="twitter">twitter</md-icon>
+          </md-button>
+        </div>
+      </md-fab-actions>
+    </md-fab-speed-dial>
+
+
+  <div layout="row"  layout-align="space-around start" layout-wrap layout-padding layout-xs="column" >
+    <div flex-sm="50" flex-gt-sm="59" flex-order-xs="1" >
+      <strong class="md-header">{{view.event.eventName}} </strong> by
+      <i>{{(view.event.organizationName) ? view.event.organizationName : view.event.organizerName}}</i>
+      <dl >
+        <dt><strong>Venue</strong> </dt> <dd>{{view.event.venue}}</dd>
+        <dt>
+          <strong>
+            <md-icon class="md-accent md-hue-2" style="padding:5px;">location_on
+            </md-icon>
+              Location
+            </strong></dt> <dd>{{view.event.location}},{{ view.event.address }}</dd>
+        <dt><strong>Catagory</strong></dt> <dd>{{view.event.event_category }}</dd>
+        <dt>
+          <strong>
+            <md-icon class="md-accent md-hue-2" style="padding:5px;">date_range</md-icon>
+                Date &amp; Time
+              </strong>
+            </dt> <dd>{{view.event.startDate +"T"+ view.event.startTime | date : mediumDate }}
+        - {{view.event.endDate +"T"+ view.event.endTime | date : mediumDate }} </dd>
+
+
+      </dl>
+    </div>
+
+    <md-card flex-xs="100" flex-order-xs="-1" layout-align-xs="none" layout-fill flex-gt-xs="50"  >
+        <img ng-src="{{view.eventImage()}}"  class="md-media-md card-media yyy"  alt="event image" />
+
+    </md-card>
+
+  </div>
+  <md-divider class="inset"></md-divider>
+  <md-toolbar layout="row" ng-hide="view.selectedTickets == 0" layout-align="space-around start" style=" z-index :999; position : fixed; bottom : 0; right:0; left:0"
+  class="md-accent">
+
+    <div flex="65">
+      <div layout="column">
+        <div>
+          <strong>Tickets</strong> : {{view.selectedTickets}}
+        </div>
+        <div>
+           Total : {{view.totalPrice | currency}}
+        </div>
+      </div>
+    </div>
+    <div flex>
+      <md-button ng-click="view.checkOut()" class="md-raised md-primary md-hue-3" >Checkout</md-button>
+    </div>
+</md-toolbar>
+<div layout="row" layout-xs="column" layout-align="space-between none"  >
+
+  <div   flex-xs="100" flex="100"  >
+    <md-toolbar class=" md-primary md-hue-1 md-whiteframe-z2 ">
+    <div class="md-toolbar-tools">
+
+    <h5  >  Ticket </h5>
+  </div>
+    </md-toolbar>
+
+    <md-content hide-gt-xs  layout="row" layout-wrap>
+      <md-card flex="100" ng-repeat="ticket in view.tickets" class="md-whiteframe-z3">
+        <md-card-header>
+          <md-card-header-text>
+            <div layout="row">
+              <div flex="90">
+                <div>
+
+                <strong>Price: {{ticket.price}}</strong>
+              </div>
+                <span class="md-subhead">sale end on {{ticket.saleEnd | date : mediumDate}}</span>
+              </div>
+
+
+                <md-select ng-model="ticket.selected" placeholder="Quantity" style="padding : 0px; margin:0px;"
+                 ng-click="oldval = ticket.selected" ng-change="view.calculate(oldval, ticket)" class="md-whiteframe-z2">
+                  <md-option ng-value="0"></md-option>
+                  <md-option ng-repeat="size in [1,2,4,5]" ng-value="size">{{size}}</md-option>
+                </md-select>
+
+            </div>
+          </md-card-header-text>
+        </md-card-header>
+        <md-divider class="md-accent"></md-divider>
+        <md-card-title>
+          <md-card-title-text style="margin : 0px; padding : 0px;">
+            <span class="md-headline">{{ticket.name}}</span>
+
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-content style="text-align " >
+          <p>
+            {{ticket.aboutTicket}}
+          </p>
+        </md-card-content>
+      </md-card>
+    </md-content>
+
+    <div hide-xs class="ticket-view md-whiteframe-z2">
+<form name="orderForm" >
+
+
+      <table width="100%" style="text-align:center" >
+        <thead>
+          <tr>
+            <th>Name </th>
+            <th>Discription</th>
+            <th>Available</th>
+            <th>Price</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="ticket in view.tickets">
+            <td>{{ticket.name}}</td>
+            <td>{{ticket.discription}} {{ size }}</td>
+            <td>{{ticket.available}}</td>
+            <td> {{ price =  ( ticket.price  == 0) ? 'Free' : (ticket.price | currency)   }}
+
+            </td>
+            <td>
+
+
+            <md-select ng-model="ticket.selected" ng-click="oldval = ticket.selected"
+                      ng-change="view.calculate(oldval, ticket)" class="md-whiteframe-z2" style="padding : 0px; margin:0px;">
+                <md-option ng-value="0">0</md-option>
+              <md-option ng-repeat="size in [1,2,4,5]" ng-value="size">{{size}}</md-option>
+            </md-select>
+
+          </td>
+          </tr>
+        </tbody>
+        <tfoot style=" border-top : 1px solid black; " >
+          <tr >
+            <td style=" border-right : 1px solid black">
+              <strong>Selected</strong> : {{view.selectedTickets}}
+            </td>
+            <td  >
+              <strong> Total Cost =</strong> {{view.totalPrice | currency}}
+            </td>
+            <td colspan="4">
+              <div layout="row" layout-align="center end" layout-padding >
+                <md-button ng-click="view.checkOut()" ng-disabled="view.selectedTickets == 0"
+                      class="md-raised md-primary md-hue-3" >
+                      Checkout
+                </md-button>
+              </div>
+            </td>
+
+
+          </tr>
+        </tfoot>
+      </table>
+</form>
+    </div>
+  <md-divider></md-divider>
+  <md-toolbar class="md-primary md-hue-1 md-whiteframe-z2">
+    <div class="md-toolbar-tools">
+      <span class="md-heading">Discription</span>
+    </div>
+  </md-toolbar>
+    <md-content flex=100 flex-xs="100" class="ticket-view" >
+      <p>  {{view.event.aboutEvent}}    </p>
+
+    </md-content>
+  </div>
+  <div  flex="30" flex-xs="100"   >
+    <div flex-xs="100" flex >
+      <md-list class="md-whiteframe-z2" >
+
+        <md-subheader style="padding : 0; margin: 0;" class="md-primary" > <md-icon style="padding : 0; margin: 0;" >person</md-icon>Personal Info. </md-subheader>
+
+
+        <md-list-item  >
+          <div class="md-list-item-text">
+
+            <span class="md-secondary md-body-2" ng-bind="view.event.organizerName"></span>
+            <div class="md-subheader" ><md-icon>person</md-icon>Organizer </div>
+          </div>
+        </md-list-item>
+        <md-list-item >
+          <div class="md-list-item-text">
+            <strong class="md-secondary md-body-2" ng-bind="view.event.organizerEmail"></strong>
+            <div class="md-subheader"><md-icon>mail</md-icon>email</div>
+
+          </div>
+        </md-list-item >
+
+        </md-list>
+        <telephone-display phones="view.event.phones"></telephone-display>
+
+    </div>
+    <md-divider></md-divider>
+    <md-toolbar ng-if="view.event.guest" class="md-primary md-hue-1 md-whiteframe-z2">
+      <div class="md-toolbar-tools">
+          <span class="md-header" >Special Guests</span>
+      </div>
+    </md-toolbar>
+
+    <md-content ng-if="view.event.guest" class="content-view md-whiteframe-z2" layout-wrap flex flex-xs="100" >
+
+     <md-card ng-repeat="guest in view.event.guest" >
+        <md-card-title>
+          <md-card-title-media>
+            <img class="md-media-sm card-media" ng-src="{{view.guestImage(guest.guestImage)}}"  alt="image not available" />
+
+          </md-card-title-media>
+          <md-card-title-text>
+            <strong>{{guest.guestName}}</strong>
+
+          </md-card-title-text>
+        </md-card-title>
+      </md-card>
+
+    </md-content>
+
+    <md-divider></md-divider>
+    <md-toolbar ng-if="view.event.sponsor" class="md-primary md-hue-1 md-whiteframe-z2">
+      <div class="md-toolbar-tools">
+          <span class="md-body-1" >Sponsors</span>
+      </div>
+    </md-toolbar>
+        <md-content flex flex-xs="100" ng-if="view.event.sponsor" class="content-view  md-whiteframe-z2">
+      <md-list>
+      <md-list-item ng-repeat="sponsor in view.event.sponsor" md-theme="default" md-theme-watch>
+
+        <img ng-src="{{view.sponsorImage(sponsor.sponsorImage)}}" class="md-avatar"   alt="event image" />
+         <md-item-content>
+         <strong class="md-body-2">{{sponsor.sponsorName}}</strong>
+
+
+         </md-item-content>
+       </md-list-item>
+     </md-list>
+
+   </md-content>
+    </div>
+  </div>
+  <md-toolbar class="md-primary md-hue-1">
+    <div class="md-toolbar-tools">
+     <h4>Comments</h4>
+    </div>
+</md-toolbar>
+  <div layout="row" layout-xs="column" ng-controller="commentController"  layout-align="space-between start" flex>
+
+      <md-content flex="40" flex-xs="100" flex-order-xs="10" class="md-whiteframe-z2">
+        <form ng-submit="postComment()" novalidate="novalidate" name="commentForm">
+          <div  layout="row" layout-wrap   layout-padding>
+            <md-input-container flex="100"  class="md-accent">
+              <label>Full Name</label>
+              <input type="text" required ng-model="viewer.fullName" name="fullName" />
+              <div ng-messages="commentForm.fullName.$error" >
+                <div ng-message="required">Your name is required for comment</div>
+              </div>
+            </md-input-container>
+
+            <md-input-container flex="100"  class="md-accent ">
+              <label>Comment</label>
+              <textarea row="3" required placeholder="What do you want to say?" name="comment" ng-model="viewer.comment" >
+              </textarea>
+                <div ng-messages="commentForm.comment.$error">
+                  <div ng-message="required">you show write something</div>
+                </div>
+            </md-input-container>
+      </div>
+
+          <div layout="row" layout-xs="column" layout-align="center center" layout-padding layout-fill>
+              <md-button type="submit" class="md-raised md-primary md-hue-2">
+                <md-icon class="md-primary">comment</md-icon>  Post Comment </md-button>
+          </div>
+        </form>
+    </md-content>
+      <md-content style="text-align:left" flex="60" flex-xs="100" flex-order-xs="-1" class="md-whiteframe-z2 content-view">
+        <md-list>
+       <md-list-item  class="md-3-line md-long-text">
+
+         <div class="md-list-item-text">
+
+
+
+           <h3>Mikael Araya</h3>
+           <p>
+             Secondary line text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam massa quam.
+             Nulla metus metus, ullamcorper vel, tincidunt sed, euismod in, nibh. Quisque volutpat condimentum
+             velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+           </p>
+         </div>
+
+       </md-list-item>
+       <md-list-item class="md-3-line md-long-text">
+
+         <div  class="md-list-item-text" >
+           <h3>Mikael Araya</h3>
+           <p >
+             Secondary line text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam massa quam.
+             Nulla metus metus, ullamcorper vel, tincidunt sed, euismod in, nibh. Quisque volutpat condimentum
+             velit. Class aptent taciti sociosqu ad litra torquent per conubia nostra, per inceptos himenaeos.
+           </p>
+         </div>
+       </md-list-item>
+
+      </md-list>
+
+      </md-content>
+
+  </div>
+
+
+</div>

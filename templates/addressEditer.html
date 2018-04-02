@@ -1,0 +1,112 @@
+<section layout-margin ng-controller="addressEditerController as ctrl">
+
+    <form ng-submit="ctrl.saveChanges()" name="addressForm">
+      <md-content
+                  class="md-whiteframe-z2"
+                  layout="row"
+                  layout-xs="column"
+                  layout-wrap
+                  layout-padding
+                  layout-align="space-around"
+                  ng-repeat="address in ctrl.address"
+                  style="margin-top : 10px;"
+
+                   >
+        <md-input-container flex="100">
+          <label>Location</label>
+          <input
+                type="text"
+                name="location"
+                required="required"
+                ng-model="address.location"
+                placeholder="Building name and room or common area name" />
+          <div class="hint" ng-show="addressForm.location.$pristine">
+            Building name and room or common area name eg. dembel mall 3rd floor
+          </div>
+          <div ng-messages="addressForm.location.$error">
+            <div ng-message="required">
+              Location is required
+            </div>
+          </div>
+        </md-input-container>
+        <md-input-container flex="33" flex-xs="100">
+          <label>Country</label>
+          <md-select
+                    name="country"
+                    required="required"
+                    ng-model="address.country"
+                    ng-model-options="{trackBy : '$value.name'}"
+                    >
+            <md-option ng-repeat="country in ctrl.countries" ng-value="{{country}}">
+                {{country.name}}
+            </md-option>
+          </md-select>
+          <div class="hint" ng-show="addressForm.country.$pristine"></div>
+          <div ng-messages="addressForm.country.$error">
+            <div ng-message="required">
+              Country is Required
+            </div>
+          </div>
+        </md-input-container>
+        <md-input-container flex="33" flex-xs="100">
+          <label>City</label>
+          <md-select
+                name="city"
+                required="required"
+                ng-model="address.city"
+                >
+          <md-option ng-repeat="city in ctrl.cities" value="{{city}}"> {{city}}</md-option>
+        </md-select>
+          <div class="hint" ng-show="addressForm.city.$error"> </div>
+          <div ng-messages="addressForm.city.$error">
+            <div ng-message="required">
+              City is Required
+            </div>
+          </div>
+        </md-input-container>
+        <md-input-container flex="33" flex-xs="100">
+          <label>Sub-City</label>
+          <input
+                type="text"
+                name="subCity"
+                required="required"
+                ng-model="address.subCity"
+            />
+            <div class="hint" ng-show="addressForm.subCity.$prisine"> </div>
+            <div ng-messages="addressForm.subCity.$error">
+              <div ng-message="required">
+                Sub-City is Required
+              </div>
+            </div>
+        </md-input-container>
+        <div layout-align="center center" style="padding : 0px; margin:0px;">
+
+          <md-button class="md-warn md-fab" aria-label="delete address" ng-click="ctrl.deleteAddress($index)"><md-icon class="">delete</md-icon></md-button>
+        </div>
+
+
+    </md-content>
+    <md-divider></md-divider>
+    <div layout="row" layout-align="center center" class="no-padding no-margin md-whiteframe-z2">
+      <md-button class="md-primary" ng-click="ctrl.addAddress()">
+      <md-icon>add_location</md-icon> Add New
+    </md-button>
+    </div>
+
+
+      <md-content layout="row" layout-align="space-around center" layout-margin>
+        <md-button
+                  type="submit"
+                  ng-disabled="addressForm.$invalid "
+                  class="md-primary md-raised">
+          <md-icon>save</md-icon>
+                  Save
+        </md-button>
+        <md-button class="md-warn md-raised"><md-icon>cancel </md-icon> Cancel</md-button>
+      </md-content>
+
+
+    </form>
+
+
+</section>

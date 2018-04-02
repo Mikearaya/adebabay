@@ -1,0 +1,59 @@
+
+
+<md-dialog ng-controller="logInController as logIn" class="my-form"  >
+
+
+    <form name="logInForm" ng-submit="logIn.Submit()">
+<div layout="row">
+
+
+      <md-toolbar flex>
+
+     <div class="md-toolbar-tools">
+       <h2>Log In</h2>
+       <span flex></span>
+       <md-button class="md-icon-button md-warn" ng-click="logIn.cancel()">
+         <md-icon aria-label="Close dialog">close</md-icon>
+       </md-button>
+     </div>
+   </md-toolbar>
+</div>
+   <md-content layout="row" layout-padding  >
+      <md-input-container   >
+          <label><md-icon>mail</md-icon>Email</label>
+          <input name="email"  ng-model="logIn.user.email"
+                 required  ng-pattern="/^.+@.+\..+$/" />
+
+          <div class="hint" ng-show="logInForm.email.$pristine">Email address you used when registering</div>
+
+          <div ng-messages="logInForm.email.$error" >
+            <div ng-message-exp="['required', 'pattern']">
+              <md-icon class="md-warn" style="padding : 5px;">error</md-icon>Your email must be between 10 and 100 characters long and look like an e-mail address.
+            </div>
+          </div>
+        </md-input-container>
+</md-content>
+<md-content layout="row" latout-padding>
+        <md-input-container >
+          <label>Password</label>
+          <input type="password" required name="password" ng-model="logIn.user.password" />
+          <div class="hint" ng-show="logInForm.password.$pristine">Provied the Password for your account</div>
+          <div ng-messages="logInForm.password.$error">
+            <div ng-message="required">Password is Required!!!</div>
+          </div>
+        </md-input-container>
+        </md-content>
+        <md-content>
+          <output>
+
+          </output>
+        </md-content>
+        <md-content layout="row" layout-align="space-between center">
+       <md-button type="submit" class="md-raised md-primary" ng-disabled="logInForm.$invalid">Log In</md-button>
+       <md-button type="button" class="md-raised md-warn" ng-click="logIn.cancel()" ng-disabled="logInForm.$submited">
+         <md-icon>cancel</md-icon>Cancel</md-button>
+     </md-content>
+
+    </form>
+
+  </md-dialog>

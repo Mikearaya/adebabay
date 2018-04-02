@@ -1,0 +1,87 @@
+<section ng-controller="phoneEditerController as phoneCtrl" >
+
+
+    <form ng-submit="phoneCtrl.saveChanges()"  name="phoneEditer">
+<div layout="row"  layout-xs="column" layout-margin layout-padding layout-align="center center" >
+      <div flex class="md-whiteframe-z2">
+                <div
+                            ng-repeat="phone in phoneCtrl.phones"
+                            layout="row"
+                            layout-xs="column"
+                            style="margin-top : 10px;"
+                            layout-algn="space-between center">
+
+          <!--  <md-subheader class="md-primary" flex="10">
+              <span class="md-body-2" ng-bind="$index"></span>
+            </md-subheader> -->
+            <md-input-container flex="45" flex-xs="90" flex-order-xs="0"  >
+              <md-select ng-model="phone.type"
+                        required
+                        name="type" >
+              <md-option ng-repeat="type in phoneCtrl.phoneTypes"
+                        value="{{type.type}}" >
+
+                        {{type.type}}
+              </md-option>
+            </md-select>
+              <div class="hint" ng-show="phoneEditer.type.$pristine"> </div>
+              <div ng-messages="phoneEditer.type.$error">
+                <div ng-message="required">Phone type is requirerd </div>
+              </div>
+            </md-input-container>
+
+            <md-input-container flex-order-xs="1" flex="50" flex-xs="100">
+              <label>Phone Number</label>
+              <input
+                    type="text"
+                    required
+                    name="phoneNumber"
+                    ng-model="phone.number"
+                    ng-pattern="/[0-9]{10}/" />
+              <div class="hint" ng-show="phoneEditer.phoneNumber.$pristine"> </div>
+              <div ng-messages="phoneEditer.phoneNumber.$error">
+                <div ng-message="required">Phone number is requirerd </div>
+<div ng-message="pattern">only number value is allowed </div>
+
+
+              </div>
+            </md-input-container>
+
+            <md-button flex-order-xs="-1" class="md-icon-button md-warn" ng-click="phoneCtrl.deletePhone($index)">
+              <md-icon>delete</md-icon>
+            </md-button>
+
+
+
+          </div>
+        <md-divider></md-divider>
+          <div layout="row"
+              layout-align="center center"
+              ng-click="phoneCtrl.addPhone()">
+              <md-button class="md-primary">
+                        <md-icon>add</md-icon>
+                New</md-button>
+          </div>
+
+
+</div>
+</div>
+<div
+    layout="row"
+    layout-align="space-around end">
+    <md-button
+              type="submit"
+              ng-disabled="phoneEditer.$invalid || phoneEditer.$submitted"
+              class="md-raised md-primary">
+              Save Changes
+    </md-button>
+    <md-button class="md-warn md-raised"> Cancel</md-button>
+
+</div>
+
+
+
+
+    </form>
+
+</section>

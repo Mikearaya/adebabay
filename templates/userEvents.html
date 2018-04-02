@@ -1,0 +1,87 @@
+<section ng-controller="userEventsController as ctrl">
+
+      <md-content layout-margin >
+        <md-tabs md-dynamic-height md-border-bottom>
+          <md-tab label="active" >
+            <md-content  layout="column" layout-padding >
+
+
+
+                <md-card class="md-whiteframe-z2" ng-repeat="event in ctrl.activeEvents" layout-margin   >
+                  <md-card-title >
+                    <md-card-title-media>
+                      <img ng-src="{{ctrl.poster(evt.eventImage)}}" class="md-media-lg card-media"/>
+                    </md-card-title-media>
+                    <md-card-title-text>
+                      <span class="md-body-2" ng-bind="event.eventName"></span>
+                      <span class="md-subhead" ng-bind="event.startDate"> event</span>
+                    </md-card-title-text>
+
+                  </md-card-title>
+                  <md-divider></md-divider>
+                  <md-card-actions layout="row" layout-align="start center">
+                    <md-button ng-click="ctrl.manageEvent(event)" >
+                      <md-icon>build</md-icon>
+                      Manage</md-button>
+                  </md-card-actions>
+                </md-card>
+  </md-content>
+
+
+          </md-tab>
+          <md-tab label="drafts">
+            <md-content  layout="column" layout-padding >
+
+
+
+                <md-card class="md-whiteframe-z2" layout="row" ng-repeat="evt in ctrl.draftEvents"
+                layout-margin
+                layout-fill >
+                  <md-card-title >
+                    <md-card-title-media>
+                      <img ng-src="{{ctrl.poster(evt.eventImage)}}" class="md-media-lg card-media"/>
+                    </md-card-title-media>
+                    <md-card-title-text>
+                      <span class="md-body-2" ng-bind="evt.eventName"></span>
+                      <span class="md-subhead" ng-bind="evt.startDate"> event</span>
+                    </md-card-title-text>
+
+                  </md-card-title>
+                  <md-divider></md-divider>
+                  <md-card-actions layout="row" layout-align="start center">
+                    <md-button ng-click="ctrl.manageEvent(evt)" >
+                      <md-icon>build</md-icon>
+                      Manage</md-button>
+                  </md-card-actions>
+                </md-card>
+  </md-content>
+          </md-tab>
+          <md-tab label="past">
+            <md-content  layout="column"  layout-padding >
+
+
+
+                <md-card class="md-whiteframe-z2" ng-repeat="evt in ctrl.pastEvents" layout-margin  layout-fill >
+                  <md-card-title >
+                    <md-card-title-media>
+                      <img ng-src="{{ctrl.poster(evt.eventImage)}}" class="md-media-lg card-media"/>
+                    </md-card-title-media>
+                    <md-card-title-text>
+                      <span class="md-body-2" ng-bind="evt.eventName"></span>
+                      <span class="md-subhead" ng-bind="evt.startDate"> event</span>
+                    </md-card-title-text>
+
+                  </md-card-title>
+                  <md-divider></md-divider>
+                  <md-card-actions layout="row" layout-align="start center">
+                    <md-button ng-click="ctrl.manageEvent(evt)" >
+                      <md-icon>build</md-icon>
+                      Manage</md-button>
+                  </md-card-actions>
+                </md-card>
+  </md-content>
+          </md-tab>
+        </md-tab>
+
+
+</section>

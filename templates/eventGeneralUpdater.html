@@ -1,0 +1,105 @@
+<section layout-margin ng-controller="eventGeneralUpdateController as ctrl" ng-cloak>
+
+    <form ng-submit="ctrl.saveChanges()" name="generalUpdater">
+      <md-content class="md-whiteframe-z2">
+      <div layout-padding  layout="row" >
+        <md-input-container class="md-accent" flex >
+          <label>Event Name</label>
+          <input ng-model="ctrl.event.eventName" name="eventName" required >
+          <div class="hint" ng-show="generalUpdater.eventName.$pristine" >
+            What do you want people to call it
+          </div>
+          <div ng-messages="generalUpdater.eventName.$error">
+            <div ng-message="required" > Event Name is Required </div>
+          </div>
+        </md-input-container>
+      </div>
+      <div layout="row" layout-padding>
+        <md-input-container class="md-accent" flex >
+          <label>Catagory</label>
+          <md-select ng-model="ctrl.event.catagory"  name="catagory" required>
+            <md-option ng-repeat="catagory in  ctrl.catagories" value="{{catagory.catagoryId}}">
+              {{catagory.catagoryName}}
+            </md-option>
+          </md-select>
+          <div class="hint" ng-show="generalUpdater.catagory.$pristine" >
+            Type of the Event
+          </div>
+          <div ng-messages="generalUpdater.catagory.$error" >
+            <div ng-message="required" >  Event Catagory Is Required </div>
+          </div>
+        </md-input-container>
+      </div>
+      <div layout="row" layout-padding layout-xs="column">
+        <md-input-container class="md-accent"  flex >
+          <label>Venue Name</label>
+          <input ng-model="ctrl.event.venueName" name="venue" required >
+          <div class="hint" ng-show="generalUpdater.venue.$pristine" >
+            Place event is held at
+          </div>
+          <div ng-messages="generalUpdater.venue.$error" >
+            <div ng-message="required" > Event Venue is required </div>
+          </div>
+        </md-input-container>
+      </div>
+      <div layout="row" layout-align="space-between center" layout-padding  layout-xs="column">
+        <md-input-container class="md-accent" flex>
+          <label>Country</label>
+          <md-select ng-model="ctrl.event.country" required name="country">
+            <md-option ng-repeat="country in ctrl.countries" value="{{country.code}}">
+              {{country.name }}, {{country.code}}
+            </md-option>
+          </md-select>
+          <div class="hint" ng-show="generalUpdater.country.$pristine" >  </div>
+          <div ng-messages="generalUpdater.country.$error" >
+            <div ng-message="required" >   Country field is required </div>
+          </div>
+        </md-input-container>
+        <md-input-container class="md-accent" flex>
+          <label>City</label>
+          <md-select  ng-model="ctrl.event.city" name=city required>
+            <md-option ng-repeat="city in ctrl.cities" value="{{city}}">
+              {{city}}
+            </md-option>
+          </md-select>
+          <div class="hint" ng-show="generalUpdater.city.$pristine" > </div>
+          <div ng-messages="generalUpdater.city.$error" >
+            <div ng-message="required" >  City Field is required  </div>
+          </div>
+        </md-input-container>
+    </div>
+  <div layout="row" layout-align="space-between center" layout-padding  layout-xs="column">
+        <md-input-container class="md-accent"  flex>
+          <label>Sub-city</label>
+          <input  ng-model="ctrl.event.subCity" name="subCity" required >
+          <div class="hint" ng-show="generalUpdater.subCity.$pristine" > </div>
+          <div ng-messages="generalUpdater.subCity.$error" >
+            <div ng-message="required" >  Sub-City field is required </div>
+          </div>
+        </md-input-container>
+        <md-input-container class="md-accent"  flex>
+          <label>Location (common name)</label>
+          <input ng-model="ctrl.event.location" name="location" required >
+          <div class="hint" ng-show="generalUpdater.location.$pristine" >
+            Common name of event venue neborehood
+          </div>
+          <div ng-messages="generalUpdater.location.$error" >
+            <div ng-message="required" > Event Location is required </div>
+          </div>
+        </md-input-container>
+      </div>
+    </md-content>
+
+
+      <div layout="row" layout-align="space-around center">
+        <md-button class="md-primary md-raised" type="submit" ng-disabled="generalUpdater.$invalid">
+          <md-icon>save</md-icon> Save
+        </md-button>
+        <md-button class="md-warn md-raised" ng-disabled="generalUpdater.$submmitted">
+          <md-icon>cancel</md-icon> Cancel
+        </md-button>
+      </div>
+
+    </form>
+
+</section>

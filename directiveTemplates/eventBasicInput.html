@@ -1,0 +1,114 @@
+<md-content layout-padding md-theme="input" layout="row" >
+  <md-input-container flex >
+    <label>Event Name</label>
+    <input ng-model="ctrl.event.eventName" name="eventName" required >
+    <div class="hint" ng-show="eventForm.eventName.$pristine" >
+      What do you want people to call it
+    </div>
+    <div ng-messages="eventForm.eventName.$error">
+      <div ng-message="required" > Event Name is Required </div>
+    </div>
+  </md-input-container>
+</md-content>
+<md-content layout="row" layout-padding>
+  <md-input-container flex >
+    <label>Catagory</label>
+    <md-select ng-model="ctrl.event.catagory" required name="catagory" required>
+      <md-option ng-repeat="catagory in  ctrl.catagories" value="{{catagory.catagoryId}}">
+        {{catagory.catagoryName}}
+      </md-option>
+    </md-select>
+    <div class="hint" ng-show="eventForm.catagory.$pristine" >
+      Type of the Event
+    </div>
+    <div ng-messages="eventForm.catagory.$error" >
+      <div ng-message="required" >  Event Catagory Is Required </div>
+    </div>
+  </md-input-container>
+</md-content>
+<md-content layout="row" layout-padding layout-xs="column">
+  <md-input-container  flex >
+    <label>Venue Name</label>
+    <input ng-model="ctrl.event.address.venueName" name="venue" required >
+    <div class="hint" ng-show="eventForm.venue.$pristine" >
+      Place event is held at
+    </div>
+    <div ng-messages="eventForm.venue.$error" >
+      <div ng-message="required" > Event Venue is required </div>
+    </div>
+  </md-input-container>
+</md-content>
+<md-content layout="row" layout-align="space-between center" layout-padding class="md-block" layout-xs="column">
+  <md-input-container flex>
+    <label>Country</label>
+    <md-select ng-model="ctrl.event.address.country" required name="country">
+      <md-option ng-repeat="country in ctrl.countries" value="{{country.code}}">
+        {{country.name }}, {{country.code}}
+      </md-option>
+    </md-select>
+    <div class="hint" ng-show="eventForm.country.$pristine" >  </div>
+    <div ng-messages="eventForm.country.$error" >
+      <div ng-message="required" >   Country field is required </div>
+    </div>
+  </md-input-container>
+  <md-input-container flex>
+    <label>City</label>
+    <md-select  ng-model="ctrl.event.address.city" name=city required>
+      <md-option ng-repeat="city in ctrl.cities" value="{{city}}">
+        {{city}}
+      </md-option>
+    </md-select>
+    <div class="hint" ng-show="eventForm.city.$pristine" > </div>
+    <div ng-messages="eventForm.city.$error" >
+      <div ng-message="required" >  City Field is required  </div>
+    </div>
+  </md-input-container>
+  <md-input-container  flex>
+    <label>Sub-city</label>
+    <input  ng-model="ctrl.event.address.subCity" name="subCity" required >
+    <div class="hint" ng-show="eventForm.subCity.$pristine" > </div>
+    <div ng-messages="eventForm.subCity.$error" >
+      <div ng-message="required" >  Sub-City field is required </div>
+    </div>
+  </md-input-container>
+  <md-input-container  flex>
+    <label>Location (common name)</label>
+    <input ng-model="ctrl.event.address.location" name="location" required >
+    <div class="hint" ng-show="eventForm.location.$pristine" >
+      Common name of event venue neborehood
+    </div>
+    <div ng-messages="eventForm.location.$error" >
+      <div ng-message="required" > Event Location is required </div>
+    </div>
+  </md-input-container>
+</md-content>
+
+
+<div  layout-align="start start" layout-xs="column" layout="row">
+  <div layout-align="space-between start" layout="row" flex>
+    <md-input-container >
+      <label>Start Date</label>
+      <md-datepicker md-min-date="ctrl.minDate" md-placeholder="Start Date"  ng-model="ctrl.event.eventStartDate" name="eventStartDate" required></md-datepicker>
+    </md-input-container>
+    <md-input-container >
+      <label>Time</label>
+      <md-datepicker ng-model="ctrl.event.eventStartTime"  md-placeholder="Start Time" name="eventStartTime" required></md-datepicker>
+    </md-input-container>
+  </div>
+  <div layout-align="space-between start" layout="row" flex>
+    <md-input-container >
+      <label>End Date</label>
+      <md-datepicker  md-min-date="ctrl.event.eventStartDate" md-placeholder="End Date"  ng-model="ctrl.event.eventEndDate" name="eventEndDate"required ></md-datepicker>
+    </md-input-container>
+    <md-input-container >
+      <label>Time</label>
+      <md-datepicker ng-model="ctrl.event.eventEndTime" md-placeholder="End Time" name="eventEndTime" required></md-datepicker>
+    </md-input-container>
+  </div>
+</div>
+<div layout-padding layout="row">
+  <md-input-container flex>
+    <label>Discription </label>
+    <textarea ng-model="ctrl.event.eventDiscription" rows="3" ></textarea>
+  </md-input-container>
+</div>

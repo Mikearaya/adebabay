@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html  ng-app="myApp" ng-static-di>
+  <head>
+
+    <meta charset="utf-8" />
+    <title>ETevents</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="yes" />
+
+
+
+
+
+
+    <link rel="stylesheet" href="css/angular-material.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="css/myCss.css">
+
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-aria.min.js"></script>
+    <script src="js/angular-route.min.js"></script>
+    <script src="js/angular-animate.min.js"></script>
+    <script src="js/angular-messages.min.js"></script>
+    <script src="js/angular-material.min.js"></script>
+
+    <link rel="stylesheet" href="css/lf-ng-md-file-input.min.css">
+<script src="js/lf-ng-md-file-input.min.js"></script>
+
+    <script src="js/adebabay.js"> </script>
+    <script src="js/config.js"> </script>
+    <script src="js/service.js"> </script>
+    <script src="js/directives.js"> </script>
+    <script src="js/controllers.js"> </script>
+
+
+  </head>
+
+  <body  layout="row" ng-controller="mainController as main" ng-cloak  >
+    <md-sidenav class="md-primary" layout="column" class="md-sidenav-left" md-component-id="left"
+    ng-click="main.toggleSidenav('left')"    md-is-locked-open="$mdMedia('gt-md')">
+      <md-toolbar class="md-tall" >
+
+        <div layout="column" class="md-toolbar-tools-bottom " >
+          <site-logo></site-logo>
+
+          <div><md-icon class="md-primary">business</md-icon>ETevents</div>
+          <div><md-icon class="md-primary">mail</md-icon>info@etevents.com</div>
+        </div>
+      </md-toolbar>
+      <md-content >
+      <md-list  >
+        <md-item>
+          <md-item-content>
+            <md-subheader >
+            Event Catagories</md-subheader>
+
+
+        </md-item-content></md-item>
+        <md-divider></md-divider>
+      <md-item ng-click="main.showEvents({'catagoryId' : 0, 'catagoryName' : 'all'})">
+        <a>
+          <md-item-content layout="row" layout-align="start center">
+            <div class="inset">All Events  </div>
+            <span flex> </span>
+            <div class="inset">
+              <md-icon >keyboard_arrow_right</md-icon>
+            </div>
+          </md-item-content>
+        </a>
+      </md-item>
+      <div ng-repeat="catagory in main.eventCatagories ">
+      <md-item md-ink-ripple ng-click="main.showEvents(catagory) " class="md-ink-rl" >
+        <a>
+          <md-item-content  layout="row"  layout-align="start center">
+
+            <div class="inset" >{{catagory.catagoryName}} </div>
+
+          </md-item-content>
+          </a>
+      </md-item>
+    </div>
+    </md-list>
+    </md-content>
+    </md-sidenav>
+
+
+    <div layout="column" class="relative" layout-fill role="main">
+      <md-toolbar  >
+        <div layout="row" layout-align="space-between center" class="md-toolbar-tools">
+          <md-button ng-click="main.toggleSidenav('left')" class="md-icon-button" hide-gt-md aria-label="Event Catagories">
+            <md-icon>menu</md-icon>
+          </md-button>
+          <h3>
+
+          </h3>
+          <span flex></span>
+
+          <md-button ng-show="!showSearch" aria-label="Search" class="md-icon-button" ng-click="showSearch = !showSearch">
+            <md-icon >search</md-icon>
+          </md-button>
+          <md-button ng-show="showSearch" aria-label="Search" class="md-icon-button md-warn" ng-click="showSearch = !showSearch">
+            <md-icon >cancel</md-icon>
+          </md-button>
+          <md-button aria-label="Open Menu" class="md-icon-button" ng-click="main.toggleSidenav('right')">
+            <md-icon >more_vert</md-icon>
+          </md-button>
+        </div>
+      </md-toolbar>
+      <md-toolbar  ng-show="showSearch" ng-controller="searchCtrl" >
+
+          <md-content layout="row" flex>
+            <form name="autocompleteForm" flex>
+          <md-autocomplete md-input-name="autocomplete"md-selected-item="selectedItem" md-search-text="searchText"
+          md-items="item in getMatches(searchText)"
+          md-floating-lable="true"
+          md-select-on-match="true"
+          md-no-cache="false"
+          md-delay="500"
+          md-autoselect="true"
+          md-select-on-match="true"
+          md-dropdown-items="10"
+          placeholder="Search by name or catagory"
+          md-item-text="item.eventName"
+          md-selected-item-change="searchItemSelected(item)"
+          >
+            <md-item-template ng-click="itemClicked(item.eventName)" >
+
+              <span class="item-title">
+              <span md-highlight-text="searchText"  md-highlight-flags="^i" >{{item.eventName}}</span>
+                 </span>
+                 <span class="item-metadata">
+                     <strong class="md-accent">{{item.eventStatus}}</strong>
+                 </span>
+
+            </md-item-template>
+            <md-not-found>
+                no matching result
+            </md-not-found>
+          </md-autocomplete>
+        </form>
+
+
+  </md-content>
+
+
+
+      </md-toolbar>
+      <md-content flex md-scroll-y>
+        <div class="app-body" ng-class="{loading: loading}">
+        <div ng-show="loading" class="app-content-loading">
+
+        </div>
+        <div class="app-content">
+        <ng-view >
+
+        </ng-view>
+      </div>
+    </div>
+
+      </md-content>
+
+
+
+    </div>
+
+        <md-sidenav layout="column" ng-click="main.toggleSidenav('right')"   class="md-sidenav-right md-whiteframe-z2"  md-component-id="right">
+          <organizer-controlles  ng-if="main.isLogged()"></organizer-controlles>
+          <md-divider></md-divider>
+          <md-list>
+            <md-item ng-click="main.createEvent($event)"  >
+              <a>
+                <md-item-content md-ink-ripple layout="row" md-colors="{ 'background-color' : 'accent'}" layout-align="start center" >
+                  <div class="inset" >
+                    <md-icon >create</md-icon>
+                  </div>
+                  <div class="inset">Create Event </div>
+                </md-item-content>
+              </a>
+            </md-item>
+            <md-divider ></md-divider>
+          <default-controlles ng-if="!main.isLogged()"> </default-controlles>
+          <event-managment-controlles ng-if="main.isLogged()"> </event-managment-controlles>
+
+
+
+        </md-list>
+        </md-sidenav>
+
+  </body>
+</html>

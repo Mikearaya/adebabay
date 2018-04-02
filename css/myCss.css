@@ -1,0 +1,317 @@
+
+h1 {
+  padding: 0;
+  margin: 10px 0;
+}
+
+table#orderTable {
+  width: 100%;
+}
+
+.no-padding{
+  padding : 0px;
+}
+.no-margin {
+  margin : 0px;
+}
+
+table#orderTable tr td , table#orderTable tr th {
+  border-bottom: 1px solid grey;
+}
+
+
+
+
+table#orderTable tr td:not(:first-child) {
+  width : 18%;
+  text-align: center
+}
+table#orderTable tr td:first-child {
+  width : 40%;
+  text-align: left;
+}
+
+
+img.xxx {
+
+  height: 200px;
+}
+
+img.yyy{
+  height: 250px;
+}
+md-icon{
+  padding: 5px;
+}
+.ticket-view {
+min-height:  200px;
+  overflow-y: scroll;
+  border-style: none solid solid solid ;
+  text-align: center;
+}
+
+.content-view {
+max-height:  400px;
+  overflow-y: scroll;
+  text-align: center;
+}
+
+
+
+md-list.event-catagory-list md-item {
+  cursor: pointer;
+}
+
+.feat {
+  background: lightblue;
+  text-align: center;
+}
+
+.md-toolbar-tools-bottom {
+font-size: small;
+}
+
+md-icon.icon-margin-right{
+  margin-right : 5px;
+}
+md-icon.icon-margin-left{
+  margin-left : 5px;
+}
+
+.user-avatar {
+border-radius: 99%;
+}
+
+md-list md-item a:hover {
+  cursor:pointer;
+
+}
+
+md-list md-item:hover {
+  background-color: red;
+}
+.loading-spinner {
+  position: absolute;
+  font-size: 50px;
+  left: 50%;
+  top: 50%;
+  margin-left: -25px;
+  margin-top: -25px;
+}
+
+
+table#ticket-table thead tr th {
+  height: 30px;
+  font-weight: bold;
+}
+table#ticket-table tbody tr td ,
+table#ticket-table thead tr th {
+  padding: 0px;
+  margin: 0px;
+text-align: center;
+}
+table#ticket-table thead tr  {
+background-color: grey;
+color: white;
+}
+table#ticket-table tbody tr  {
+  border-top:  1px solid ;
+}
+
+
+table#ticket-table,
+table.ticket-manage {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+
+table.ticket-manage thead tr th:last-child {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+}
+
+
+table.ticket-manage tbody tr td:last-child {
+  display: block;
+  width: 100%;
+  text-align: left;
+  margin-top: 0px;
+    margin-bottom:  0px;
+}
+table.ticket-manage tbody tr:nth-of-type(odd){
+  background: #eee;
+}
+table#ticket-table{
+  width: 100%;
+}
+
+.ticket-type {
+  width: 15%;
+}
+.ticket-name {
+  width: 40%;
+}
+.ticket-quantity {
+  width : 15%;
+}
+
+.ticket-price {
+  width : 20%;
+}
+.ticket-action {
+  width: 10%;
+  height: 10%;
+}
+
+table#ticket-table tbody tr td:last-child, table#ticket-table thead tr th:last-child {
+  display: block;
+  width: 100%;
+  text-align: left;
+  margin-top: 0px;
+    margin-bottom:  0px;
+}
+
+
+table#ticket-table tbody tr td.ticket-action > * {
+  display: inline;
+  left : 0;
+  right: 0;
+
+
+}
+
+table#ticket-table tbody tr td{
+  height: 100px;
+}
+
+table#ticket-table tbody tr  td:last-child{
+  height: auto;
+}
+.hint {
+  font-size: smaller;
+}
+
+.control-group {
+  margin-bottom:20px;
+}
+.error-messages.ng-active {
+  background:maroon;
+  color:white;
+  padding:5px;
+  border-radius:5px;
+  margin-top:15px;
+  position:relative;
+}
+.error-messages.ng-active:after {
+  position:absolute;
+  top:-10px;
+  content:"";
+  left:20px;
+  border-style:solid;
+  border-color:transparent transparent maroon;
+  border-width:5px;
+}
+
+
+
+  @media
+  only screen and (max-width: 760px),
+  (min-device-width: 768px) and (max-device-width: 1024px)  {
+
+
+    table.ticket-manage,
+    table.ticket-manage tfoot,
+    table.ticket-manage thead,
+    table.ticket-manage tbody,
+    table.ticket-manage thead tr th,
+    table.ticket-manage tbody tr td,
+    table.ticket-manage thead tr,
+    table.ticket-manage tbody tr {
+            display: block;
+            margin: 0;
+            padding: 0;
+          }
+
+
+table.ticket-manage tbody tr td:not(:last-child) {
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid #eee;
+		position: relative;
+		padding-left: 50%;
+	}
+
+table.ticket-manage tbody tr 	td:not(:last-child):before {
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 6px;
+		left: 6px;
+		width: 45%;
+		padding-right: 10px;
+		white-space: nowrap;
+	}
+
+table#ticket-table,
+table#ticket-table tfoot,
+table#ticket-table thead,
+table#ticket-table tbody,
+table#ticket-table thead tr th,
+table#ticket-table tbody tr td,
+table#ticket-table thead tr,
+table#ticket-table tbody tr {
+        display: block;
+        margin: 0;
+        padding: 0;
+      }
+
+table.ticket-manage tbody tr td:nth-of-type(1)::before{ content: "Name";     }
+table.ticket-manage tbody tr td:nth-of-type(2)::before{ content: "Type";     }
+table.ticket-manage tbody tr td:nth-of-type(3)::before{ content: "Price";     }
+table.ticket-manage tbody tr td:nth-of-type(4)::before{ content: "Quantity";     }
+table.ticket-manage tbody tr td:nth-of-type(5)::before{ content: "Sold";     }
+table.ticket-manage tbody tr td:nth-of-type(6)::before{ content: "Available";     }
+table.ticket-manage tbody tr td:nth-of-type(7)::before{ content: "Status";     }
+
+
+table#ticket-table thead tr,
+table.ticket-manage thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+
+
+table#ticket-table tbody tr  td {
+    display: table-cell;
+    width: 100%;
+
+    position: relative;
+
+  }
+
+table#ticket-table tbody tr td.ticket-action,
+table#ticket-table tbody tr td.ticket-advanced-setting {
+
+display: block;
+width: 100%;
+
+}
+table#ticket-table tbody tr td.ticket-type,
+table#ticket-table tbody tr td.ticket-quantity {
+clear: both;
+width: 33%;
+display: table-cell;
+float: left;
+}
+table#ticket-table tbody tr td.ticket-name ,
+table#ticket-table tbody tr td.ticket-price {
+width: 65%;
+display: table-cell;
+float: left;
+
+}
+
+}

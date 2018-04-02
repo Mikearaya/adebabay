@@ -1,0 +1,79 @@
+
+
+<section ng-controller="signUpController as signUp"   >
+
+    <form name="signUpForm" ng-submit="signUp.Submit()">
+      <md-toolbar >
+        <div class="md-toolbar-tools">
+          <h5>
+            Sign Up
+          </h5>
+
+        </div>
+      </md-toolbar>
+      <md-content layout-xs="column" layout-align="space-between center" layout-padding   layout="row" >
+        <md-input-container  flex>
+          <label> First Name </label>
+          <input type="text" name="firstName" required ng-model="signUp.user.firstName" />
+            <div class="hint" ng-show="$signUpForm.firstName.$pristine" > </div>
+            <div ng-messages="signUpForm.firstName.$error">
+              <div ng-message="required" >
+                First Name is Required
+              </div>
+            </div>
+        </md-input-container >
+        <md-input-container  flex >
+          <label> Last Name </label>
+          <input type="text" name="lastName" required ng-model="signUp.user.lastName" />
+            <div class="hint" ng-show="$signUpForm.lastName.$pristine" > </div>
+            <div ng-messages="signUpForm.lastName.$error" >
+              <div ng-message="required" >
+                Last Name is Required
+              </div>
+            </div>
+        </md-input-container>
+      </md-content>
+      <md-content layout="row" layout-align="start center" layout-padding >
+        <md-input-container  flex>
+          <label>Email</label>
+          <input name="email" ng-model="signUp.user.email"
+                 required  ng-pattern="/^.+@.+\..+$/" usermail ng-model-options="{updateOn : 'default blur', debounce :{ default : 500, blur : 0}}" />
+          <span ng-show="signUpForm.email.$pending.usermail">Checking if this name is available...</span>
+          <div class="hint" ng-show="signUpForm.email.$pristine">Valid email address you use eg. example@gmail.com</div>
+          <div ng-messages="signUpForm.email.$error" >
+            <div ng-message="required">
+              Email address is Required, Provide a valid email address
+            </div>
+            <div ng-message="usermail">This username is already taken!</div>
+          </div>
+        </md-input-container>
+      </md-content>
+      <md-content layout-xs="column" layout-align="space-between center" layout-padding  layout="row" >
+        <md-input-container  flex>
+          <label>Password</label>
+          <input type="password" required name="password" ng-model="signUp.user.password" />
+          <div class="hint" ng-show="signUpForm.password.$pristine">Provied the Password for your account</div>
+          <div ng-messages="signUpForm.password.$error">
+            <div  ng-message="required">Password is Required!!!</div>
+          </div>
+        </md-input-container>
+        <md-input-container >
+          <label>Retype Password</label>
+          <input type="password" required name="confirmPassword" ng-model="signUp.user.confirmationPassword" />
+          <div class="hint" ng-show="signUpForm.confirmPassword.$pristine">Rewrite password again</div>
+          <div ng-messages="signUpForm.confirmPassword.$error">
+            <div ng-message="required">Please retype password again</div>
+          </div>
+        </md-input-container>
+      </md-content>
+      <md-content layout="row" layout-align="space-around center">
+        <md-button  type="submit" class="md-raised md-primary"  ng-disabled="signUpForm.$invalid ">
+          Register
+        </md-button>
+        <md-button  type="button" class="md-raised md-warn md-hue-3" ng-click="signUp.cancel()"  ng-disabled="signUpForm.$submited">
+          Cancel
+        </md-button>
+      </md-content>
+    </form>
+
+</section>

@@ -1,0 +1,365 @@
+
+<section ng-controller="eventCtrl as ctrl" ng-cloak >
+
+    <form name="eventForm" ng-submit="ctrl.submitEvent()"  novalidate >
+      <md-content layout-padding  layout="row" >
+        <md-input-container class="md-accent" flex >
+          <label>Event Name</label>
+          <input ng-model="ctrl.event.eventName" name="eventName" required >
+          <div class="hint" ng-show="eventForm.eventName.$pristine" >
+            What do you want people to call it
+          </div>
+          <div ng-messages="eventForm.eventName.$error">
+            <div ng-message="required" > Event Name is Required </div>
+          </div>
+        </md-input-container>
+      </md-content>
+      <md-content layout="row" layout-padding>
+        <md-input-container class="md-accent" flex >
+          <label>Catagory</label>
+          <md-select ng-model="ctrl.event.catagory" required name="catagory" required>
+            <md-option ng-repeat="catagory in  ctrl.catagories" value="{{catagory.catagoryId}}">
+              {{catagory.catagoryName}}
+            </md-option>
+          </md-select>
+          <div class="hint" ng-show="eventForm.catagory.$pristine" >
+            Type of the Event
+          </div>
+          <div ng-messages="eventForm.catagory.$error" >
+            <div ng-message="required" >  Event Catagory Is Required </div>
+          </div>
+        </md-input-container>
+      </md-content>
+      <md-content layout="row" layout-padding layout-xs="column">
+        <md-input-container class="md-accent"  flex >
+          <label>Venue Name</label>
+          <input ng-model="ctrl.event.address.venueName" name="venue" required >
+          <div class="hint" ng-show="eventForm.venue.$pristine" >
+            Place event is held at
+          </div>
+          <div ng-messages="eventForm.venue.$error" >
+            <div ng-message="required" > Event Venue is required </div>
+          </div>
+        </md-input-container>
+      </md-content>
+      <div layout="row" layout-align="space-between center"  layout-xs="column">
+        <md-input-container class="md-accent" flex>
+          <label>Country</label>
+          <md-select ng-model="ctrl.event.address.country" required name="country">
+            <md-option ng-repeat="country in ctrl.countries" value="{{country.code}}">
+              {{country.name }}, {{country.code}}
+            </md-option>
+          </md-select>
+          <div class="hint" ng-show="eventForm.country.$pristine" >  </div>
+          <div ng-messages="eventForm.country.$error" >
+            <div ng-message="required" >   Country field is required </div>
+          </div>
+        </md-input-container>
+        <md-input-container class="md-accent" flex>
+          <label>City</label>
+          <md-select  ng-model="ctrl.event.address.city" name=city required>
+            <md-option ng-repeat="city in ctrl.cities" value="{{city}}">
+              {{city}}
+            </md-option>
+          </md-select>
+          <div class="hint" ng-show="eventForm.city.$pristine" > </div>
+          <div ng-messages="eventForm.city.$error" >
+            <div ng-message="required" >  City Field is required  </div>
+          </div>
+        </md-input-container>
+        <md-input-container class="md-accent"  flex>
+          <label>Sub-city</label>
+          <input  ng-model="ctrl.event.address.subCity" name="subCity" required >
+          <div class="hint" ng-show="eventForm.subCity.$pristine" > </div>
+          <div ng-messages="eventForm.subCity.$error" >
+            <div ng-message="required" >  Sub-City field is required </div>
+          </div>
+        </md-input-container>
+        <md-input-container class="md-accent"  flex>
+          <label>Location (common name)</label>
+          <input ng-model="ctrl.event.address.location" name="location" required >
+          <div class="hint" ng-show="eventForm.location.$pristine" >
+            Common name of event venue neborehood
+          </div>
+          <div ng-messages="eventForm.location.$error" >
+            <div ng-message="required" > Event Location is required </div>
+          </div>
+        </md-input-container>
+      </div>
+
+
+      <div   layout-xs="column" layout="row">
+        <md-input-container  flex flex-xs="60" >
+          <label>Start Date</label>
+          <md-datepicker md-min-date="ctrl.minDate" md-date-locale="" md-placeholder="Start Date"  ng-model="ctrl.event.eventStartDate" name="eventStartDate" required></md-datepicker>
+        </md-input-container>
+        <md-input-container flex flex-xs="30">
+          <label>Time</label>
+          <md-select ng-model="ctrl.event.eventStartTime"  ng-change="ctrl.seeTime(ctrl.event.eventStartTime)"  md-pl ="Start Time" name="eventStartTime" required>
+            <md-option value="01:00">01:00</md-option>
+            <md-option value="01:30">01:30</md-option>
+            <md-option value="02:00">02:00</md-option>
+            <md-option value="02:30">02:30</md-option>
+          </md-select>
+        </md-input-container>
+
+        <md-input-container  flex flex-xs="60" >
+          <label>End Date</label>
+          <md-datepicker  md-min-date="ctrl.event.eventStartDate" md-placeholder="End Date"  ng-model="ctrl.event.eventEndDate" name="eventEndDate"required ></md-datepicker>
+        </md-input-container>
+        <md-input-container  flex flex-xs="30" >
+          <label>Time</label>
+          <md-datepicker ng-model="ctrl.event.eventEndTime" md-placeholder="End Time" name="eventEndTime" required></md-datepicker>
+        </md-input-container>
+      </div>
+
+      <div layout-padding  layout="row" layout-xs="column">
+        <md-input-container class="md-accent" flex flex-xs="100">
+          <label>Discription </label>
+          <textarea ng-model="ctrl.event.eventDiscription" rows="3" name="discription" required ></textarea>
+          <div ng-messages="eventForm.discription.$error">
+            <div ng-message="required">
+              Event discription is Required
+
+            </div>
+          </div>
+        </md-input-container>
+<div flex flex-xs="100">
+
+  <lf-ng-md-file-input name="eventImage"   lf-files="ctrl.event.eventImage" lf-required lf-browse-label="Upload Image" lf-remove-label="Remove"
+  lf-filesize="2MB"  lf-mimetype="image/*" preview>
+</lf-ng-md-file-input>
+<div ng-messages="eventForm.eventImage.$error" style="color:red;">
+<div ng-message="mimetype">Mimetype error.</div>
+<div ng-message="filesize">File size too large.</div>
+
+</div>
+      </div>
+      </div>
+
+      <md-toolbar class="md-primary md-hue-1">
+        <div class="md-toolbar-tools">
+          <h4>2. Ticket</h4>
+        </div>
+    </md-toolbar>
+
+      <md-content layout-padding flex>
+        <table id="ticket-table" >
+          <thead class="md-accent md-hue-2">
+            <tr>
+              <th class="ticket-type">Ticket Type  </th>
+              <th class="ticket-name">Ticket Name </th>
+              <th class="ticket-quantity">Avilable Quantity </th>
+              <th class="ticket-price">Price </th>
+              <th class="ticket-action">Action </th>
+              <th class="ticket-advanced-setting">Discription </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="ticket in ctrl.event.eventTickets">
+              <td class="ticket-type">
+                <md-input-container flex >
+                  <label>Type</label>
+                  <md-select ng-model="ticket.type" md-placeholder="type"
+                   name="ticketType" required>
+                    <md-option  value="Free">Free </md-option>
+                    <md-option  value="Paid">Paid </md-option>
+                  </md-select>
+                  <div class="hint" ng-show="eventForm.ticketType.$pristine" ></div>
+                  <div ng-messages="eventForm.ticketType.$error" >
+                    <div ng-message="required" >  Ticket Type is Required  </div>
+                  </div>
+                </md-input-container>
+              </td>
+              <td class="ticket-name">
+                <md-input-container  flex >
+                  <label>Ticket Name</label>
+                  <input ng-model="ticket.ticketName" ng-disabled="isFree" type="text" name="ticketName" required >
+                  <div class="hint" ng-show="eventForm.ticketName.$pristine" >
+                    That explains its purpose
+                  </div>
+                  <div ng-messages="eventForm.ticketName.$error" >
+                    <div ng-message="required" >  Ticket Name is Required  </div>
+                  </div>
+                </md-input-container>
+              </td>
+              <td class="ticket-quantity">
+                <md-input-container  flex >
+                  <label>Quantity</label>
+                  <input ng-model="ticket.quantity" type="number" size="10" name="quantity"  min="0" required >
+                  <div class="hint" ng-show="eventForm.quantity.$pristine" >  Available Tickets </div>
+                  <div ng-messages="eventForm.quantity.$error" >
+                    <div ng-message="required" >  Quantity is required </div>
+                    <div ng-message="number" > Only number value  </div>
+                    <div ng-message="min" > Quantity can't be less than 0  </div>
+                  </div>
+                </md-input-container>
+              </td>
+              <td class="ticket-price">
+                <md-input-container  flex  >
+                  <label>Price</label>
+                  <input  ng-model="ticket.price" size="10" type="number" value="{{$index}}" name="price" ng-disabled="ticket.type == 'Free'"  min="0" required >
+                  <div class="hint" ng-show="eventForm.price.$pristine" >  Cost of Ticket </div>
+                  <div ng-messages="eventForm.price.$error"  >
+                    <div ng-message="required" >  Price is required </div>
+                    <div ng-message="number" > Only number value  </div>
+                    <div ng-message="min" > Price can't be less than 0 </div>
+                  </div>
+                </md-input-container>
+              </td>
+              <td class="ticket-action">
+
+                <md-checkbox aria-label="avanced ticket setting "  ng-model="ticket.showAdvanced" name="showAdvanced" flex  />  </md-checkbox>
+                <md-checkbox aria-label="remove current ticket " ng-click="ctrl.event.removeTicket($index)"  name="removeTicket" flex  />  </md-checkbox>
+
+              </td>
+              <td ng-show="ticket.showAdvanced" class="ticket-advanced-setting">
+                <strong class="md-accent"> Advanced Setting </strong>
+                <div layout="row" layout-xs="column">
+                  <md-input-container class="md-accent" flex-gt-xs="50" flex-xs="100"  >
+                    <label>Discription</label>
+                    <textarea ng-model="ticket.ticketDiscription" rows="3" md-select-on-focus></textarea>
+                  </md-input-container>
+                  <md-input-container  flex flex-xs="50"    >
+                    <label>Sale Start</label>
+                    <md-datepicker  ng-model="ticket.saleStart" name="ticketSaleStart" ></md-datepicker>
+                  </md-input-container>
+                  <md-input-container flex-xs="50" flex  >
+                    <label>Sale End</label>
+                    <md-datepicker   ng-model="ticket.saleEnd" name="ticketSaleEnd" ></md-datepicker>
+                  </md-input-container>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <div layout="row" layout-align="space-between center">
+                <md-input-container flex flex-xs="50" class="md-accent"   >
+                  <label>Sale Start</label>
+                  <md-datepicker required="required" ng-model="ctrl.saleStartDefault" name="ticketSaleStartDefault" ></md-datepicker>
+                </md-input-container>
+                <md-input-container class="md-accent" flex-xs="50" flex  >
+                  <label>Sale End</label>
+                  <md-datepicker required="required"   ng-model="ctrl.saleEndDefault" name="ticketSaleEndDefault" ></md-datepicker>
+                </md-input-container>
+              </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div layout="row" layout-wrap layout-align="center center">
+          <md-button   class="md-raised md-accent md-hue-2" type="button" ng-click="ctrl.addTicket()"  name="addTicket"   >
+            Add Ticket
+          </md-button>
+        </div>
+</md-content>
+
+      <md-toolbar class="md-primary md-hue-1" flex layout="row">
+        <div class="md-toolbar-tools" >
+          <h4>
+            <span>3. Special Guests</span>
+          </h4>
+          <span flex></span>
+          <md-button class="md-icon-button md-accent md-hue-1" ng-click="ctrl.addGuest()" aria-label="Add Guest">
+            <md-icon>add </md-icon>
+          </md-button>
+        </div>
+
+      </md-toolbar>
+
+
+
+      <div ng-repeat="guest in ctrl.event.eventGuests" >
+        <div layout="row"  layout-xs="column" layout-align="space-between center">
+          <md-input-container flex>
+            <label>First Name</label>
+            <input type="text" ng-model="guest.firstName" name="guestFirstName" required  />
+            <div class="hint" ng-show="eventForm.guestFirstName.$pristine"></div>
+            <div ng-messages="eventForm.guestFirstName.$error">
+              <div ng-message="required">   First Name is Required   </div>
+            </div>
+          </md-input-container>
+          <md-input-container flex >
+            <label>Last Name</label>
+            <input type="text" name="guestLastName" ng-model="guest.lastName" required />
+            <div class="hint" ng-show="eventForm.guestLasttName.$pristine"></div>
+            <div ng-messages="eventForm.guestLastName.$error">
+              <div ng-message="required">  Last Name is Required  </div>
+            </div>
+          </md-input-container>
+        </div>
+        <div layout="row"  layout-xs="column" layout-align="space-between center">
+          <md-input-container flex>
+            <label>Aka Name</label>
+            <input type="text" name="guestAkaName" ng-model="guest.akaName" />
+            <div class="hint" ng-show="eventForm.guestAkaName.$pristine"> Stage name or Nick Name (Optional) </div>
+          </md-input-container>
+          <div flex>
+
+            <lf-ng-md-file-input name="guestImage"  lf-files="guest.guestImage"  lf-browse-label="Upload Image" lf-remove-label="Remove"
+            lf-filesize="2MB"  lf-mimetype="image/*" preview>
+          </lf-ng-md-file-input>
+          <div ng-messages="eventForm.guestImage.$error" style="color:red;">
+          <div ng-message="mimetype">Mimetype error.</div>
+          <div ng-message="filesize">File size too large.</div>
+
+          </div>
+                </div>
+        <md-divider class="inset"></md-divider>
+      </div>
+    </div>
+
+      <md-toolbar class="md-primary md-hue-1" flex layout="row">
+      <div class="md-toolbar-tools" >
+          <h4>4. Sponsors <span flex> </span>
+            <md-button ng-click="ctrl.addSponsor()" class="md-accent md-hue-1">
+              <md-icon>add</md-icon>
+            </md-button></h4>
+        </div>
+</md-toolbar>
+
+
+
+
+      <div ng-repeat="sponsor in ctrl.event.eventSponsors" >
+        <div layout="row" layout-xs="column" layout-padding layout-align="space-between start">
+          <md-input-container  flex >
+            <label>Sponsor Name</label>
+            <input type="text" name="sponsorName" ng-model="sponsor.sponsorName" required />
+            <div class="hint" ng-show="eventForm.sponsorName.$pristine">  Name of Company or person sponsoring event(Optional) </div>
+            <div ng-messages="eventForm.sponsorName.$error">
+              <div ng-message="required"> Sponsor Name is Required  </div>
+            </div>
+          </md-input-container>
+          <div flex>
+
+            <lf-ng-md-file-input name="sponsorImage" lf-files="sponsor.sponsorImage" lf-browse-label="Upload Image" lf-remove-label="Remove"
+            lf-filesize="2MB"  lf-mimetype="image/*" preview>
+          </lf-ng-md-file-input>
+          <div ng-messages="eventForm.sponsorImage.$error" style="color:red;">
+          <div ng-message="mimetype">Mimetype error.</div>
+          <div ng-message="filesize">File size too large.</div>
+
+          </div>
+                </div>
+      </div>
+    </div>
+
+
+      <md-content layout-padding layout-align="space-between center" layout-gt-xs="row">
+        <md-button type="submit" class="md-raised  md-primary" ng-disabled="eventForm.$invalid && eventForm.$submitted">
+          <md-icon>upload</md-icon>Post
+         </md-button>
+        <md-button type="button" class="md-raised  md-accent md-hue-3" ng-disabled="eventForm.$invalid && eventForm.$submitted" ng-disabled="eventForm.$submited">
+          <md-icon>save</md-icon>Save
+        </md-button>
+        <span flex></span>
+        <md-button type="button" class="md-raised  md-warn" ng-disabled="eventForm.$submitted">
+          <md-icon>cancel</md-icon>
+          Cancel
+        </md-button>
+      </md-content>
+    </form>
+
+</section>

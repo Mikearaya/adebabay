@@ -1,0 +1,64 @@
+<section layout-margin ng-controller="eventScheduleUpdateController as ctrl" ng-cloak>
+
+    <form ng-submit="ctrl.saveChanges()" name="scheduleUpdater">
+      <md-content class="md-whiteframe-z2">
+        <div   layout-xs="column" layout="row">
+          <md-input-container  flex flex-xs="60" >
+            <label>Start Date</label>
+            <md-datepicker
+                          md-min-date="ctrl.minDate"
+                          md-placeholder="Start Date"
+                          ng-model="ctrl.eventStartDate"
+                          name="eventStartDate"
+                          required="required">
+            </md-datepicker>
+          </md-input-container>
+          <md-input-container flex flex-xs="30">
+            <label>Time</label>
+            <md-select ng-model="ctrl.eventStartTime"  ng-change="ctrl.seeTime(ctrl.eventStartTime)"  md-pl ="Start Time" name="eventStartTime" required>
+              <md-option value="01:00">01:00</md-option>
+              <md-option value="01:30">01:30</md-option>
+              <md-option value="02:00">02:00</md-option>
+              <md-option value="02:30">02:30</md-option>
+            </md-select>
+          </md-input-container>
+
+          <md-input-container  flex flex-xs="60" >
+            <label>End Date</label>
+            <md-datepicker
+                          md-min-date="ctrl.eventStartDate"
+                          md-placeholder="End Date"
+                          ng-model="ctrl.eventEndDate"
+                          name="eventEndDate"
+                          required="required" >
+            </md-datepicker>
+          </md-input-container>
+          <md-input-container  flex flex-xs="30" >
+            <label>Time</label>
+            <md-datepicker
+                          ng-model="ctrl.eventEndTime"
+                          md-placeholder="End Time"
+                          name="eventEndTime"
+                          required="required">
+            </md-datepicker>
+          </md-input-container>
+        </div>
+
+      </md-content>
+      <div layout="row" layout-align="space-around center">
+        <md-button
+                  type="submit"
+                  class="md-primary md-raised"
+                  ng-disabled="scheduleUpdater.$invalid"
+                  >
+                  <md-icon>save</md-icon>
+                  Save
+        </md-button>
+        <md-button class="md-warn md-raised" ng-disabled="scheduleUpdater.$submitted">
+          <md-icon>cancel</md-icon> Cancel
+        </md-button>
+
+      </div>
+    </form>
+
+</section>

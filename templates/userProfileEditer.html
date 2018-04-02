@@ -1,0 +1,85 @@
+<section  ng-controller="profileEditerController as ctrl" class="md-whiteframe-z2" layout-margin layout-padding >
+
+    <form ng-submit="ctrl.saveChanges()" name="profileEditer">
+       <div layout="row" layout-xs="column"   layout-wrap layout-padding layout-align="space-between center">
+
+
+
+          <md-input-container  flex="50" flex-xs="100" >
+            <label>First Name</label>
+            <input type="text" ng-model="ctrl.user.firstName" name="firstName" ng-placeholder="First Name" required />
+            <div class="hint" ng-show="profileEditer.firstName.$error"> </div>
+            <div ng-messages="profileEditer.firstName.$error">
+               <div ng-message="required"> First name is required </div>
+            </div>
+
+          </md-input-container>
+
+            <md-input-container  flex="50" flex-xs="100">
+              <label>Last Name</label>
+              <input type="text" ng-model="ctrl.user.lastName" ng-placeholder="Last Name" name="lastName" required />
+              <div class="hint" ng-show="profileEditer.lastName.$error"> </div>
+              <div ng-messages="profileEditer.lastName.$error">
+                 <div ng-message="required"> Last name is required </div>
+              </div>
+            </md-input-container>
+
+          <md-input-container flex="30" flex-xs="50">
+            <label>prefix</label>
+            <md-select ng-model="ctrl.user.prefix" name="prefix">
+              <md-option ng-repeat="prefix in ctrl.prefixes" value="{{prefix}}">{{prefix}}</md-option>
+            </md-select>
+            <div class="hint" ng-show="profileEditer.prefix.$error"> eg. Mr,Dr, Mrs... </div>
+          </md-input-container>
+
+            <md-input-container flex="70" flex-xs="50">
+              <label>Postion</label>
+              <md-select ng-model="ctrl.user.position" name="position">
+                <md-option ng-repeat="position in ctrl.positions" value="{{position.abriv}}">{{position.abriv}}</md-option>
+              </md-select>
+              <div class="hint" ng-show="profileEditer.position.$error"> eg. CEO, CMO, COO </div>
+            </md-input-container>
+
+
+            <div flex="50" flex-xs="100">
+              <md-input-container>
+                <label>gender</label>
+                <md-select ng-model="ctrl.user.gender" name="gender">
+                  <md-option  value="Male" >Male</md-option>
+                  <md-option  value="Female" >Female</md-option>
+                </md-select>
+                <div class="hint" ng-show="profileEditer.gender.$error"> </div>
+              </md-input-container>
+          </div>
+          <div flex="50" flex-xs="100">
+            <md-input-container  >
+              <label>Birthdate</label>
+              <md-datepicker  md-placeholder="Birthdate"  ng-model="ctrl.user.birthdate" name="birthday" ></md-datepicker>
+            </md-input-container>
+          </div>
+
+        </div>
+
+        <div layout="row"
+              layout-margin
+              layout-align="space-around end">
+          <md-button
+                    type="submit"
+                    ng-disabled="profileEditer.$invalid && profileEditer.$submitted"
+                    class="md-primary md-raised">
+                    <md-icon>save</md-icon>
+                    Save
+          </md-button>
+          <md-button class="md-warn md-raised" ng-disabled="profileEditer.$submitted">
+            <md-icon>cancel</md-icon>
+             Cancel  </md-button>
+
+
+        </div>
+
+
+
+
+    </form>
+
+</section>

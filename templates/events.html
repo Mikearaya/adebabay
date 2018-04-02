@@ -1,0 +1,45 @@
+<div ng-controller="viewCtrl as thumbnail"  >
+
+  <md-content  layout="row" layout-wrap layout-padding layout-xs="column" layout-align="start space-between">
+    <md-card  ng-repeat="event in thumbnail.events" flex-gt-xs="45"   flex-gt-sm="30"  flex-xs="100" flex>
+      <img ng-src="{{thumbnail.eventImage(event.eventImage)}}" ng-click="thumbnail.showEventDetail(event.eventId)"   class="xxx" alt="Washed Out">
+
+
+          <md-card-titles ng-click="thumbnail.showEventDetail(event.eventId)" tyle="margin:0;">
+
+            <md-card-title-text style="margin:0; ">
+              <strong style="padding : 2px;" >{{event.eventName}}</strong>
+              <span style="display: block; margin:3px;" class="md-subheader">{{event.startDate | date : fullDate }}</span>
+            </md-card-title-text>
+          </md-card-title>
+          <md-divider class="md-accent"></md-divider>
+          <md-card-actions style="margin:0;" layout="row" layout-align="space-between center">
+            <strong class="md-accent md-hue-2">{{price = (event.maxPrice == 0) ? 'Free' : event.minPrice +'-'+event.maxPrice+'birr'}}</strong>
+            <span flex></span>
+            <md-menu>
+             <md-button aria-label="Open event share options" class="md-icon-button" ng-click="thumbnail.openMenu($mdMenu, $event)">
+               <md-icon>share</md-icon>
+             </md-button>
+             <md-menu-content width="3">
+               <md-menu-item>
+                 <md-button ng-click="thumbnail.share(event)">
+                   <md-icon>home</md-icon>
+                   Facebook
+                 </md-button>
+               </md-menu-item>
+               <md-menu-divider ></md-menu-divider>
+               <md-menu-item>
+                 <md-button ng-click="thumbnail.share(event)">
+                   <md-icon>home</md-icon>
+                   Twitter
+                 </md-button>
+               </md-menu-item>
+             </md-menu-content>
+           </md-menu>
+          </md-card-actions>
+        </md-card>
+
+
+
+  </md-content>
+</div>

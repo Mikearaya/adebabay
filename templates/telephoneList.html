@@ -1,0 +1,12 @@
+<md-list  >
+  <md-subheader >
+    <md-icon class="md-primary">phone</md-icon>
+    Telephone Address</md-subheader>
+    <md-list-item class="md-2-line" ng-repeat="phone in phones track by $index">
+      <md-icon>{{phone.icon}}</md-icon>
+    <div class="md-list-item-text">
+    <div class="md-body-2">{{phone.number}}</div>
+    <span class="md-subheader">{{phone.type}}</span >
+    </div>
+    </md-list-item>
+  </md-list>

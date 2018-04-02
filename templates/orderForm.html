@@ -1,0 +1,124 @@
+<section ng-controller="orderController as orderCtrl" layout="row" layout-warp layout-xs="column" >
+
+    <md-content flex="100"   >
+      <table id="orderTable" class="md-whiteframe-z2" layout-margin>
+        <thead>
+          <tr>
+            <th>Ticket </th>
+            <th>Price</th>
+            <th>Quantity </th>
+            <th>Sub-total </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="order in orderCtrl.orders">
+            <td>{{order.name}} </td>
+            <td>{{order.price | currency}} </td>
+            <td>{{order.selected}} </td>
+            <td>{{ order.selected * order.price | currency }} </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2">Total</td>
+            <td colspan="2">{{orderCtrl.orders.totalPrice | currency}} </td>
+
+          </tr>
+        </tfoot>
+      </table>
+    </md-content>
+    <div flex="100"  class="md-whiteframe-z2" >
+       <form   ng-submit="orderCtrl.completeOrder()" name="orderForm">
+
+          <md-content layout="row" layout-xs="column" class="md-whiteframe-z2"
+          layout-wrap
+           layout-margin >
+          <div flex="50" flex-xs="100">
+            <md-input-container>
+              <label>First Name</label>
+              <input type="text" name="firstName" ng-model="orderCtrl.attendee.firstName" required  />
+              <div class="hint" ng-show="orderForm.firstName.$pristine"> </div>
+              <div ng-messages="orderForm.firstName.$error">
+                <div ng-message="required"><md-icon>error</md-icon> First name is Required </div>
+              </div>
+            </md-input-container>
+           </div>
+           <div flex="50" flex-xs="100">
+             <md-input-container>
+               <label>Last Name</label>
+               <input type="text" name="lastName" ng-model="orderCtrl.attendee.lastName" required  />
+               <div class="hint" ng-show="orderForm.lastName.$pristine"> </div>
+               <div ng-messages="orderForm.lastName.$error">
+                 <div ng-message="required"><md-icon>error</md-icon> Last name is Required </div>
+               </div>
+             </md-input-container>
+           </div>
+              <div flex="100" >
+                <md-input-container>
+                  <label>Mobile Number</label>
+                  <input type="number" name="mobileNumber" ng-model="orderCtrl.attendee.mobileNumber" required  />
+                  <div class="hint" ng-show="orderForm.mobileNumber.$pristine">
+                    Mobile phone that is currently available to you and perferably
+                    registered to mobile banking service
+                   </div>
+                  <div ng-messages="orderForm.mobileNumber.$error">
+                    <div ng-message="required"><md-icon>error</md-icon> Mobile Number is Required</div>
+                    <div ng-message="number"><md-icon>error</md-icon> Only Number Vaule is allowed </div>
+                  </div>
+                </md-input-container>
+               </div>
+               <div flex="100" >
+                 <md-input-container>
+                   <label>Email Address</label>
+                   <input type="email" placeholder="eg. example@domain.com" name="email" ng-model="orderCtrl.attendee.email" required  />
+                   <div class="hint" ng-show="orderForm.email.$pristine">
+                     anything related to the event including your tickets will be sent to this address
+                   </div>
+                   <div ng-messages="orderForm.email.$error">
+                     <div ng-message="required"><md-icon>error</md-icon> Mobile Number is Required</div>
+                     <div ng-message="email"><md-icon>error</md-icon> Invalid Email Address </div>
+                   </div>
+                 </md-input-container>
+                </div>
+
+
+         </md-content>
+         <md-content layout="row" class="md-whiteframe-z2" layout-xs="column"
+         layout-align="space-between center" layout-wrap layout-padding layout-margin>
+
+           <p >
+             Select your prefered mobile banking provider and the one registered
+             with the phone you provided.
+           </p>
+           <p >
+             if you are not registered to mobile banking service yet just select any from the list
+             below
+           </p>
+           <div flex="100">
+           <md-input-container flex>
+             <label> Mobile Banking Provider</label>
+             <md-select ng-model="orderCtrl.attendee.paymentProvider">
+               <md-option ng-value="HelloCash"><md-icon>home</md-icon>Hello Cash</md-option>
+               <md-option ng-value="Mbirr"><md-icon>home</md-icon>Mbirr Cash</md-option>
+               <md-option ng-value="CBE"><md-icon>home</md-icon> Commercial Bank of Ethiopia (CBE)</md-option>
+               <md-option ng-value="Wogagen"><md-icon>home</md-icon>Wogagen Bank</md-option>
+             </md-select>
+           </md-input-container>
+           </div>
+         </md-content>
+         <md-content layout="row" layout-align="space-between center">
+           <md-button type="submit" ng-disabled="orderForm.$invalid"
+           class="md-primary md-raised"> Complet Order
+         </md-button>
+           <md-button type="button" ng-disabled="orderForm.$submited" class="md-warn md-raised" >
+             Cancel
+           </md-button>
+         </md-content>
+
+       </form>
+    </div>
+
+
+
+
+</section>

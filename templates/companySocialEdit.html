@@ -1,0 +1,57 @@
+<section ng-controller="comanySocialEditerController as ctrl">
+  <form ng-submit="ctrl.saveChanges()" name="socialEditer">
+<div  layout="row" layout-xs="column" layout-margin layout-align="center center">
+
+
+    <div flex  class="md-whiteframe-z2" >
+
+
+    <div
+                layout="row"
+                layout-align="space-between center"
+                ng-repeat="social in ctrl.social"
+                ng-model-options="{trackBy : '$value.name'}">
+      <md-input-container flex="50" >
+        <label>Site</label>
+        <md-select
+                  name="socialSite"
+                  required="required"
+                  ng-model="social.site">
+            <md-option ng-repeat="site in ctrl.socialSites" ng-value="site">
+            {{site.name}}</md-option>
+        </md-select>
+        <div class="hint" ng-show="socialEditer.socialSite.$pristine"> </div>
+        <div ng-messages="socialEditer.socialSite.$error">
+          <div ng-message="required" >Social site is required </div>
+        </div>
+      </md-input-container>
+      <md-input-container flex="50" >
+        <label>Address</label>
+        <input
+              type="text"
+              name="socialAddress"
+              required="required"
+              ng-model="social.address">
+        <div class="hint" ng-show="socialEditer.socialAddress.$pristine"> </div>
+        <div ng-messages="socialEditer.socialAddress.$error">
+          <div ng-message="required">
+            Social Address is required
+          </div>
+        </div>
+      </md-input-container>
+    </div>
+    <md-divider></md-divider>
+    <div layout="row"  layout-align="center center" >
+      <md-button class="md-primary" ng-click="ctrl.addSocialAddress()">
+        <md-icon>add</md-icon> Add Social
+      </md-button>
+    </div>
+    </div>
+    </div>
+    <div layout="row" layout-align="space-around center">
+      <md-button type="submit" class="md-primary"><md-icon>save</md-icon>Save</md-button>
+      <md-button class="md-warn" >Cancel</md-button>
+    </div>
+
+  </form>
+</section>

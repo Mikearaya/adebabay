@@ -1,0 +1,231 @@
+<section ng-controller="eventManagerController as ctrl" ng-cloak>
+
+  <md-toolbar>
+    <span class="md-headline" ng-bind="ctrl.event.eventName"></span>
+  </md-toolbar>
+  <div layout="row" layout-margin   layout-xs="column"    >
+
+      <md-card flex="25"  flex-xs="100"   class="md-whiteframe-z2"  layout-padding >
+        <img ng-src="ctrl.eventImage()" class="card-media md-media-lg" />
+        <md-card-action layout="row" layout-align="center center">
+          <md-button ng-click="ctrl.changeImage()" class="md-primary">Edit Poster</md-button>
+        </md-card-action>
+    </md-card>
+
+    <md-list flex="37" flex-xs="100" flex  class="md-whiteframe-z2">
+
+      <md-list-item>
+      <md-item-content>
+        <span class="md-subheader">Status</span>
+        <span class="md-body-2 md-secondary" ng-bind="ctrl.event.status" ></span>
+      </md-item-content>
+
+    </md-list-item>
+        <md-list-item>
+          <md-item-content >
+            <span class="md-subheader">Catagory</span>
+            <span class="md-body-2 md-secondary" ng-bind="ctrl.event.eventCategory" ></span>
+
+          </md-item-content>
+
+      </md-list-item>
+      <md-divider></md-divider>
+      <md-list-item>
+      <md-item-content>
+        <span class="md-subheader">Venue</span>
+        <span class="md-body-2 md-secondary" ng-bind="ctrl.event.venue" ></span>
+      </md-item-content>
+
+    </md-list-item>
+    <md-divider></md-divider>
+      <md-list-item>
+      <md-item-content>
+        <span class="md-subheader">location</span>
+        <span class="md-body-2 md-secondary" ng-bind="ctrl.event.location" ></span>
+      </md-item-content>
+
+    </md-list-item>
+    <md-divider></md-divider>
+      <md-list-item>
+      <md-item-content>
+        <span class="md-subheader">Address</span>
+        <span class="md-body-2 md-secondary" ng-bind="ctrl.address" ></span>
+      </md-item-content>
+
+    </md-list-item>
+      <md-divider ></md-divider>
+      <md-list-item>
+          <md-item-content>
+            <md-button class="md-primary md-secondary" ng-click="ctrl.updateGenerals()"><md-icon>edit</md-icon>edit </md-button>
+          </md-item-content>
+        </md-list-item>
+      </md-list>
+
+      <md-list flex="37" flex-xs="100"  flex class="md-whiteframe-z2">
+
+        <md-list-item>
+          <md-item-content>
+              <span class="md-subheader">Start Date</span>
+              <span class="md-body-2 md-secondary" ng-bind="ctrl.event.startDate"></span>
+          </md-item-content>
+          </md-list-item>
+          <md-divider></md-divider>
+          <md-list-item>
+          <md-item-content>
+            <span class="md-subheader">Start Time</span>
+            <span class="md-body-2 md-secondary" ng-bind="ctrl.event.startTime" ></span>
+          </md-item-content>
+
+        </md-list-item>
+        <md-divider></md-divider>
+        <md-list-item>
+          <md-item-content>
+              <span class="md-subheader">End Date</span>
+              <span class="md-body-2 md-secondary" ng-bind="ctrl.event.endDate"></span>
+          </md-item-content>
+          </md-list-item>
+          <md-divider></md-divider>
+          <md-list-item>
+          <md-item-content>
+            <span class="md-subheader">End Time</span>
+            <span class="md-body-2 md-secondary" ng-bind="ctrl.event.endTime" ></span>
+          </md-item-content>
+
+        </md-list-item>
+        <md-divider></md-divider>
+        <md-list-item>
+        <md-item-content>
+          <span class="md-subheader">Created On</span>
+          <time class="md-body-2 md-secondary" ng-bind="ctrl.event.createdOn | date : fullDate" ></time>
+        </md-item-content>
+
+      </md-list-item>
+      <md-divider></md-divider>
+      <md-list-item>
+      <md-item-content>
+        <span class="md-subheader">Last Updated</span>
+        <span class="md-body-2 md-secondary" ng-bind="ctrl.event.lastUpdated | date : fullDate" ></span>
+      </md-item-content>
+
+    </md-list-item>
+    <md-item-content>
+      <md-button ng-click="ctrl.updateSchedule()" class="md-primary md-secondary"><md-icon>edit</md-icon>edit </md-button>
+    </md-item-content>
+        </md-list>
+
+
+</div>
+  <div layout="row" layout-xs="column" layout-margin layout-wrap   >
+      <div flex="100" flex-xs="100"  class="md-whiteframe-z2" >
+        <md-subheader><span class="md-body-2">Tickets</span></md-subheader>
+        <md-divider></md-divider>
+        <table  class="ticket-manage">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Sold</th>
+              <th>Available</th>
+              <th>Status</th>
+              <th>Discription</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="ticket in ctrl.event.tickets">
+              <td ng-bind="ticket.ticketName"></td>
+              <td ng-bind="ticket.type"></td>
+              <td ng-bind="ticket.price"></td>
+              <td ng-bind="ticket.quantity"></td>
+              <td ng-bind="ticket.confirmedSale"></td>
+              <td ng-bind="ticket.available"></td>
+              <td ng-bind="ticket.status"></td>
+              <td ng-bind="ticket.ticketDiscription"></td>
+            </tr>
+          </tbody>
+
+          <tfoot>
+            <tr>
+              <td colspan="8">
+                  <md-button ng-click="ctrl.updateTickets()" class="md-primary">
+                  <md-icon>edit</md-icon>
+                </md-button>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <md-content flex="100" flex-xs="100"  class="md-whiteframe-z2" >
+        <md-subheader><span class="md-body-2">Discription</span></md-subheader>
+      <md-divider></md-divider>
+        <p ng-bind="ctrl.event.aboutEvent"> </p>
+        <md-divider></md-divider>
+        <div layout="row" layout-align="end center">
+          <md-button ng-click="ctrl.updateDiscription()" class="md-primary"><md-icon>edit</md-icon>edit </md-button>
+        </div>
+      </md-content>
+
+    </div>
+    <div layout="row" layout-xs="column" layout-margin layout-align="space-between none">
+
+      <md-content class="md-whiteframe-z2" flex="50"  flex-xs="100">
+        <md-subheader><span class="md-body-2">Sponsors</span></md-subheader>
+        <md-divider></md-divider>
+      <md-list ng-if="!ctrl.event.sponsors">
+      <md-list-item>
+        <md-item-content layout="row" layout-align="end center">
+        <span class="md-body-2">No Sponsors Added</span>
+        </md-item-content>
+      </md-list-item>
+    </md-list>
+      <md-list   >
+        <md-list-item ng-repeat="sponsor in ctrl.event.sponsors" >
+
+          <img ng-src="{{ctrl.sponsorImage(sponsor.sponsorImage)}}" class="md-avatar"   alt="event image" />
+           <md-item-content>
+           <strong class="md-body-2">{{sponsor.sponsorName}}</strong>
+           </md-item-content>
+         </md-list-item>
+         <md-divider></md-divider>
+         <md-list-item>
+           <md-item-content layout="row" layout-align="end center">
+             <md-button ng-click="ctrl.updateSponsors()" class="md-primary"><md-icon>edit</md-icon>edit </md-button>
+           </md-item-content>
+         </md-list-item>
+       </md-list>
+    </md-content>
+      <md-content flex="50" flex-xs="100"  class="md-whiteframe-z2" >
+        <md-subheader><span class="md-body-2">Guests</span></md-subheader>
+        <md-divider></md-divider>
+        <md-list ng-if="!ctrl.event.guests">
+        <md-list-item>
+          <md-item-content layout="row" layout-align="end center">
+          <span class="md-body-2">No Guest Added</span>
+          </md-item-content>
+        </md-list-item>
+      </md-list>
+        <md-card ng-repeat="guest in ctrl.event.guests" >
+           <md-card-title>
+             <md-card-title-media>
+               <img class="md-media-sm card-media" ng-src="{{ctrl.guestImage(guest.guestImage)}}"  alt="image not available" />
+
+             </md-card-title-media>
+             <md-card-title-text>
+               <strong class="md-body-2" ng-bind="guest.guestName"></strong>
+               <strong class="md-body-1" ng-bind="guest.akaName"></strong>
+
+             </md-card-title-text>
+           </md-card-title>
+
+         </md-card>
+         <md-divider></md-divider>
+         <div layout="row" layout-align="end center">
+           <md-button ng-click="ctrl.updateGuests()" class="md-primary"><md-icon>edit</md-icon>edit </md-button>
+         </div>
+
+
+      </md-content>
+  </div>
+
+</section>

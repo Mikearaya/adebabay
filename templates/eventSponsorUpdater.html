@@ -1,0 +1,45 @@
+<section layout-margin ng-controller="sponsorUpdateController as ctrl" ng-cloak>
+
+    <form ng-submit="ctrl.saveChanges()" name="sponsorUpdater">
+      <div class="md-whiteframe-z2">
+
+
+      <div ng-repeat="sponsor in ctrl.sponsors" >
+        <div layout="row" layout-xs="column" layout-padding layout-align="space-between start">
+          <md-input-container  flex >
+            <label>Sponsor Name</label>
+            <input type="text" name="sponsorName" ng-model="sponsor.sponsorName" required />
+            <div class="hint" ng-show="sponsorUpdater.sponsorName.$pristine">  Name of Company or person sponsoring event(Optional) </div>
+            <div ng-messages="sponsorUpdater.sponsorName.$error">
+              <div ng-message="required"> Sponsor Name is Required  </div>
+            </div>
+          </md-input-container>
+          <div flex>
+
+            <lf-ng-md-file-input name="sponsorImage" lf-files="sponsor.sponsorImage" lf-browse-label="Upload Image" lf-remove-label="Remove"
+            lf-filesize="2MB"  lf-mimetype="image/*" preview>
+          </lf-ng-md-file-input>
+          <div ng-messages="sponsorUpdater.sponsorImage.$error" style="color:red;">
+          <div ng-message="mimetype">Mimetype error.</div>
+          <div ng-message="filesize">File size too large.</div>
+
+          </div>
+                </div>
+      </div>
+    </div>
+    <div layout="row" layout-align="center center">
+      <md-button ng-click="ctrl.addSponsor()" class="md-primary">
+      <md-icon>add</md-icon>Add</md-button>
+    </div>
+</div>
+    <div layout="row" layout-align="space-around center">
+      <md-button type="submit" ng-disabled="sponsorUpdater.$invalid" class="md-primary md-raised">
+        <md-icon>save</md-icon> Save
+      </md-button>
+      <md-button class="md-warn md-raised" ng-disabled="sponsorUpdater.$submitted">
+        <md-icon>cancel</md-icon> Cancel
+      </md-button>
+    </div>
+    </form>
+
+</section>

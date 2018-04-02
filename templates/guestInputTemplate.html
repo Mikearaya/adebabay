@@ -1,0 +1,39 @@
+<div ng-repeat="guest in ctrl.event.eventGuests" >
+  <div layout="row"  layout-xs="column" layout-align="space-between center">
+    <md-input-container flex>
+      <label>First Name</label>
+      <input type="text" ng-model="guest.firstName" name="guestFirstName" required  />
+      <div class="hint" ng-show="eventForm.guestFirstName.$pristine"></div>
+      <div ng-messages="eventForm.guestFirstName.$error">
+        <div ng-message="required">   First Name is Required   </div>
+      </div>
+    </md-input-container>
+    <md-input-container flex >
+      <label>Last Name</label>
+      <input type="text" name="guestLastName" ng-model="guest.lastName" required />
+      <div class="hint" ng-show="eventForm.guestLasttName.$pristine"></div>
+      <div ng-messages="eventForm.guestLastName.$error">
+        <div ng-message="required">  Last Name is Required  </div>
+      </div>
+    </md-input-container>
+  </div>
+  <div layout="row"  layout-xs="column" layout-align="space-between center">
+    <md-input-container flex>
+      <label>Aka Name</label>
+      <input type="text" name="guestAkaName" ng-model="guest.akaName" />
+      <div class="hint" ng-show="eventForm.guestAkaName.$pristine"> Stage name or Nick Name (Optional) </div>
+    </md-input-container>
+    <div flex>
+
+      <lf-ng-md-file-input name="guestImage"  lf-files="guest.guestImage"  lf-browse-label="Upload Image" lf-remove-label="Remove"
+      lf-filesize="2MB"  lf-mimetype="image/*" preview>
+    </lf-ng-md-file-input>
+    <div ng-messages="eventForm.guestImage.$error" style="color:red;">
+    <div ng-message="mimetype">Mimetype error.</div>
+    <div ng-message="filesize">File size too large.</div>
+
+    </div>
+          </div>
+  <md-divider class="inset"></md-divider>
+</div>
+</div>
