@@ -185,7 +185,7 @@ if($submitted_form === 'eventDiscriptionUpdate' &&
 
     if($ERROR_HANDLER->get_error_count() == 0 && $organizer->update_event_discription($event)) {
         $result->success = true;
-        
+
     } else {
       $result->success = false;
       $result->message = generate_message("Failed to Update Event Discription");
@@ -479,33 +479,43 @@ if($ERROR_HANDLER->get_error_count() == 0 && $organizer->add_event($event) ) {
 
 
 
-if($submitted_form === 'guest_update' && $_POST['organizer_id'] == $SESSION->get_session_id() && isset($_POST['event_id'])){
-
-	$event_id = $_POST['event_id'];
-
+if($submitted_form === 'eventGuestsUpdate' &&
+$_POST['organizerId'] == $SESSION->get_session_id() &&
+isset($_POST['eventId']) &&
+isset($_POST["data"])){
 
 
 			$organizer = new Organizer();
 			$organizer->set_id($SESSION->get_session_id());
 			$event = new Event();
-			$event->set_id($event_id);
+			$event->set_id($_POST['eventId']);
 
-			$i= 0;
+      $data = json_decode($_POST["data"], true);
 
-			if(isset($_POST['guest-first-name']) && isset($_POST['guest-last-name'])) {
+  		$i= 0;
 
-				while($i < count($_POST['guest-first-name'])) {
+      $new = 0;
+      $updated = 0;
 
-						$guest = new Guest();
+				while($i < count($data)) {
+$guest;
+            if(isset($data[$i]['status']) && $data[$i]['status'] == "new") {
+                $guest = new Guest();
+                $new++;
+            } else {
+              $updated++;
+              $guest = new Guest($data[$i]['guestId'], "updated");
+            }
 
-						if(isset($_POST['guest-first-name'][$i]))	$guest->set_first_name($_POST['guest-first-name'][$i]);
 
-						if(isset($_POST['guest-last-name'][$i])) $guest->set_last_name($_POST['guest-last-name'][$i]);
+						if(isset($data[$i]['firstName']))	$guest->set_first_name($data[$i]['firstName']);
 
-
-				if(isset($_POST['guest-aka-name'][$i]) && strlen($_POST['guest-aka-name'][$i]) > 0 )	$guest->set_aka_name($_POST['guest-aka-name'][$i]);
+						if(isset($data[$i]['lastName'])) $guest->set_last_name($data[$i]['lastName']);
 
 
+				if(isset($data[$i]['akaName']) && strlen($data[$i]['akaName']) > 0 )	$guest->set_aka_name($data[$i]['akaName']);
+
+/*
 						if(isset($_FILES['guest-image'][$i])) {
 							$image = null;
 							$image['tmp_name'] = $_FILES['guest-image']['tmp_name'][$i];
@@ -517,78 +527,43 @@ if($submitted_form === 'guest_update' && $_POST['organizer_id'] == $SESSION->get
 							$guest->set_image($image);
 
 						}
-
+*/
 					$event->set_guest($guest);
 
 					$i++;
-				}
 
+          }
 
+          $success = false;
 
-			if($ERROR_HANDLER->get_error_count() == 0 && $organizer->add_event_guest($event)){
-				$result = generate_message(' Guests Was success fully updated' );
+          if(($new > 0) && ($updated > 0) ) {
+            if($ERROR_HANDLER->get_error_count() == 0 &&
+                $organizer->add_event_guest($event) &&
+                $organizer->update_event_guest($event)) {
+
+                  $success = true;
+      			}
+
+          } else if($new > 0) {
+            if($ERROR_HANDLER->get_error_count() == 0 && $organizer->add_event_guest($event)){
+      				$success = true;
+              echo "new";
+      			}
+          } else if($updated > 0) {
+            if($ERROR_HANDLER->get_error_count() == 0 && $organizer->update_event_guest($event)){
+      				$success = true;
+              echo "updated";
+      			}
+          }
+			if($success){
+				$result->success = true;
 			} else {
-				$result = generate_message(' Error updating Guests ' );
+        $result->success = false;
+				$result->message = generate_message(' Error updating Guests ' );
 			}
 
-
-		}
-
-$i = 0;
-				if(isset($_POST['guest-first-name-update']) && isset($_POST['guest-last-name-update'])) {
-						$event1 = new Event();
-
-				$old_guest = null;
-
-					while($i < count($_POST['guest-first-name-update'])) {
-							if(isset($_POST['guest_id'][$i])) {
-							$old_guest = new Guest($_POST['guest_id'][$i], 'updated');
-
-
-							if(isset($_POST['guest-first-name-update'][$i])){
-								$old_guest->set_first_name($_POST['guest-first-name-update'][$i]);
-							}
-							if(isset($_POST['guest-last-name-update'][$i])){
-								$old_guest->set_last_name($_POST['guest-last-name-update'][$i]);
-							}
-
-							if(isset($_POST['guest-aka-name-update'][$i]) &&  (strlen($_POST['guest-aka-name-update'][$i]) > 0)){
-									$old_guest->set_aka_name($_POST['guest-aka-name-update'][$i]);
-							}
-
-						if(isset($_FILES['guest-image-update']['tmp_name'][$i])){
-
-							$image = null;
-							$image['tmp_name'] = $_FILES['guest-image-update']['tmp_name'][$i];
-							$image['name'] = $_FILES['guest-image-update']['name'][$i];
-							$image['size'] = $_FILES['guest-image-update']['size'][$i];
-							$image['type'] = $_FILES['guest-image-update']['type'][$i];
-							$image['error'] = $_FILES['guest-image-update']['error'][$i];
-
-							$old_guest->set_image($image);
-
-						}
-
-
-
-							$event->set_guest($old_guest);
-
-						}
-						$i++;
-
-				}
-
-			if($ERROR_HANDLER->get_error_count() == 0 && $organizer->update_event_guest($event)){
-				$result = generate_message(' Guests Was success fully updated' );
-
-			} else {
-				$result = generate_message(' Error updating Guests ' );
-			}
-
-		}
-
-		echo json_encode($result);
-		exit;
+      echo json_encode($result);
+      exit;
 
 }
 

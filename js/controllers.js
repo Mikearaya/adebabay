@@ -152,6 +152,8 @@ app.controller("eventManagerController", [ "$http", "$location", "$route", "sess
         self.event = data;
         self.address = data.subCity+", "+data.city+", "+data.country;
           console.log(data);
+
+
       }
 
       self.updateTickets = function(){
@@ -193,6 +195,15 @@ app.controller("eventManagerController", [ "$http", "$location", "$route", "sess
 
 }]);
 
+app.controller("dynamicFieldController", [function(){
+    var self = this;
+  self.addGuest = function(guest) {
+    guest.push({status : "new", firstName : "", lastName : "", akaName : "", image : "" });
+
+  }
+
+}]);
+
 app.controller("guestUpdateController", ["$http","$location", "$route", "$httpParamSerializerJQLike","transporter", "notifier", "session",
                                           function($http,$location, $route, $httpParamSerializerJQLike, transporter, notifier, session){
 
@@ -212,13 +223,16 @@ app.controller("guestUpdateController", ["$http","$location", "$route", "$httpPa
            function initialize(data) {
 
              angular.forEach(data, function(guest){
+               guest.status = "updated";            
                 self.guests.push(guest);
+
+
              });
-             console.log(data);
+
            }
 
-           initialize(guestsData);
 
+           initialize(guestsData);
           self.saveChanges = function(){
               $http({
                 method : "POST",

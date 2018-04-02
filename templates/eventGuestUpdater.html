@@ -2,7 +2,7 @@
   <form ng-submit="ctrl.saveChanges()" name="guestUpdater">
 
 
-    <md-content class="md-whiteframe-z2" >
+    <md-content layout-margin  class="md-whiteframe-z2" >
       <div ng-repeat="guest in ctrl.guests">
     <div layout="row"  layout-xs="column"  layout-align="space-between center">
       <md-input-container flex>
@@ -39,11 +39,13 @@
 
       </div>
             </div>
-    <md-divider class="inset"></md-divider>
+
   </div>
+  <md-divider></md-divider>
 </div>
-<div layout="row" layout-align="center center">
-  <md-button ng-click="ctrl.addGuest()" class="md-primary">
+<md-divider class="inset"></md-divider>
+<div layout="row" ng-controller="dynamicFieldController as dynamicCtrl"  layout-align="center center">
+  <md-button ng-click="dynamicCtrl.addGuest(ctrl.guests)" class="md-primary">
   <md-icon>add</md-icon>Add</md-button>
 </div>
   </md-content>
