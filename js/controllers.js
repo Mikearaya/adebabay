@@ -196,11 +196,49 @@ app.controller("eventManagerController", [ "$http", "$location", "$route", "sess
 }]);
 
 app.controller("dynamicFieldController", [function(){
-    var self = this;
-  self.addGuest = function(guest) {
-    guest.push({status : "new", firstName : "", lastName : "", akaName : "", image : "" });
 
-  }
+    var self = this;
+
+    var guestJSON = { status : "new",
+                      firstName : "",
+                      lastName : "",
+                      akaName : "",
+                      image : []
+                    };
+    var ticketJSON = {  status : "new",
+                        type : "" ,
+                        ticketName : "",
+                        quantity : "",
+                        price : "",
+                        ticketDiscription : "",
+                        saleStart : "",
+                        saleEnd : "",
+                        showAdvanced : false
+                      };
+    var sponsorJSON = { status : "new",
+                        sponsorName : "",
+                        sponsorImage : []
+                      };
+
+      self.addGuest = function(guests) {
+                      guests.push(guestJSON);
+                    };
+      self.addTicket = function(tickets) {
+                        tickets.push(ticketJSON);
+                      };
+      self.removeTicket = function(tickets, index) {
+                            tickets.splice(index, 1);
+                      };
+      self.removeGuest = function(guests,index) {
+                          guests.splice(index, 1);
+                      };
+      self.addSponsor = function(sponsors) {
+                          sponsors.push(sponsorJSON);
+                      };
+      self.removeSponsor = function(sponsors, index) {
+                          sponsors.splice(index, 1);
+                      };
+
 
 }]);
 
@@ -223,7 +261,7 @@ app.controller("guestUpdateController", ["$http","$location", "$route", "$httpPa
            function initialize(data) {
 
              angular.forEach(data, function(guest){
-               guest.status = "updated";            
+               guest.status = "updated";
                 self.guests.push(guest);
 
 
@@ -256,55 +294,60 @@ app.controller("guestUpdateController", ["$http","$location", "$route", "$httpPa
 
 }]);
 
+//event spoonsors update controller
 app.controller("sponsorUpdateController", ["$http","$location", "$route", "$httpParamSerializerJQLike","transporter", "notifier", "session",
                                           function($http,$location, $route, $httpParamSerializerJQLike, transporter, notifier, session){
 
-        var sponsorData = transporter.get();
-        var self = this;
+    var sponsorData = transporter.get();
+    var self = this;
+    self.sponsors = [];
 
-        if($route.current.params.eventId === undefined ||
-           $route.current.params.organizerId === undefined ||
-           $route.current.params.organizerId !== session.getUserId()) {
-           $location.path("/");
-         }
+      if($route.current.params.eventId === undefined ||
+         $route.current.params.organizerId === undefined ||
+         $route.current.params.organizerId !== session.getUserId()) {
+         $location.path("/");
+       }
 
-         var organizer = $route.current.params.organizerId;
-         var currentEvent = $route.current.params.eventId;
+    var organizer = $route.current.params.organizerId;
+    var currentEvent = $route.current.params.eventId;
 
-         self.sponsors = [];
 
-         function initialize(data) {
+        function initialize(data) {
 
            angular.forEach(data, function(sponsor){
-             self.sponsors.push(sponsor);
-           })
-         }
+                  sponsor.status = "updated";
+                  self.sponsors.push(sponsor);
+                  console.log(sponsor);
+           });
 
-         initialize(sponsorData);
+        };
+
+    initialize(sponsorData);
 
 
 
         self.saveChanges = function(){
             $http({
-              method : "POST",
-              url : "includes/systemController.php",
-              data : $httpParamSerializerJQLike({
-                form : "eventSponsorsUpdate",
-                organizerId : organizer,
-                eventId : currentEvent,
-                data : JSON.stringify(self.sponsors)
-              })
-            }).then(function(response){
+                    method : "POST",
+                    url : "includes/systemController.php",
+                    data : $httpParamSerializerJQLike({
+                            form : "eventSponsorsUpdate",
+                            organizerId : organizer,
+                            eventId : currentEvent,
+                            data : JSON.stringify(self.sponsors)
+                          })
+                  })
+                  .then(function(response){
 
-                  if(response.data.success) {
-                    notifier.basic("Sponsors Updated Successfuly!!!");
-                  } else {
-                    notifier.basic("Sponsors Update Failed!!!");
-                  }
-                console.log(response);
-            });
+                      if(response.data.success) {
+                        notifier.basic("Sponsors Updated Successfuly!!!");
+                      } else {
+                        notifier.basic("Sponsors Update Failed!!!");
+                      }
+                  });
 
         };
+
 
 }]);
 

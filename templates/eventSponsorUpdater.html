@@ -27,8 +27,8 @@
                 </div>
       </div>
     </div>
-    <div layout="row" layout-align="center center">
-      <md-button ng-click="ctrl.addSponsor()" class="md-primary">
+    <div layout="row" ng-controller="dynamicFieldController as dynamicCtrl" layout-align="center center">
+      <md-button ng-click="dynamicCtrl.addSponsor(ctrl.sponsors)" class="md-primary">
       <md-icon>add</md-icon>Add</md-button>
     </div>
 </div>

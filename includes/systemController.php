@@ -608,28 +608,37 @@ exit;
 
 }
 
-if ($submitted_form === 'sponsor_update' && $_POST['organizer_id'] == $SESSION->get_session_id() && isset($_POST['event_id'])) {
+//Event Sponsors Update Functionality
+if (  $submitted_form === 'eventSponsorsUpdate' &&
+      $_POST['organizerId'] == $SESSION->get_session_id() &&
+      isset($_POST['eventId']) &&
+      isset($_POST["data"]) ) {
 
-		$organizer = new Organizer();
-		$organizer->set_id($SESSION->get_session_id());
+      $new = 0;
+
+      $updated = 0;
+
+      $organizer = new Organizer();
+		  $organizer->set_id($SESSION->get_session_id());
 
 			$event = new Event();
-			$event->set_id($_POST['event_id']);
-			$success = true;
+			$event->set_id($_POST['eventId']);
 
+      $data = json_decode($_POST["data"], true);
 
-		$i= 0;
-				if(isset($_POST['sponsor-name'])) {
+      $i= 0;
+        while($i < count($data)){
 
-					while($i < count($_POST['sponsor-name'])){
+              if($data[$i]["status"] == "new") {
+                  $sponsor = new Sponsor();
+                  $new++;
+              } else {
+                	$sponsor = new  Sponsor($data[$i]['sponsorId'], 'updated');
+                  $updated++;
+              }
 
-							$sponsor = new Sponsor();
-
-							if (isset($_POST['sponsor-name'][$i])) {
-								$sponsor_name = $_POST['sponsor-name'][$i];
-								$sponsor->set_name($sponsor_name);
-							}
-
+              if (isset($data[$i]["sponsorName"])) $sponsor->set_name($data[$i]["sponsorName"]);
+            /*
 							if(isset($_FILES['sponsor-image']['tmp_name'][$i])){
 								$image = null;
 								$image['tmp_name'] = $_FILES['sponsor-image']['tmp_name'][$i];
@@ -640,56 +649,46 @@ if ($submitted_form === 'sponsor_update' && $_POST['organizer_id'] == $SESSION->
 
 								$sponsor->set_image($image);
 							}
-
+            */
 
 						$event->set_sponsor($sponsor);
 						$i++;
 
-
 				}
 
-			$success = ($ERROR_HANDLER->get_error_count() == 0 && $organizer->add_event_sponsor($event)) ? true : false;
+      $success = false;
 
+        if($new > 0 && $updated > 0) {
 
-			}
+          if( $ERROR_HANDLER->get_error_count() == 0 &&
+                $organizer->add_event_sponsor($event) &&
+                $organizer->update_event_sponsor($event)) {
 
-$i=0;
+                  $success = true;
+              }
+        } else if($new > 0) {
+          if( $ERROR_HANDLER->get_error_count() == 0 &&
+                $organizer->add_event_sponsor($event)) {
+                  $success = true;
+                }
+        } else if($updated > 0) {
 
-					if(isset($_POST['sponsor-name-update'])) {
+          if( $ERROR_HANDLER->get_error_count() == 0 &&
+                $organizer->update_event_sponsor($event)) {
+                  $success = true;
+                }
+        }
 
-					while($i < count($_POST['sponsor-name-update'])){
+		   if($success) {
+         $result->success = true;
+       } else {
+         $result->success = false;
+         $result->message = generate_message("Event Sponsor Update Failed!!!");
+       }
 
-							if(isset($_POST['sponsor-id'][$i])) {
-								$sponsor = new  Sponsor($_POST['sponsor-id'][$i], 'updated');
+    echo json_encode($result);
+	  exit;
 
-								if (isset($_POST['sponsor-name-update'][$i])) 	$sponsor->set_name($_POST['sponsor-name-update'][$i]);
-							if(isset($_FILES['sponsor-image-update']['tmp_name'][$i])){
-									$image = null;
-									$image['tmp_name'] = $_FILES['sponsor-image-update']['tmp_name'][$i];
-									$image['name'] = $_FILES['sponsor-image-update']['name'][$i];
-									$image['size'] = $_FILES['sponsor-image-update']['size'][$i];
-									$image['type'] = $_FILES['sponsor-image-update']['type'][$i];
-									$image['error'] = $_FILES['sponsor-image-update']['error'][$i];
-
-									$sponsor->set_image($image);
-								}
-
-									$event->set_sponsor($sponsor);
-
-
-
-					}
-					$i++;
-
-					}
-
-					$success = ($ERROR_HANDLER->get_error_count() == 0 && $organizer->update_event_sponsor($event)) ? true : false;
-				}
-
-
-			echo ($success) ? json_encode(generate_message("Event Sponsors Updated Successfuly!!!")) : json_encode(generate_message("Failed to Update Event Sponsor!!!"));
-
-	exit;
 }
 
 
