@@ -1691,8 +1691,6 @@ class Organizer extends Organization {
 				$discription = null;
 				if((!$discription = $this->get_event($eventIndex)->get_discription()) && $error = 1 )
 					trigger_error("REQUIRED Event Discription can not be null", E_USER_ERROR);
-
-
 					if($error == 0) {
 						try {
 							$sql = 'CALL updateEventDiscription('.$this->get_id().', '.$this->get_event($eventIndex)->get_id().', "'.$discription.'")';
@@ -1816,9 +1814,6 @@ class Organizer extends Organization {
 						trigger_error("Organizer (first name) Can not Be empty", E_USER_ERROR);
 					if((!$profile["lastName"] = self::get_last_name()) && $error = 1)
 						trigger_error("Organizer (last name) Can not Be empty", E_USER_ERROR);
-					if(!$profile["aboutOrganizer"] = self::get_bio())
-						trigger_error("Organizer (Bio) empty, previous value will be deleted if it exists", E_USER_NOTICE);
-
 					if(!$profile["gender"] = self::get_gender())
 						trigger_error("Organizer (Gender) empty, previous value will be deleted if it exists", E_USER_NOTICE);
 					if(!$profile["birthdate"] = self::get_birthdate())
@@ -1827,8 +1822,7 @@ class Organizer extends Organization {
 						trigger_error("Organizer (Position) empty, previous value will be deleted if it exists", E_USER_NOTICE);
 					if(!$profile["title"] = self::get_title())
 						trigger_error("Organizer (Title) empty, previous value will be deleted if it exists", E_USER_NOTICE);
-					if(!$profile["organizerImage"] = self::get_picture())
-						trigger_error("Organizer (Profile) empty, previous value will be deleted if it exists", E_USER_NOTICE);
+
 
 					if($error == 0) {
 						try {
@@ -1854,7 +1848,30 @@ class Organizer extends Organization {
 
 
 			}
+      public function update_bio() {
+				 $error = 0;
+				 if((!$this->get_bio()) && $error = 1)
+				 trigger_error("REQUIRED, Organizer Bio can not be NULL!! ", E_USER_ERROR);
 
+
+				 if($error === 0) {
+					 try {
+						 $sql = "CALL updateOrganizerBio(".self::get_id().",'".$this->get_bio()."' )";
+
+					 		$statement = $this->DB_Driver->prepare_query($sql);
+							$statement->execute();
+					 } catch (Exception $e) {
+
+						 trigger_error($e->getMessage(), E_USER_ERROR);
+						 $error = 1;
+
+					 }
+
+				 }
+
+				 return ($error) ? false : true;
+
+			}
 
 			public function update_organization(){
 

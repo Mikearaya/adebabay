@@ -124,10 +124,11 @@ app.config(["$routeProvider", "$locationProvider", function($routeProvider, $loc
                   .when('/logIn', { templateUrl : 'templates/logIn.html' })
                   .when('/events/id/:catagoryId/catagory/:catagoryName', {templateUrl : 'templates/events.html' })
                   .when('/userProfile', { templateUrl: 'templates/userProfile.html' })
+                  .when('/editCompany/myBio/:organizerId/:organizationId', { templateUrl: 'templates/organizerBioUpdater.html' })
                   .when('/eventForm/id/:organizer/', {templateUrl : 'templates/eventForm.html' })
                   .when('/eventDetail/:eventId/', {templateUrl : 'templates/eventDetail.html' })
                   .when('/orderForm/event/:eventId/checkout/', {templateUrl : "templates/orderForm.html"})
-                  .otherwise({templateUrl : "index.html"});
+                  .otherwise({templateUrl : "templates/home.html"});
 
 }]);
 //routing configuration end

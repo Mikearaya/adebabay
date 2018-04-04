@@ -581,6 +581,54 @@ app.controller("eventDiscriptionUpdateController", ["$http","$location", "$route
 
 }]);
 
+app.controller("organizerBioUpdateController", ["$http","$location", "$route", "$httpParamSerializerJQLike","transporter", "notifier", "session",
+                                          function($http,$location, $route, $httpParamSerializerJQLike, transporter, notifier, session){
+
+          var organizerData = transporter.get();
+          var self = this;
+
+          if($route.current.params.organizerId === undefined ||
+          $route.current.params.organizerId != session.getUserId()){
+            $location.path("/");
+          }
+
+          var organizer = $route.current.params.organizerId;
+
+          self.bio = "";
+
+          function initialize(data){
+             self.bio = data;
+
+
+          }
+
+          initialize(organizerData);
+
+
+
+        self.saveChanges = function(){
+            return $http({
+              method : "POST",
+              url : "includes/systemController.php",
+              data : $httpParamSerializerJQLike({
+                form : "organizerBioUpdate",
+                organizerId : organizer,
+                data : self.bio
+              })
+            }).then(function(response) {
+
+                if(response.data.success){
+                  notifier.basic("Bio updated Successfuly!!!");
+                } else {
+                  notifier.basic("Bio update Failed!!!");
+                }
+
+                console.log(response);
+            })
+        };
+
+}]);
+
 //eventDetail viewer page controller
 app.controller("detailViewController",["$scope", "$route", "$http", "shareService", "imageLocator", "$location","transporter",
                                 function($scope, $route, $http, shareService, imageLocator, $location, transporter){
@@ -936,6 +984,7 @@ app.controller("userProfileController", ["$scope", "$http", "$q", "session", "im
 
 
       }
+
       self.fullName = function() {
         return self.organizer.prefix +" "+self.organizer.firstName+" "+ self.organizer.lastName
       }
@@ -943,6 +992,11 @@ app.controller("userProfileController", ["$scope", "$http", "$q", "session", "im
       self.editProfile = function(data){
         transporter.set(data);
         $location.path("/editCompany/myprofile/"+self.organizerId+"/"+self.organizationId);
+      }
+      self.editBio = function(){
+        transporter.set(self.organizer.bio);
+
+        $location.path("/editCompany/myBio/"+self.organizerId+"/"+self.organizationId);
       }
 
       self.editPhones = function(){
