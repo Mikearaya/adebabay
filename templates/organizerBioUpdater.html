@@ -1,0 +1,31 @@
+<section
+        layout-margin
+        ng-controller="organizerBioUpdateController as ctrl"
+        ng-cloak>
+
+    <form ng-submit="ctrl.saveChanges()" name="bioUpdater">
+        <md-content layout-padding  layout="row" class="md-whiteframe-z2">
+
+            <md-input-container class="md-accent" flex flex-xs="100">
+              <label>Discription </label>
+              <textarea ng-model="ctrl.bio" name="bio"></textarea>
+            </md-input-container>
+
+        </md-content>
+        <div layout="row" layout-align="space-around center">
+          <md-button
+                    type="submit"
+                    ng-disabled="bioUpdater.$invalid || bioUpdater.$pristine || bioUpdated.$submitted"
+                    class="md-primary md-raised">
+                <md-icon>save</md-icon>
+                Save
+          </md-button>
+          <md-button class="md-warn md-raised" ng-disabled="bioUpdater.$submitted">
+            <md-icon>cancel</md-icon>
+            Cancel
+          </md-button>
+
+        </div>
+    </form>
+
+</section>
