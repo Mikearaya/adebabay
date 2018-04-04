@@ -608,13 +608,39 @@ exit;
 
 }
 
+if($submitted_form === "companyProfileUpdate"  &&
+   $_POST["organizerId"] == $SESSION->get_session_id() &&
+   isset($_POST["data"])) {
+
+     $organizer = new Organizer();
+
+     $data = json_decode($_POST["data"], true);
+     var_dump($_POST["data"]);
+     var_dump($data);
+     $organizer->set_id($SESSION->get_session_id());
+     $organizer->set_service($data["service"]);
+     $organizer->set_website($data["website"]);
+     $organizer->set_organization_name($data["name"]);
+     $organizer->set_established_date($data["establishedOn"]);
+     $organizer->set_po_num($data["postNumber"]);
+
+     if($ERROR_HANDLER->get_error_count() == 0 && $organizer->update_organization_profile()) {
+       $result->success = true;
+     } else {
+       $result->success = false;
+       $result->message = generate_message("Failed Updating organization profile!!!");
+     }
+
+     echo json_encode($result);
+     exit;
+}
+
 if($submitted_form === "companyDiscriptionUpdate"  &&
    $_POST["organizerId"] == $SESSION->get_session_id() &&
    isset($_POST["data"])) {
 
-     $bio = $_POST["data"];
      $organizer = new Organizer();
-     
+
 
      $organizer->set_id($SESSION->get_session_id());
      $organizer->set_organization_info($_POST["data"]);

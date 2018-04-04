@@ -1,0 +1,78 @@
+<section  ng-controller="comapanyProfileUpdateController as ctrl" class="md-whiteframe-z2" layout-margin layout-padding >
+
+    <form ng-submit="ctrl.saveChanges()" name="companyProfileUpdater">
+
+       <div layout="row" layout-xs="column"  layout-padding >
+          <md-input-container  flex="100" flex-xs="100" >
+            <label>Organization Name</label>
+            <input
+                  type="text"
+                  ng-model="ctrl.company.name"
+                  name="companyName"
+                  ng-placeholder="Organization Name"
+              />
+          </md-input-container>
+      </div>
+      <div layout="row" layout-xs="column"  layout-padding layout-align="space-between center">
+            <md-input-container  flex="50" flex-xs="100">
+              <label>Service</label>
+              <input type="text"
+                    ng-model="ctrl.company.service"
+                    placeholder="Company Serive"
+                    name="service" />
+            </md-input-container>
+
+          <md-input-container flex="50" flex-xs="50">
+            <label>Website </label>
+            <input type="url"
+                  ng-model="ctrl.company.website"
+                  placeholder="http:\//www.example.com"
+                  name="website" />
+              <div ng-messages="companyProfileUpdater.website.$error">
+                <div ng-message="url">
+                  Invalid Url. Valid url start with http://
+                </div>
+              </div>
+          </md-input-container>
+      </div>
+      <div layout="row" layout-xs="column"  layout-padding layout-align="space-between center">
+        <md-input-container flex="50" flex-xs="100">
+          <label>Postal Code</label>
+          <input type="text"
+                ng-model="ctrl.company.postNumber"
+                placeholder="Postal Code"
+                name="postcode" />
+        </md-input-container>
+        <md-input-container  flex="50" flex-xs="100" >
+          <label>Established on</label>
+          <md-datepicker
+                        md-placeholder="Established"
+                        ng-model="ctrl.company.establishedOn"
+                        name="established"
+                        >
+          </md-datepicker>
+            </md-input-container>
+      </div>
+
+
+        <div layout="row"
+              layout-margin
+              layout-align="space-around center">
+          <md-button
+                    type="submit"
+                    ng-disabled="companyProfileUpdater.$invalid"
+                    class="md-primary md-raised">
+                    <md-icon>save</md-icon>
+                    Save
+          </md-button>
+          <md-button class="md-warn md-raised" ng-disabled="profileEditer.$submitted">
+            <md-icon>cancel</md-icon>
+             Cancel  </md-button>
+
+
+        </div>
+
+    </form>
+
+</section>
+com

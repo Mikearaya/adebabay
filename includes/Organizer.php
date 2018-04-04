@@ -6,6 +6,8 @@ abstract class Organization implements Event_interface {
 		protected $ORGANIZATION_ID;
 		protected $logo;
 		protected $name;
+		protected $service;
+		protected $established;
 
 		protected $SOCIALS;
 		protected $website;
@@ -51,7 +53,12 @@ abstract class Organization implements Event_interface {
 
 
 
-
+			public function set_service($value) {
+				$this->service = $value;
+			}
+			public function get_service(){
+				return $this->service;
+			}
 			public function set_organization_id($new_id) {
 				return $this->ORGANIZATION_ID = $new_id;
 			}
@@ -104,7 +111,14 @@ abstract class Organization implements Event_interface {
 			}
 
 			public function set_po_num($value) {
-				return ($this->po_num = VALIDATOR::validate_string($value))? $this->po_num :  trigger_error("Invalid postal address", E_USER_ERROR);
+				return $this->po_num = $value;
+			}
+
+			public function set_established_date($value) {
+				 return ($this->established = VALIDATOR::validate_date($value)) ? $this->established : trigger_error("INVALID established date. valid date should be in the format YYYY-MM-DD . ", E_USER_ERROR);
+			}
+			public function get_established_date($value) {
+				return $this->established;
 			}
 
 
@@ -329,23 +343,18 @@ abstract class Organization implements Event_interface {
 			}
 
 			public function update_address($addressJSON){
+						$error = 0;
 
-						//$last_index = $this->set_address_count($this->get_address_count() + 1 );
-						//$this->ADDRESS[$last_index] = $address;
-				$error = 0;
+							$address = [];
+						$count = 0;
+						if(!$this->set_address($addressJSON)){
+							$error = 1;
+						}
 
-					$address = [];
-				$count = 0;
-				if(!$this->set_address($addressJSON)){
-					$error = 1;
-				}
-
-
-
-				while($count < $this->get_address_count()) {
-						$address[$count] = $this->get_address($count);
-						$count++;
-				}
+						while($count < $this->get_address_count()) {
+								$address[$count] = $this->get_address($count);
+								$count++;
+						}
 
 					if($error == 0) {
 						try {
@@ -389,12 +398,12 @@ abstract class Organization implements Event_interface {
 
 				$error = 0;
 
-				if(!$this->get_organization_info() && $error = 1)
+				if((!$this->get_organization_info()) && $error = 1)
 				trigger_error("Organization Discription Can not be NULL", E_USER_ERROR);
 
 				if($error == 0) {
 					try {
-							$sql = "CALL updateOrganizationDiscription(".$this->get_id().",'".$this->get_organization_info() ."')";
+							$sql = "CALL updateOrganizationDiscription(".$this->get_id().",'".$this->get_organization_info()."')";
 							$statement = $this->DB_Driver->prepare_query($sql);
 							$statement->execute($placeholder);
 					} catch(Exception $e) {
@@ -407,6 +416,45 @@ abstract class Organization implements Event_interface {
 
 
 				}
+
+				public function update_organization_profile(){
+
+						  $error = 0;
+
+						  if((!$this->get_id()) && $error = 1 )
+						  	trigger_error("REQUIRED, Organizer Id not Profivded!! ", E_USER_ERROR);
+								$profile = [];
+
+									$profile['organizationName'] = $this->get_organization_name();
+									$profile['service'] = $this->get_service();
+									$profile['postNumber'] = $this->get_po_num();
+									$profile['website'] = $this->get_website();
+									$profile['establishedOn'] = $this->get_established_date();
+
+
+									$profile = json_encode($profile);
+
+
+						  if($error == 0) {
+						  	try {
+
+						  		$sql = "CALL updateOrganizationProfile(".$this->get_id().",".json_encode($profile).")";
+									$statement = $this->DB_Driver->prepare_query($sql);
+						  	  		$statement->execute();
+
+						  	} catch (Exception $e) {
+						  		$error = 1;
+						  		trigger_error($e->getMessage(), E_USER_ERROR);
+						  	}
+
+						  }
+
+						  return ($error == 0) ? true : false;
+				}
+
+
+
+
 
 }
 
@@ -440,7 +488,17 @@ class Organizer extends Organization {
 
 				}
 
+				function close_organization(Organizer $updated_organizer) {
 
+					 		$sql = "CALL closeAccount(".self::get_id()."".self::get_password().") ";
+
+
+								$statement = $this->DB_driver->prepare_query($sql);
+								$statement->execute();
+
+					return ($statement->rowCount() == 1 ) ? true : false ;
+
+				}
 					public function add_address() {
 					$this->set_address($new_address);
 						//$last_index = $this->set_address_count($this->get_address_count() + 1 );
@@ -1071,9 +1129,6 @@ class Organizer extends Organization {
 			public static function log_in($userMail, $password, SESSION $session) {
 
         		try {
-
-
-
         				$connection = new DB_CONNECTION();
 
         				$log["email"] = $userMail;
@@ -1893,61 +1948,6 @@ class Organizer extends Organization {
 				 return ($error) ? false : true;
 
 			}
-
-			public function update_organization(){
-
-			  $error = 0;
-
-			  if((!$this->get_id()) && $error = 1 )
-			  	trigger_error("REQUIRED, Organizer Id not Profivded!! ", E_USER_ERROR);
-			  if((!$this->get_organization_id()) && $error = 1 )
-			  	trigger_error("REQUIRED, Organization Id not Profivded!! ", E_USER_ERROR);
-
-
-			  							$profile['organizationName'] = $this->get_organization_name();
-			  							$profile['officeNumber'] = [$this->get_office_number()];
-			  							$profile['mobileNumber'] = [$this->get_mobile_number()];
-			  							$profile['aboutOrganization'] = $this->get_bio();
-			  							$profile['postNumber'] = $this->get_po_num();
-			  							$profile['website'] = $this->get_website();
-			  							$profile['organizationLogo'] = $this->get_organization_logo();
-
-			  							$profile = json_encode($profile);
-
-
-			  if($error == 0) {
-			  	try {
-
-			  		$sql = "CALL updateOrganizationProfile(".$this->get_id().", ".$this->get_organization_id().",".json_encode($profile).")";
-						$statement = $this->DB_Driver->prepare_query($sql);
-			  	  		$statement->execute();
-
-			  	} catch (Exception $e) {
-			  		$error = 1;
-			  		trigger_error($e->getMessage(), E_USER_ERROR);
-			  	}
-
-			  }
-
-			  return ($error == 0) ? true : false;
-		}
-
-
-			function close_organization(Organizer $updated_organizer) {
-
-				 		$sql = "CALL closeAccount(".self::get_id()."".self::get_password().") ";
-
-
-							$statement = $this->DB_driver->prepare_query($sql);
-							$statement->execute();
-
-				return ($statement->rowCount() == 1 ) ? true : false ;
-
-			}
-
-
-
-
 
 
 

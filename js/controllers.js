@@ -629,6 +629,61 @@ app.controller("organizerBioUpdateController", ["$http","$location", "$route", "
 
 }]);
 
+app.controller("comapanyProfileUpdateController", ["$http","$location", "$route", "$httpParamSerializerJQLike","transporter", "notifier", "session",
+                                          function($http,$location, $route, $httpParamSerializerJQLike, transporter, notifier, session){
+
+          var companyData = transporter.get();
+          var self = this;
+
+          if($route.current.params.organizerId === undefined ||
+            $route.current.params.organizerId != session.getUserId()){
+            $location.path("/");
+          }
+
+          var organizer = $route.current.params.organizerId;
+
+          self.company = {
+            name : "",
+            website : "",
+            postNumber : "",
+            establishedOn : "",
+            service : ""
+          };
+
+          function initialize(data){
+             self.company.name = data.organizationName;
+             self.company.service = data.service;
+             self.company.postNumber = data.postNumber;
+             self.company.website = data.website;
+             self.company.establishedOn = data.establishedOn;
+          }
+
+          initialize(companyData);
+
+        self.saveChanges = function(){
+            return $http({
+              method : "POST",
+              url : "includes/systemController.php",
+              data : $httpParamSerializerJQLike({
+                form : "companyProfileUpdate",
+                organizerId : organizer,
+                data : JSON.stringify(self.company)
+              })
+            }).then(function(response) {
+
+                if(response.data.success){
+                  notifier.basic("Company Profile update Successfuly!!!");
+                } else {
+                  notifier.basic("Company Profile update Failed!!!");
+                }
+
+                console.log(response);
+            })
+        };
+
+}]);
+
+
 app.controller("companyDiscriptionUpdateController", ["$http","$location", "$route", "$httpParamSerializerJQLike","transporter", "notifier", "session",
                                           function($http,$location, $route, $httpParamSerializerJQLike, transporter, notifier, session){
 
@@ -1022,12 +1077,14 @@ app.controller("userProfileController", ["$scope", "$http", "$q", "session", "im
           self.organizer.position = data.organizerPosition;
           self.organizer.bio = data.aboutOrganizer;
           self.company.registeredOn = data.registeredOn;
+          self.company.service = data.service;
           self.company.website = data.website;
           self.company.discription = data.aboutOrganization;
           self.company.phoneNumbers = JSON.parse(data.phoneNumber);
           self.company.socials = JSON.parse(data.social);
           self.company.address = JSON.parse(data.address);
           self.company.establishedOn = JSON.parse(data.establishedOn);
+          console.log(data);
 
 
       }
@@ -1036,10 +1093,16 @@ app.controller("userProfileController", ["$scope", "$http", "$q", "session", "im
         return self.organizer.prefix +" "+self.organizer.firstName+" "+ self.organizer.lastName
       }
 
+      self.updateCompanyProfile = function(){
+        transporter.set(self.company);
+        $location.path("/editCompany/profile/"+self.organizerId);
+      }
+
       self.editProfile = function(data){
         transporter.set(data);
         $location.path("/editCompany/myprofile/"+self.organizerId+"/"+self.organizationId);
       }
+
       self.editBio = function(){
         transporter.set(self.organizer.bio);
 
