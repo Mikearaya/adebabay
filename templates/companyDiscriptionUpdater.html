@@ -1,0 +1,33 @@
+<section
+        layout-margin
+        ng-controller="companyDiscriptionUpdateController as ctrl"
+        ng-cloak>
+
+    <form ng-submit="ctrl.saveChanges()" name="discriptionUpdater">
+        <md-content layout-padding  layout="row" class="md-whiteframe-z2">
+
+            <md-input-container class="md-accent" flex flex-xs="100">
+              <label>Discription </label>
+              <textarea ng-model="ctrl.discription" name="discription"></textarea>
+            </md-input-container>
+
+        </md-content>
+        <div layout="row" layout-align="space-around center">
+          <md-button
+                    type="submit"
+                    ng-disabled="discriptionUpdater.$invalid ||
+                                  discriptionUpdater.$pristine ||
+                                  discriptionUpdater.$submitted"
+                    class="md-primary md-raised">
+                <md-icon>save</md-icon>
+                Save
+          </md-button>
+          <md-button class="md-warn md-raised" ng-disabled="discriptionUpdater.$submitted">
+            <md-icon>cancel</md-icon>
+            Cancel
+          </md-button>
+
+        </div>
+    </form>
+
+</section>

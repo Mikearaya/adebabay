@@ -383,9 +383,30 @@ abstract class Organization implements Event_interface {
 			}
 
 			return ($error == 0) ? true : false;
+		}
+
+			public function update_organization_info(){
+
+				$error = 0;
+
+				if(!$this->get_organization_info() && $error = 1)
+				trigger_error("Organization Discription Can not be NULL", E_USER_ERROR);
+
+				if($error == 0) {
+					try {
+							$sql = "CALL updateOrganizationDiscription(".$this->get_id().",'".$this->get_organization_info() ."')";
+							$statement = $this->DB_Driver->prepare_query($sql);
+							$statement->execute($placeholder);
+					} catch(Exception $e) {
+						$error = 1;
+						trigger_error($e->getMessage(), E_USER_ERROR);
+					}
+				}
+
+				return ($error == 0) ? true : false;
 
 
-	}
+				}
 
 }
 

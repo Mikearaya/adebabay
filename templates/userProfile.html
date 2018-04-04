@@ -276,14 +276,17 @@
 </div>
 <div layout="row" layout-xs="column" layout-margin  >
     <div class="md-whiteframe-z2" layout-margin flex="100" >
-      <md-subheader class="md-primary">Bio</md-subheader>
+      <md-subheader class="md-primary">About Company</md-subheader>
       <md-divider></md-divider>
       <p ng-bind="profileCtrl.company.discription">
 
     </p>
     <md-divider></md-divider>
       <div layout="row" layout-align="center center">
-        <md-button class="md-primary"><md-icon class="icon-margin-right">edit</md-icon> Edit</md-button>
+        <md-button
+          class="md-primary"
+          ng-click="profileCtrl.updateDiscription()">
+          <md-icon class="icon-margin-right">edit</md-icon> Edit</md-button>
       </div>
     </div>
   </div>

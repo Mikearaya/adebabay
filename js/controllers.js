@@ -629,6 +629,53 @@ app.controller("organizerBioUpdateController", ["$http","$location", "$route", "
 
 }]);
 
+app.controller("companyDiscriptionUpdateController", ["$http","$location", "$route", "$httpParamSerializerJQLike","transporter", "notifier", "session",
+                                          function($http,$location, $route, $httpParamSerializerJQLike, transporter, notifier, session){
+
+          var companyData = transporter.get();
+          var self = this;
+
+          if($route.current.params.organizerId === undefined ||
+            $route.current.params.organizationId === undefined ||
+          $route.current.params.organizerId != session.getUserId()){
+            $location.path("/");
+          }
+
+          var organizer = $route.current.params.organizerId;
+          var organization = $route.current.params.organizationId;
+
+          self.discription = "";
+
+          function initialize(data){
+             self.discription = data;
+          }
+
+          initialize(companyData);
+
+        self.saveChanges = function(){
+            return $http({
+              method : "POST",
+              url : "includes/systemController.php",
+              data : $httpParamSerializerJQLike({
+                form : "companyDiscriptionUpdate",
+                organizerId : organizer,
+                organizationId : organization,
+                data : self.discription
+              })
+            }).then(function(response) {
+
+                if(response.data.success){
+                  notifier.basic("Bio updated Successfuly!!!");
+                } else {
+                  notifier.basic("Bio update Failed!!!");
+                }
+
+                console.log(response);
+            })
+        };
+
+}]);
+
 //eventDetail viewer page controller
 app.controller("detailViewController",["$scope", "$route", "$http", "shareService", "imageLocator", "$location","transporter",
                                 function($scope, $route, $http, shareService, imageLocator, $location, transporter){
@@ -1022,6 +1069,10 @@ app.controller("userProfileController", ["$scope", "$http", "$q", "session", "im
       self.editWebsite = function(){
         transporter.set(self.company.website);
         $location.path("/editCompany/website/"+self.organizerId);
+      }
+      self.updateDiscription = function(){
+        transporter.set(self.company.discription);
+        $location.path("/editCompany/discription/"+self.organizerId+"/"+self.organizationId);
       }
 
 

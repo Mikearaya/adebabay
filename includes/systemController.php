@@ -608,6 +608,28 @@ exit;
 
 }
 
+if($submitted_form === "companyDiscriptionUpdate"  &&
+   $_POST["organizerId"] == $SESSION->get_session_id() &&
+   isset($_POST["data"])) {
+
+     $bio = $_POST["data"];
+     $organizer = new Organizer();
+     
+
+     $organizer->set_id($SESSION->get_session_id());
+     $organizer->set_organization_info($_POST["data"]);
+
+     if($ERROR_HANDLER->get_error_count() == 0 && $organizer->update_organization_info()) {
+       $result->success = true;
+     } else {
+       $result->success = false;
+       $result->message = generate_message("Failed Updating organization discription!!!");
+     }
+
+     echo json_encode($result);
+     exit;
+}
+
 if($submitted_form === "organizerBioUpdate"  &&
    $_POST["organizerId"] == $SESSION->get_session_id() &&
    isset($_POST["data"])) {

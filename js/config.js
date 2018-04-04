@@ -121,6 +121,7 @@ app.config(["$routeProvider", "$locationProvider", function($routeProvider, $loc
                   .when('/editCompany/address/:organizerId/:organizationId', { templateUrl: 'templates/addressEditer.html' })
                   .when('/editCompany/myprofile/:organizerId/:organizationId', { templateUrl: 'templates/userProfileEditer.html' })
                   .when('/editCompany/phone/:organizerId/:organizationId', { templateUrl: 'templates/organizerPhone.html' })
+                  .when('/editCompany/discription/:organizerId/:organizationId', { templateUrl: 'templates/companyDiscriptionUpdater.html' })
                   .when('/logIn', { templateUrl : 'templates/logIn.html' })
                   .when('/events/id/:catagoryId/catagory/:catagoryName', {templateUrl : 'templates/events.html' })
                   .when('/userProfile', { templateUrl: 'templates/userProfile.html' })
