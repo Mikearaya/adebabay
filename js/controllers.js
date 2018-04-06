@@ -1076,6 +1076,7 @@ app.controller("userProfileController", ["$scope", "$http", "$q", "session", "im
           self.organizer.prefix = data.title;
           self.organizer.position = data.organizerPosition;
           self.organizer.bio = data.aboutOrganizer;
+          self.company.name = data.organizationName;
           self.company.registeredOn = data.registeredOn;
           self.company.service = data.service;
           self.company.website = data.website;
@@ -1136,6 +1137,10 @@ app.controller("userProfileController", ["$scope", "$http", "$q", "session", "im
       self.updateDiscription = function(){
         transporter.set(self.company.discription);
         $location.path("/editCompany/discription/"+self.organizerId+"/"+self.organizationId);
+      }
+
+      self.updateBillingAddress = function(){
+        
       }
 
 

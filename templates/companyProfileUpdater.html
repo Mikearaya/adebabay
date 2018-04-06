@@ -45,7 +45,8 @@
         </md-input-container>
         <md-input-container  flex="50" flex-xs="100" >
           <label>Established on</label>
-          <md-datepicker
+          <md-datepicker md-current-view="month"
+                        md-placeholder="Established On"
                         md-placeholder="Established"
                         ng-model="ctrl.company.establishedOn"
                         name="established"

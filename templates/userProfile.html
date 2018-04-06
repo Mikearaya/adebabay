@@ -1,303 +1,288 @@
 <section ng-controller="userProfileController as profileCtrl" >
+  <md-tabs md-selected="selectedIndex"
+          md-border-bottom
+          md-autoselect
+          md-swipe-content
+          md-dynamic-height>
 
-      <md-tabs md-selected="selectedIndex"
-              md-border-bottom
-              md-autoselect
-              md-swipe-content
-              md-dynamic-height>
-        <md-tab label="About">
-          <div layout="row" layout-xs="column"  >
-
-
-          <md-card class="md-whiteframe-z2" flex flex-xs="100" layout-align="center center" layout-margin >
-        <md-card-title >
-
-
-
-          <md-card-title-media >
-          <img ng-src="img/placeholder2.jpg" class="md-media-xl card-media"  />
-          </md-card-title-media>
-
-              </md-card-title>
+    <md-tab label="About">
+      <div layout="row" layout-xs="column"  >
+        <md-card class="md-whiteframe-z2" flex flex-xs="100" layout-align="center center" layout-margin >
+          <md-card-title >
+            <md-card-title-media >
+              <img ng-src="img/placeholder2.jpg" class="md-media-xl card-media"  />
+            </md-card-title-media>
+          </md-card-title>
           <md-card-action layout="row" layout-align="center center">
             <md-button class="md-primary">
-              <md-icon class="icon-margin-right">edit</md-icon>upload image</md-button>
+              <md-icon class="icon-margin-right">edit</md-icon>
+              upload image
+            </md-button>
           </md-card-action>
+        </md-card>
+    <div  flex="50" layout-margin  flex-xs="100">
 
-          </md-card>
-        <div  flex="50" layout-margin  flex-xs="100">
+      <md-list class="md-whiteframe-z2" >
 
-          <md-list class="md-whiteframe-z2" >
-
-            <md-subheader style="padding : 0; margin: 0;" class="md-primary" > <md-icon style="padding : 0; margin: 0;" >person</md-icon>Personal Info. </md-subheader>
-
-
-            <md-list-item  >
-              <div class="md-list-item-text">
-                <div class="md-subheader" >Name </div>
-                <span class="md-secondary md-body-2" ng-bind="profileCtrl.fullName()"></span>
-              </div>
-            </md-list-item>
-            <md-list-item >
-              <div class="md-list-item-text">
-                <div class="md-subheader">Position</div>
-                <strong class="md-secondary md-body-2" ng-bind="profileCtrl.organizer.position"></strong>
-              </div>
-            </md-list-item >
-            <md-list-item>
-              <div class="md-list-item-text">
-                <div class="md-subheader" >Gender</div>
-                <span class="md-secondary md-body-2" ng-bind="profileCtrl.organizer.gender"></span>
-              </div>
-            </md-list-item >
-            <md-list-item>
-              <div class="md-list-item-text">
-                <div class="md-subheader">Birthdate</div>
-                <time class="md-body-2 md-secondary" ng-bind="profileCtrl.organizer.birthdate"> </time>
-              </div>
-            </md-list-item>
-            <md-list-item >
-
-            <div class="md-list-item-text">
-
-              <div  class="md-subheader">  <md-icon>mail</md-icon> Email</div>
-              <span class="md-body-2 md-secondary" ng-bind="profileCtrl.organizer.email"></span>
-            </div>
-            </md-list-item>
-            <md-divider></md-divider>
-            <md-list-item >
-
-              <div class="md-list-item-text">
+        <md-subheader style="padding : 0; margin: 0;" class="md-primary" > <md-icon style="padding : 0; margin: 0;" >person</md-icon>Personal Info. </md-subheader>
 
 
-                <md-button class="md-primary md-secondary"
-                          ng-click="profileCtrl.editProfile(profileCtrl.organizer)">
-                          <md-icon>edit</md-icon>
-                          edit
-                  </md-button>
-
-            </div>
-            </md-list-item>
-
-            </md-list>
-
-
-        </div>
-
-      </div>
-
-        <div class="md-whiteframe-z2" flex >
-          <md-subheader class="md-accent">Bio</md-subheader>
-          <md-divider></md-divider>
-          <p ng-bind="profileCtrl.organizer.bio"></p>
-          <div layout="row" layout-align="center center">
-            <md-button class="md-primary" ng-click="profileCtrl.editBio()"><md-icon class="icon-margin-right">edit</md-icon> Edit</md-button>
+        <md-list-item  >
+          <div class="md-list-item-text">
+            <div class="md-subheader" >Name </div>
+            <span class="md-secondary md-body-2" ng-bind="profileCtrl.fullName()"></span>
           </div>
-        </div>
-
-    </md-tab>
-    <md-tab label="companyProfile">
-      <div layout-xs="column" layout="row" layout-margin  >
-        <md-card class="md-whiteframe-z2" flex layout-align="space-between center" >
-          <md-card-title >
-        <md-card-title-media  >
-        <img ng-src="img/placeholder2.jpg" class="md-media-xl card-media"  />
-        </md-card-title-media>
-      </md-card-title>
-        <md-card-action layout="row" layout-align="center center">
-          <md-button class="md-primary">
-            <md-icon class="icon-margin-right">edit</md-icon>upload logo</md-button>
-        </md-card-action>
-
-      </md-card>
-
-
-    <div class="md-whiteframe-z2" flex="50" flex-xs="100">
-      <md-list >
-        <md-subheader class="md-no-sticky">General</md-subheader>
-        <md-divider></md-divider>
+        </md-list-item>
         <md-list-item >
           <div class="md-list-item-text">
-            <span class="md-subhead" >Organization Name </span>
-            <span class="md-body-2 md-secondary" ng-bind="profileCtrl.company.name"></span>
+            <div class="md-subheader">Position</div>
+            <strong class="md-secondary md-body-2" ng-bind="profileCtrl.organizer.position"></strong>
           </div>
-        </md-list-item>
+        </md-list-item >
         <md-list-item>
           <div class="md-list-item-text">
-            <div class="md-subhead">Product or Service</div>
-            <span class="md-body-2 md-secondary" ng-bind="profileCtrl.company.service"></span>
+            <div class="md-subheader" >Gender</div>
+            <span class="md-secondary md-body-2" ng-bind="profileCtrl.organizer.gender"></span>
           </div>
-        </md-list-item>
+        </md-list-item >
         <md-list-item>
           <div class="md-list-item-text">
-            <div class="md-subhead">Established on</div>
-            <span class="md-body-2 md-secondary" ><time ng-bind="profileCtrl.company.establishedOn"> </time></span>
+            <div class="md-subheader">Birthdate</div>
+            <time class="md-body-2 md-secondary" ng-bind="profileCtrl.organizer.birthdate"> </time>
           </div>
         </md-list-item>
-        <md-list-item>
-          <div class="md-list-item-text">
-            <div class="md-subhead"><md-icon>date_range</md-icon>Registed Since</div>
-            <span class="md-body-2 md-secondary"><time ng-bind="profileCtrl.company.registeredOn"> </time></span>
-          </div>
-        </md-list-item>
+        <md-list-item >
 
+        <div class="md-list-item-text">
+
+          <div  class="md-subheader">  <md-icon>mail</md-icon> Email</div>
+          <span class="md-body-2 md-secondary" ng-bind="profileCtrl.organizer.email"></span>
+        </div>
+        </md-list-item>
+        <md-divider></md-divider>
+        <md-list-item >
+
+          <div class="md-list-item-text">
+
+
+            <md-button class="md-primary md-secondary"
+                      ng-click="profileCtrl.editProfile(profileCtrl.organizer)">
+                      <md-icon>edit</md-icon>
+                      edit
+              </md-button>
+
+        </div>
+        </md-list-item>
 
         </md-list>
-        <md-divider></md-divider>
-        <div layout="row" layout-align="end end" >
-          <md-button
-                    class="md-primary"
-                    ng-click="profileCtrl.updateCompanyProfile()">
-                    <md-icon>edit</md-icon> edit</md-button>
-        </div>
+
+
     </div>
+
   </div>
 
-    <div layout="row" layout-xs="column"  >
-      <div  flex="50" flex-xs="100" >
-        <md-list class="md-whiteframe-z2">
-          <md-subheader class="md-primary md-body-2" >
-            <md-icon class="md-primary">location_city</md-icon>
-            <span>Address </span></md-subheader>
-          <md-divider></md-divider>
-            <md-list-item class="md-2-line" ng-repeat="address in profileCtrl.company.address">
+    <div class="md-whiteframe-z2" flex >
+      <md-subheader class="md-accent">Bio</md-subheader>
+      <md-divider></md-divider>
+      <p ng-bind="profileCtrl.organizer.bio"></p>
+      <div layout="row" layout-align="center center">
+        <md-button class="md-primary" ng-click="profileCtrl.editBio()"><md-icon class="icon-margin-right">edit</md-icon> Edit</md-button>
+      </div>
+    </div>
 
-            <div class="md-list-item-text">
-            <span class="md-body-2"></span>{{address.location}}</span>
-            <div class="md-subheader">{{address.subCity}}, {{address.city}} {{address.country.name}}</div>
-            </div>
-            <md-button class="md-secondary md-primary md-icon-button"><md-icon>edit_location</md-icon></md-button>
-            <md-divider ng-if="!$last"></md-divider>
-          </md-list-item>
-          <md-divider></md-divider>
-          <md-list-item>
-            <md-button
-                      class="md-primary md-secondary"
-                      ng-click="profileCtrl.editAddress(profileCtrl.company.address)" >
-              <md-icon>edit</md-icon> edit
-            </md-button>
-        </md-list-item>
-          </md-list>
+</md-tab>
+<md-tab label="companyProfile">
+  <div layout-xs="column" layout="row" layout-margin  >
+    <md-card class="md-whiteframe-z2" flex layout-align="space-between center" >
+      <md-card-title >
+    <md-card-title-media  >
+    <img ng-src="img/placeholder2.jpg" class="md-media-xl card-media"  />
+    </md-card-title-media>
+  </md-card-title>
+    <md-card-action layout="row" layout-align="center center">
+      <md-button class="md-primary">
+        <md-icon class="icon-margin-right">edit</md-icon>upload logo</md-button>
+    </md-card-action>
 
+  </md-card>
+
+
+<div class="md-whiteframe-z2" flex="50" flex-xs="100">
+  <md-list >
+    <md-subheader class="md-no-sticky">General</md-subheader>
+    <md-divider></md-divider>
+    <md-list-item >
+      <div class="md-list-item-text">
+        <span class="md-subhead" >Organization Name </span>
+        <span class="md-body-2 md-secondary" ng-bind="profileCtrl.company.name"></span>
+      </div>
+    </md-list-item>
+    <md-list-item>
+      <div class="md-list-item-text">
+        <div class="md-subhead">Product or Service</div>
+        <span class="md-body-2 md-secondary" ng-bind="profileCtrl.company.service"></span>
+      </div>
+    </md-list-item>
+      <md-list-item class="md-2-line">
+        <md-icon>website</md-icon>
+      <div class="md-list-item-text">
+        <span class="md-body-2">{{profileCtrl.company.website}}</span>
+        <div class="md-subheader">Website</div>
+      </div>
+      <md-button  ng-click="profileCtrl.editWebsite()" class="md-secondary md-primary md-icon-button" aria-label="edit website">
+       <md-icon   >edit</md-icon>
+      <md-button  ng-click="profileCtrl.deleteWebsite()" class="md-secondary md-warn md-icon-button" aria-label="delete website">
+       <md-icon   >delete</md-icon>
+     </md-button>
+      </md-list-item>
+      <md-list-item class="md-2-line">
+        <md-icon>mail</md-icon>
+      <div class="md-list-item-text">
+
+        <span class="md-body-2">{{profileCtrl.organizer.email}}</span>
+        <div class="md-subhead">Company E-mail</div>
+      </div>
+      <md-button  ng-click="profileCtrl.editEmail()" class="md-secondary md-primary md-icon-button" aria-label="edit email">
+       <md-icon   >edit</md-icon>
+     </md-button>
+      </md-list-item>
+
+    <md-list-item>
+      <div class="md-list-item-text">
+        <div class="md-subhead">Established on</div>
+        <span class="md-body-2 md-secondary" ><time ng-bind="profileCtrl.company.establishedOn"> </time></span>
+      </div>
+    </md-list-item>
+    <md-list-item>
+      <div class="md-list-item-text">
+        <div class="md-subhead"><md-icon>date_range</md-icon>Registed Since</div>
+        <span class="md-body-2 md-secondary"><time ng-bind="profileCtrl.company.registeredOn"> </time></span>
+      </div>
+    </md-list-item>
+
+
+    </md-list>
+    <md-divider></md-divider>
+    <div layout="row" layout-align="end end" >
+      <md-button
+                class="md-primary"
+                ng-click="profileCtrl.updateCompanyProfile()">
+                <md-icon>edit</md-icon> edit</md-button>
+    </div>
+</div>
+</div>
+
+<div layout="row" layout-xs="column"  >
+  <div  flex="50" flex-xs="100" >
+    <md-list class="md-whiteframe-z2">
+      <md-subheader class="md-primary md-body-2" >
+        <md-icon class="md-primary">location_city</md-icon>
+        <span>Address </span></md-subheader>
+      <md-divider></md-divider>
+        <md-list-item class="md-2-line" ng-repeat="address in profileCtrl.company.address">
+
+        <div class="md-list-item-text">
+        <span class="md-body-2"></span>{{address.location}}</span>
+        <div class="md-subheader">{{address.subCity}}, {{address.city}} {{address.country.name}}</div>
+        </div>
+        <md-divider ng-if="!$last"></md-divider>
+      </md-list-item>
+      <md-divider></md-divider>
+      <md-list-item>
+        <md-button
+                  class="md-primary md-secondary"
+                  ng-click="profileCtrl.editAddress(profileCtrl.company.address)" >
+          <md-icon>edit</md-icon> edit
+        </md-button>
+    </md-list-item>
+      </md-list>
+
+
+  </div>
+  <div class="md-whiteframe-z2" flex="50" flex-xs="100" layout-margin >
+
+      <telephone-display phones="profileCtrl.company.phoneNumbers"></telephone-display>
+      <div layout="row" layout-align="end end" >
+        <md-button
+                  class="md-primary"
+                  ng-click="profileCtrl.editPhones()"
+                  ><md-icon>edit</md-icon> edit</md-button>
+      </div>
 
       </div>
-      <div class="md-whiteframe-z2" flex="50" flex-xs="100" layout-margin >
+    </div>
+    <div layout="row" layout-xs="column" layout-align="space-between" layout-margin  >
 
-          <telephone-display phones="profileCtrl.company.phoneNumbers"></telephone-display>
+      <div class="md-whiteframe-z2" flex="50" flex-xs="100">
+        <md-list  flex="100">
+      <md-subheader >
+          <md-icon class="md-primary"> payment
+            </md-icon>Billing Acounts</md-subheader>
+        <md-list-item class="md-2-line"
+          ng-repeat="billingAddress in profileCtrl.organization.billingAddressess">
+          <md-icon>{{billingAddress.logo}}</md-icon>
+        <div class="md-list-item-text">
+        <div class="md-body-2">{{billingAddress.phone}}</div>
+        <span class="md-subhead">{{billingAddress.serviceProvider}}</span>
+        </div>
+         <md-button  ng-click="profileCtrl.updateBillingAddress()" class="md-secondary md-warn md-icon-button" aria-label="delete">
+          <md-icon   >delete</md-icon>
+        </md-button>
+        </md-list-item>
+
+      </md-list>
+      <md-divider></md-divider>
+      <div layout="row" layout-align="end end" >
+        <md-button class="md-primary"><md-icon>edit</md-icon> edit</md-button>
+      </div>
+      </div>
+      <div class="md-whiteframe-z2" flex="50" flex-xs="100">
+          <md-list flex="100" >
+            <md-subheader flex >Social Media Accounts</md-subheader>
+          <md-list-item class="md-2-line" ng-repeat="social in profileCtrl.company.socials">
+            <md-icon>{{social.site.icon}}</md-icon>
+          <div class="md-list-item-text">
+            <span class="md-body-2">{{social.address}}</span>
+            <div class="md-subheader">{{social.site.name}}</div>
+          </div>
+         </md-button>
+          </md-list-item>
+          </md-list>
+          <md-divider></md-divider>
           <div layout="row" layout-align="end end" >
             <md-button
                       class="md-primary"
-                      ng-click="profileCtrl.editPhones()"
-                      ><md-icon>edit</md-icon> edit</md-button>
-          </div>
-
-          </div>
-        </div>
-        <div layout="row" layout-xs="column" layout-margin  >
-          <div class="md-whiteframe-z2" flex="50" flex-xs="100">
-          <md-list >
-            <md-subheader flex >Email &amp; Website</md-subheader>
-          <md-list-item class="md-2-line">
-            <md-icon>website</md-icon>
-          <div class="md-list-item-text">
-            <span class="md-body-2">{{profileCtrl.company.website}}</span>
-            <div class="md-subheader">Website</div>
-          </div>
-          <md-button  ng-click="profileCtrl.editWebsite()" class="md-secondary md-primary md-icon-button" aria-label="edit website">
-           <md-icon   >edit</md-icon>
-          <md-button  ng-click="profileCtrl.deleteWebsite()" class="md-secondary md-warn md-icon-button" aria-label="delete website">
-           <md-icon   >delete</md-icon>
-         </md-button>
-          </md-list-item>
-          <md-list-item class="md-2-line">
-            <md-icon>mail</md-icon>
-          <div class="md-list-item-text">
-
-            <span class="md-body-2">{{profileCtrl.organizer.email}}</span>
-            <div class="md-subhead">Company E-mail</div>
-          </div>
-          <md-button  ng-click="profileCtrl.editEmail()" class="md-secondary md-primary md-icon-button" aria-label="edit email">
-           <md-icon   >edit</md-icon>
-         </md-button>
-          </md-list-item>
-
-
-          </md-list>
-          <md-divider></md-divider>
-          <div layout="row" layout-align="end end" >
-            <md-button class="md-primary"><md-icon>edit</md-icon> edit</md-button>
-          </div>
-      </div>
-      <div class="md-whiteframe-z2" flex="50" flex-xs="100">
-        <md-list  >
-          <md-subheader >
-              <md-icon class="md-primary"> payment
-                </md-icon>Billing Acounts</md-subheader>
-            <md-list-item class="md-2-line"
-              ng-repeat="billingAddress in profileCtrl.organization.billingAddressess">
-              <md-icon>{{billingAddress.logo}}</md-icon>
-            <div class="md-list-item-text">
-            <div class="md-body-2">{{billingAddress.phone}}</div>
-            <span class="md-subhead">{{billingAddress.serviceProvider}}</span>
-            </div>
-             <md-button  ng-click="" class="md-secondary md-warn md-icon-button" aria-label="delete">
-              <md-icon   >delete</md-icon>
+                      ng-click="profileCtrl.editSocialAddress(profileCtrl.company.socials)">
+                      <md-icon>edit</md-icon>
+                      edit
             </md-button>
-            </md-list-item>
 
-          </md-list>
-          <md-divider></md-divider>
-          <div layout="row" layout-align="end end" >
-            <md-button class="md-primary"><md-icon>edit</md-icon> edit</md-button>
           </div>
-          </div>
-    </div>
-    <div layout="row" layout-xs="column" layout-margin  >
-    <div class="md-whiteframe-z2" flex="50" flex-xs="100">
-        <md-list >
-          <md-subheader flex >Social Media Accounts</md-subheader>
-        <md-list-item class="md-2-line" ng-repeat="social in profileCtrl.company.socials">
-          <md-icon>{{social.site.icon}}</md-icon>
-        <div class="md-list-item-text">
-          <span class="md-body-2">{{social.address}}</span>
-          <div class="md-subheader">{{social.site.name}}</div>
-        </div>
-       </md-button>
-        </md-list-item>
-        </md-list>
-        <md-divider></md-divider>
-        <div layout="row" layout-align="end end" >
-          <md-button
-                    class="md-primary"
-                    ng-click="profileCtrl.editSocialAddress(profileCtrl.company.socials)">
-                    <md-icon>edit</md-icon>
-                    edit
-          </md-button>
-
-        </div>
-    </div>
-</div>
-<div layout="row" layout-xs="column" layout-margin  >
-    <div class="md-whiteframe-z2" layout-margin flex="100" >
-      <md-subheader class="md-primary">About Company</md-subheader>
-      <md-divider></md-divider>
-      <p ng-bind="profileCtrl.company.discription">
-
-    </p>
-    <md-divider></md-divider>
-      <div layout="row" layout-align="center center">
-        <md-button
-          class="md-primary"
-          ng-click="profileCtrl.updateDiscription()">
-          <md-icon class="icon-margin-right">edit</md-icon> Edit</md-button>
       </div>
-    </div>
+
+</div>
+
+<div layout="row" layout-xs="column" layout-margin  >
+<div class="md-whiteframe-z2" layout-margin flex="100" >
+  <md-subheader class="md-primary">About Company</md-subheader>
+  <md-divider></md-divider>
+  <p ng-bind="profileCtrl.company.discription">
+
+</p>
+<md-divider></md-divider>
+  <div layout="row" layout-align="center center">
+    <md-button
+      class="md-primary"
+      ng-click="profileCtrl.updateDiscription()">
+      <md-icon class="icon-margin-right">edit</md-icon> Edit</md-button>
   </div>
+</div>
+</div>
 
 
-    </md-tab>
+</md-tab>
 
-  </md-tabs>
+</md-tabs>
 
 
 
