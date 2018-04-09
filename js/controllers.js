@@ -199,40 +199,36 @@ app.controller("dynamicFieldController", [function(){
 
     var self = this;
 
-    var guestJSON = { status : "new",
-                      firstName : "",
-                      lastName : "",
-                      akaName : "",
-                      image : []
-                    };
-    var ticketJSON = {  status : "new",
-                        type : "" ,
-                        ticketName : "",
-                        quantity : "",
-                        price : "",
-                        ticketDiscription : "",
-                        saleStart : "",
-                        saleEnd : "",
-                        showAdvanced : false
-                      };
-    var sponsorJSON = { status : "new",
-                        sponsorName : "",
-                        sponsorImage : []
-                      };
-    var paymentSubscriptionJSON = {
-                        status : "new",
-                        bankId :"",
-                        mobileNumber : ""
-                      }
 
       self.addGuest = function(guests) {
+        var guestJSON = { status : "new",
+                          firstName : "",
+                          lastName : "",
+                          akaName : "",
+                          image : []
+                        };
                       guests.push(guestJSON);
                     };
-      self.addBillingSubscription = function(subscriptions) {
-                      subscriptions.push(paymentSubscriptionJSON);
+      self.addBillingSubscription = function(subscript) {
+        var paymentSubscriptionJSON = {
+                            status : "new",
+                            bankId :"",
+                            mobileNumber : ""
+                          };
+                      subscript.push(paymentSubscriptionJSON);
                     };
 
       self.addTicket = function(tickets) {
+        var ticketJSON = {  status : "new",
+                            type : "" ,
+                            ticketName : "",
+                            quantity : "",
+                            price : "",
+                            ticketDiscription : "",
+                            saleStart : "",
+                            saleEnd : "",
+                            showAdvanced : false
+                          };
                         tickets.push(ticketJSON);
                       };
       self.removeTicket = function(tickets, index) {
@@ -245,6 +241,10 @@ app.controller("dynamicFieldController", [function(){
                           guests.splice(index, 1);
                       };
       self.addSponsor = function(sponsors) {
+            var sponsorJSON = { status : "new",
+                            sponsorName : "",
+                            sponsorImage : []
+                          };
                           sponsors.push(sponsorJSON);
                       };
       self.removeSponsor = function(sponsors, index) {
@@ -1074,7 +1074,7 @@ app.controller("userProfileController", ["$scope", "$http", "$q", "session", "im
         name : "", socials : [], address : "", registeredOn : "", establishedOn : "",
         address : [], phoneNumbers : [], discription : ""
       }
-
+      self.billingAddresses = "";
       self.organizationId ="";
       self.organizerId = "";
 
@@ -1099,8 +1099,6 @@ app.controller("userProfileController", ["$scope", "$http", "$q", "session", "im
           self.company.socials = JSON.parse(data.company.social);
           self.company.address = JSON.parse(data.company.address);
           self.company.establishedOn = JSON.parse(data.company.establishedOn);
-          console.log(data);
-
 
       }
 
@@ -1186,7 +1184,7 @@ app.controller("biilingAddressUpdateController", ["$scope", "$http", "$route", "
     var self = this;
     var organizer = $route.current.params.organizerId;
 
-    self.subscriptions = [];
+    self.accounts = [];
 
     self.paymentProviders = eventCatagory.getMobileBanks();
 
@@ -1197,8 +1195,14 @@ app.controller("biilingAddressUpdateController", ["$scope", "$http", "$route", "
 
         angular.forEach(data, function(billingAdd){
           billingAdd.status = "updated";
-          self.subscriptions.push(billingAdd);
+          self.accounts.push(billingAdd);
         });
+      }
+
+      self.delete = function(data) {
+          data.status = "deleted";
+
+
       }
 
       initialize(billingAddress);
@@ -1210,7 +1214,7 @@ app.controller("biilingAddressUpdateController", ["$scope", "$http", "$route", "
           data : $httpParamSerializerJQLike(
                   {form : "updateCompanyBillingAddrs",
                   organizerId : organizer,
-                data : JSON.stringify(self.subscriptions)})
+                data : JSON.stringify(self.accounts)})
         }).then(function(response){
           if(response.data.success){
             notifier.basic("Billing address updated Successfuly");

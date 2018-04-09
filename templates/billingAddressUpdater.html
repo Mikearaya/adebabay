@@ -1,32 +1,34 @@
-<section layout-margin ng-controller="biilingAddressUpdateController as Ctrl">
+<section layout-margin ng-controller="biilingAddressUpdateController as ctrl">
 
-  <form ng-submit="Ctrl.saveChanges()" name="billingAddrsUpdater">
+  <form ng-submit="ctrl.saveChanges()" name="billingAddrsUpdater">
       <div class="md-whiteframe-z2">
         <md-content layout="row"
                     layout-padding
                     layout-margin
                     layout-xs="column"
-                    ng-repeat="subscription in Ctrl.subscriptions" layout-align="space-between">
+                    ng-repeat="subscription in ctrl.accounts track by $index" layout-align="space-between">
           <md-input-container flex="50" flex-xs="100">
-            <md-select
-                      name="providers"
+            <label>Mobile Banking Provider</label>
+            <md-select aria-label="Mobile banking provider select"
+                      name="providers[]"
                       ng-model="subscription.bankId"
                       required>
-                <md-option ng-repeat="bank in Ctrl.paymentProviders" ng-value="bank.bankId">
+                <md-option ng-repeat="bank in ctrl.paymentProviders" ng-value="bank.bankId">
                   {{bank.providerName}}
                 </md-option>
             </md-select>
-            <div ng-messages="billingAddrsUpdater.provider.$error">
+            <div ng-messages="billingAddrsUpdater.providers.$error">
               <div ng-message="required">
                 Service Provider Is Required
               </div>
             </div>
           </md-input-container>
           <md-input-container flex="50" flex-xs="100">
+            <label>Mobile Number</label>
             <input
                   type="text"
                   required="required"
-                  name="providerName"
+                  name="mobileNumber[]"
                   ng-model="subscription.mobileNumber"
                   placeholder="Registered Mobile Number"
                   />
@@ -39,8 +41,8 @@
         </md-content>
 <md-divider></md-divider>
         <div layout="row" ng-controller="dynamicFieldController as dynamicCtrl" layout-align="center center">
-          <md-button
-                    ng-click="dynamicCtrl.addBillingSubscription(Ctrl.subscriptions)"
+          <md-button ng-disabled="billingAddrsUpdater.$invalid"
+                    ng-click="dynamicCtrl.addBillingSubscription(ctrl.accounts)"
                     class="md-primary"   >
             <md-icon>add</md-icon>
             Add
@@ -52,13 +54,13 @@
       <div layout="row" layout-align="space-around center">
         <md-button
                   type="submit"
-                  ng-disabled="billingAddrs.$invalid"
+                  ng-disabled="billingAddrsUpdater.$invalid"
                   class="md-primary md-raised"
                   >
           <md-icon>save</md-icon>
           Save
         </md-button>
-        <md-button ng-disabled="billingAddrs.$submitted"
+        <md-button ng-disabled="billingAddrsUpdater.$submitted"
         class="md-warn md-raised">
           <md-icon>cancel</md-icon>
           Cancel

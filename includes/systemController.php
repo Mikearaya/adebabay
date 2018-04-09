@@ -1123,15 +1123,15 @@ if($submitted_form === 'updateCompanyBillingAddrs' &&
             $billingAddress = new BillingAddress();
             $new++;
           } else if(strtolower($billings[$i]["status"]) == "updated") {
+      
             $billingAddress = new BillingAddress($billings[$i]["accountId"], "updated");
             $updated++;
-
-
           }
 
 
-      if(isset($billings[$i]["mobileNumber"]))
-          $billingAddress->set_mobile_number($billings[$i]["mobileNumber"]);
+      $billingAddress->set_mobile_number($billings[$i]["mobileNumber"]);
+
+      $billingAddress->set_bank_id($billings[$i]["bankId"]);
 
             $organizer->set_billing_address($billingAddress);
             $i++;

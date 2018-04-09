@@ -203,39 +203,74 @@ abstract class Organization implements Event_interface {
 
 		public function update_billing_address(){
 			$count = 0;
-			$data;
+			$new = 0;
+			$deleted = 0;
 			$updated = 0;
 			$error = 0;
+			$updatedAddr;
+			$deletedAddr;
+			$newAddr;
 
 			while($count < $this->get_billing_address_count()) {
 
 				if($this->get_billing_address($count)->get_status() == "updated") {
-						if(!($data[$updated]["accountId"] = $this->get_billing_address($count)->get_id()) && $error = 1)
+						if(!($updatedAddr[$updated]["accountId"] = $this->get_billing_address($count)->get_id()) && $error = 1)
 						trigger_error("when updating Billing Address account Id Cant be Null", E_USER_ERROR);
-						if(!($data[$updated]["mobileNumber"] = $this->get_billing_address($count)->get_mobile_number()) && $error = 1)
+						if(!($updatedAddr[$updated]["mobileNumber"] = $this->get_billing_address($count)->get_mobile_number()) && $error = 1)
 						trigger_error("Billing Address Mobile number Cant be Null", E_USER_ERROR);
 
 						$updated++;
+				}else	if($this->get_billing_address($count)->get_status() == "deleted") {
+						if(!($deletedAddr[$deleted]["accountId"] = $this->get_billing_address($count)->get_id()) && $error = 1)
+						trigger_error("when updating Billing Address account Id Cant be Null", E_USER_ERROR);
+						if(!($deletedAddr[$deleted]["mobileNumber"] = $this->get_billing_address($count)->get_mobile_number()) && $error = 1)
+						trigger_error("Billing Address Mobile number Cant be Null", E_USER_ERROR);
+
+						$deleted++;
+				} else if($this->get_billing_address($count)->get_status() == "new") {
+
+						if(!($newAddr[$new]["bankId"] = $this->get_billing_address($count)->get_bank_id()) && $error = 1)
+						trigger_error("when adding Billing Address bank Id Cant be Null", E_USER_ERROR);
+						if(!($newAddr[$new]["mobileNumber"] = $this->get_billing_address($count)->get_mobile_number()) && $error = 1)
+						trigger_error("Billing Address Mobile number Cant be Null", E_USER_ERROR);
+
+						$new++;
 				}
+
+
 					$count++;
 
 			}
 
+			if($error == 0) {
+					try {
 
-				try {
+						if($updated > 0) {
+							$updatedAddr = json_encode($updatedAddr);
+						$sql = "CALL updateMobileBankingAccount(".$this->get_id().", ".json_encode($updatedAddr).")";
+						$statement = $this->DB_Driver->prepare_query($sql);
+					$statement->execute();
+					}
+					if($new > 0) {
+						$newAddr = json_encode($newAddr);
+						$sql = "CALL addMobileBankingAccount(".$this->get_id().", ".json_encode($newAddr).")";
+						$statement = $this->DB_Driver->prepare_query($sql);
+						$statement->execute();
+				}
+				if($deleted > 0) {
+					$deletedAddr = json_encode($deletedAddr);
+					$sql = "CALL deleteMobileBankingAccount(".$this->get_id().", ".json_encode($deletedAddr).")";
+					$statement = $this->DB_Driver->prepare_query($sql);
+					$statement->execute();
+				}
 
+				} catch(Exception $e) {
+					trigger_error($e->getMessage(), E_USER_ERROR);
+						$error = 1;
 
-				$data = json_encode($data);
-				$sql = "CALL updateMobileBankingAccount(".$this->get_id().", ".json_encode($data).")";
-				$statement = $this->DB_Driver->prepare_query($sql);
-				$statement->execute();
-			} catch(Exception $e) {
-				trigger_error($e->getMessage(), E_USER_ERROR);
-					$error = 1;
+				}
 
 			}
-
-
 
 
 			return ($error == 0 ) ? true: false;
