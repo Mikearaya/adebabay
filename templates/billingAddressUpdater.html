@@ -1,6 +1,6 @@
 <section layout-margin ng-controller="biilingAddressUpdateController as Ctrl">
 
-  <ng-form ng-submit="Ctrl.saveChanges()" name="billingAddrsUpdater">
+  <form ng-submit="Ctrl.saveChanges()" name="billingAddrsUpdater">
       <div class="md-whiteframe-z2">
         <md-content layout="row"
                     layout-padding
@@ -58,13 +58,14 @@
           <md-icon>save</md-icon>
           Save
         </md-button>
-        <md-button class="md-warn md-raised">
+        <md-button ng-disabled="billingAddrs.$submitted"
+        class="md-warn md-raised">
           <md-icon>cancel</md-icon>
           Cancel
         </md-button>
 
       </div>
 
-  </ng-form>
+  </form>
 
 </section>

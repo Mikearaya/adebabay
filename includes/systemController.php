@@ -1103,22 +1103,59 @@ exit;
 
 
 
-if($submitted_form === 'billing_address_update' && $_POST['organizer_id'] == $SESSION->get_session_id() ){
+if($submitted_form === 'updateCompanyBillingAddrs' &&
+  $_POST['organizerId'] == $SESSION->get_session_id() &&
+  isset($_POST["data"]) ) {
 
-			$organizer = Organizer::get_organizer($_POST['organizer_id']);
+
+			$organizer =  new Organizer();
+      $organizer->set_id($SESSION->get_session_id());
+
+      $billings = json_decode($_POST["data"], true);
+      $billingAddress;
+      $new = 0;
+      $updated = 0;
+
+      $i = 0;
+      while($i < count($billings)) {
+
+          if(strtolower($billings[$i]["status"]) == "new") {
+            $billingAddress = new BillingAddress();
+            $new++;
+          } else if(strtolower($billings[$i]["status"]) == "updated") {
+            $billingAddress = new BillingAddress($billings[$i]["accountId"], "updated");
+            $updated++;
 
 
-			if(isset($_POST['service-provider']) && isset($_POST['billing-phone'])){
-				$result->success = $organizer->update_billing_address( $_POST['service-provider'], $_POST['billing-phone']);
-			}
+          }
 
-			if($result->success){
-				$result->message = "<div class='alert alert-success'> Billing Address Updated Successfuly </div>";
-					} else {
-						$result->message =  "<div class='alert alert-danger'> Error Occured While Billing Address Address Please Try Again!!! </div>";
-					}
 
-echo $result->message;
+      if(isset($billings[$i]["mobileNumber"]))
+          $billingAddress->set_mobile_number($billings[$i]["mobileNumber"]);
+
+            $organizer->set_billing_address($billingAddress);
+            $i++;
+      }
+
+      if($new > 0 && $updated > 0 &&
+        $ERROR_HANDLER->get_error_count() == 0 && $organizer->update_billing_address() &&
+        $organizer->add_billing_address()) {
+
+          $result->success = true;
+      } else if($new > 0 &&
+                  $ERROR_HANDLER->get_error_count() == 0 && $organizer->add_billing_address()) {
+          $result->success = true;
+      } else if($updated > 0 &&
+
+        $ERROR_HANDLER->get_error_count() == 0 && $organizer->update_billing_address()) {
+        $result->success = true;
+        } else {
+          $result->success = false;
+          $result->message = generate_message("error updating billing address");
+        }
+
+
+        echo json_encode($result);
 exit;
 }
 

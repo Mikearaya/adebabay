@@ -24,7 +24,9 @@ abstract class Organization implements Event_interface {
 		protected $EVENTS = array();
 		protected $eventCount;
 		protected $phoneCount;
+		protected $BILLING_ADDRESS = array();
 		protected $phone_numbers = array();
+		protected $billingAddressCount;
 	private $BILL_ADD_ID;
 
 	private $service_provider;
@@ -163,17 +165,21 @@ abstract class Organization implements Event_interface {
 				return $this->status;
 			}
 
-				public function get_billing_address(){
 
+		public function set_billing_address_count($value) {
+			return $this->billingAddressCount = $value;
+		}
+		public function get_billing_address_count() {
+			return $this->billingAddressCount;
 		}
 
-		public function set_service_provider($value){
-			$this->service_provider = $value;
+		public function set_billing_address(BillingAddress $value){
+			$this->BILLING_ADDRESS[self::get_billing_address_count()] = $value;
+			self::set_billing_address_count(self::get_billing_address_count() + 1);
 		}
 
-
-		public function set_billing_number($value){
-			$this->billing_number = $value;
+		public function get_billing_address($index) {
+			return $this->BILLING_ADDRESS[$index];
 		}
 
 
@@ -184,51 +190,58 @@ abstract class Organization implements Event_interface {
 		}
 
 
-		public function get_service_provider(){
-			return $this->service_provider;
-		}
-
-
-		public function get_billing_number(){
-			return $this->billing_number;
-		}
-
-
 		public function get_id(){
 			return $this->ORGANIZATION_ID;
 		}
 
+		public function add_billing_address(){
+
+
+		}
 
 
 
+		public function update_billing_address(){
+			$count = 0;
+			$data;
+			$updated = 0;
+			$error = 0;
 
-		public function update_billing_address( $service_provider, $mobile_number){
-			self::set_service_provider($service_provider);
-			self::set_billing_number($mobile_number);
+			while($count < $this->get_billing_address_count()) {
 
+				if($this->get_billing_address($count)->get_status() == "updated") {
+						if(!($data[$updated]["accountId"] = $this->get_billing_address($count)->get_id()) && $error = 1)
+						trigger_error("when updating Billing Address account Id Cant be Null", E_USER_ERROR);
+						if(!($data[$updated]["mobileNumber"] = $this->get_billing_address($count)->get_mobile_number()) && $error = 1)
+						trigger_error("Billing Address Mobile number Cant be Null", E_USER_ERROR);
 
-			$sql = "INSERT INTO `billing_address` (";
-			$sql .= "`ORGANIZATION_ID`, `service_provider`, `phone_number` ";
-			$sql .= " ) VALUES ( :organization_id , :service_provider , :phone_number ) ";
-			$sql .= " ON DUPLICATE KEY UPDATE    ";
-			$sql .= " `phone_number`= :phone_number1" ;
+						$updated++;
+				}
+					$count++;
 
-			$placeholder = array(
-									':organization_id' => self::get_organization_id(),
-									':service_provider' => self::get_service_provider(),
-									':phone_number' => self::get_billing_number(),
-									':phone_number1' => self::get_billing_number()
-								);
-
-			$statement = $this->DB_Driver->prepare_query($sql);
-
-			$statement->execute($placeholder);
-
-			if($statement->rowCount() >= 1){
-				return true;
-			}else{
-				return false;
 			}
+
+
+				try {
+
+
+				$data = json_encode($data);
+				$sql = "CALL updateMobileBankingAccount(".$this->get_id().", ".json_encode($data).")";
+				$statement = $this->DB_Driver->prepare_query($sql);
+				$statement->execute();
+			} catch(Exception $e) {
+				trigger_error($e->getMessage(), E_USER_ERROR);
+					$error = 1;
+
+			}
+
+
+
+
+			return ($error == 0 ) ? true: false;
+
+
+
 		}
 
 			public function update_website($url){
@@ -482,6 +495,7 @@ class Organizer extends Organization {
 						$this->set_event_count(0);
 						$this->set_address_count(0);
 						$this->set_phone_count(0);
+						$this->set_billing_address_count(0);
 						$this->DB_Driver = new DB_CONNECTION();
 
 

@@ -1207,10 +1207,10 @@ app.controller("biilingAddressUpdateController", ["$scope", "$http", "$route", "
         $http({
           method : "POST",
           url : "includes/systemController.php",
-          data : httpParamSerializerJQLike(
+          data : $httpParamSerializerJQLike(
                   {form : "updateCompanyBillingAddrs",
                   organizerId : organizer,
-                                              data : self.subscriptions})
+                data : JSON.stringify(self.subscriptions)})
         }).then(function(response){
           if(response.data.success){
             notifier.basic("Billing address updated Successfuly");
