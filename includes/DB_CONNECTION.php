@@ -74,6 +74,18 @@ class DB_CONNECTION	{
 
 			}
 
+			public static function get_mobile_banks(){
+
+
+				$sql = "CALL getMobileBankers()";
+
+					$connection = new DB_CONNECTION();
+					$statement = $connection->set_query($sql);
+
+				return $statement->fetchAll();
+
+			}
+
 			public static function get_catagories(){
 
 
@@ -82,9 +94,9 @@ class DB_CONNECTION	{
 					$connection = new DB_CONNECTION();
 					$statement = $connection->set_query($sql);
 
-					$events = $statement->fetchAll();
 
-				return $events;
+
+				return $statement->fetchAll();
 
 			}
 
@@ -393,13 +405,27 @@ class DB_CONNECTION	{
 
 
 
-
 			public static function get_organizer_info($org_id) {
 
 					$sql = "CALL getOrganizerInformation(".$org_id.")";
+					$organizer;
+					$organizer["company"] = null;
+					$organizer["billings"] = null;
 				    $connection = new DB_CONNECTION();
         	             	      $statement = $connection->set_query($sql);
-				return	($row = $statement->fetch()) ? $row : null;
+						do {
+							$row = $statement->fetchAll();
+
+							if($row && isset($row[0]["organizerId"])) {
+								$organizer = $row[0];
+							} else if($row && isset($row[0]["organizationId"])){
+								$organizer["company"] = $row[0];
+							} else if($row && isset($row[0]["accountId"])) {
+								$organizer["billings"] = $row;
+							}
+
+						}while($statement->nextRowset() && $statement->columnCount());
+				return	$organizer;
 			}
 
 			public function get_last_inserted_id(){

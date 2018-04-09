@@ -64,6 +64,7 @@ app.config(["$routeProvider", "$locationProvider", function($routeProvider, $loc
                   .when('/updateEvent/sponsor/:eventId/:organizerId', { templateUrl: 'templates/eventSponsorUpdater.html' })
                   .when('/myEvents/:organizerId', { templateUrl: 'templates/userEvents.html' })
                   .when('/editCompany/website/:organizerId', { templateUrl: 'templates/companyWebsiteEdit.html' })
+                  .when('/editCompany/billing/:organizerId', { templateUrl: 'templates/billingAddressUpdater.html' })
                   .when('/editCompany/email/:organizerId', { templateUrl: 'templates/companyEmailEdit.html' })
                   .when('/editCompany/social/:organizerId', { templateUrl: 'templates/companySocialEdit.html' })
                   .when('/editCompany/profile/:organizerId', { templateUrl: 'templates/companyProfileUpdater.html' })

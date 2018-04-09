@@ -1,3 +1,70 @@
-<section ng-controller="biilingAddressUpdateController as Ctrl">
+<section layout-margin ng-controller="biilingAddressUpdateController as Ctrl">
+
+  <ng-form ng-submit="Ctrl.saveChanges()" name="billingAddrsUpdater">
+      <div class="md-whiteframe-z2">
+        <md-content layout="row"
+                    layout-padding
+                    layout-margin
+                    layout-xs="column"
+                    ng-repeat="subscription in Ctrl.subscriptions" layout-align="space-between">
+          <md-input-container flex="50" flex-xs="100">
+            <md-select
+                      name="providers"
+                      ng-model="subscription.bankId"
+                      required>
+                <md-option ng-repeat="bank in Ctrl.paymentProviders" ng-value="bank.bankId">
+                  {{bank.providerName}}
+                </md-option>
+            </md-select>
+            <div ng-messages="billingAddrsUpdater.provider.$error">
+              <div ng-message="required">
+                Service Provider Is Required
+              </div>
+            </div>
+          </md-input-container>
+          <md-input-container flex="50" flex-xs="100">
+            <input
+                  type="text"
+                  required="required"
+                  name="providerName"
+                  ng-model="subscription.mobileNumber"
+                  placeholder="Registered Mobile Number"
+                  />
+            <div ng-messages="billingAddrsUpdater.mobileNumber.$error">
+              <div ng-message="required">
+                Mobile Number is Reuired
+              </div>
+            </div>
+          </md-input-container>
+        </md-content>
+<md-divider></md-divider>
+        <div layout="row" ng-controller="dynamicFieldController as dynamicCtrl" layout-align="center center">
+          <md-button
+                    ng-click="dynamicCtrl.addBillingSubscription(Ctrl.subscriptions)"
+                    class="md-primary"   >
+            <md-icon>add</md-icon>
+            Add
+          </md-button>
+
+        </div>
+      </div>
+
+      <div layout="row" layout-align="space-around center">
+        <md-button
+                  type="submit"
+                  ng-disabled="billingAddrs.$invalid"
+                  class="md-primary md-raised"
+                  >
+          <md-icon>save</md-icon>
+          Save
+        </md-button>
+        <md-button class="md-warn md-raised">
+          <md-icon>cancel</md-icon>
+          Cancel
+        </md-button>
+
+      </div>
+
+  </ng-form>
 
 </section>

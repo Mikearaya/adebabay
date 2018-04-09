@@ -50,7 +50,7 @@ app.controller('viewCtrl',[ "$http", "$location", "$route", "$q", "$mdDialog", "
                           function($http, $location, $route, $q, $mdDialog, shareService,imageLocator){
     self = this;
 
-self.events = "";
+    self.events = "";
       $http({
               method : 'GET',
               url : "includes/systemController.php",
@@ -219,15 +219,27 @@ app.controller("dynamicFieldController", [function(){
                         sponsorName : "",
                         sponsorImage : []
                       };
+    var paymentSubscriptionJSON = {
+                        status : "new",
+                        bankId :"",
+                        mobileNumber : ""
+                      }
 
       self.addGuest = function(guests) {
                       guests.push(guestJSON);
                     };
+      self.addBillingSubscription = function(subscriptions) {
+                      subscriptions.push(paymentSubscriptionJSON);
+                    };
+
       self.addTicket = function(tickets) {
                         tickets.push(ticketJSON);
                       };
       self.removeTicket = function(tickets, index) {
                             tickets.splice(index, 1);
+                      };
+      self.removeBillingSubscription = function(subscription, index) {
+                            subscription.splice(index, 1);
                       };
       self.removeGuest = function(guests,index) {
                           guests.splice(index, 1);
@@ -398,7 +410,7 @@ app.controller("eventGeneralUpdateController", ["$http","$location", "$route", "
       }
 
         initialize(eventData);
-self.saveChanges = function(){
+        self.saveChanges = function(){
       return $http({
         method : "POST",
         url : "includes/systemController.php",
@@ -490,8 +502,8 @@ app.controller("eventTicketUpdateController", ["$http","$location", "$route", "$
       var organizer = $route.current.params.organizerId;
       var currentEvent = $route.current.params.eventId;
       self.tickets = [];
-self.saleStartDefault;
-self.saleEndDefault;
+      self.saleStartDefault;
+      self.saleEndDefault;
         function initialize(data){
 
           angular.forEach(data, function(ticket, i){
@@ -876,7 +888,8 @@ app.controller('mainController', ["$scope", "$rootScope", "$location", "$mdSiden
                                   function($rootScope, $scope, $location, $mdSidenav,
                                             $mdDialog, $http, eventCatagory, notifier, session){
 
-var self = this;
+
+      var self = this;
       eventCatagory.availableEventCatagories()
                     .then(function(catagoryList){
                             self.eventCatagories = catagoryList;
@@ -988,9 +1001,9 @@ app.controller('homeCtrl',["$scope",
                           function($scope){
 
 }]);
-``
+
 app.controller("phoneEditerController",["$scope", "$route", "$http", "transporter", "session",
-"$location", "$httpParamSerializerJQLike", "notifier",
+                                        "$location", "$httpParamSerializerJQLike", "notifier",
                               function($scope, $route, $http, transporter, session,
                                  $location, $httpParamSerializerJQLike, notifier){
 
@@ -998,8 +1011,8 @@ app.controller("phoneEditerController",["$scope", "$route", "$http", "transporte
     var organizer = $route.current.params.organizerId;
     var organization = $route.current.params.organizationId;
 
-    self.phones = transporter.get();
-    self.removedPhones = [];
+      self.phones = transporter.get();
+      self.removedPhones = [];
       if(organizer != session.getUserId() || self.phones === undefined ){
         $location.path("/userProfile");
       }
@@ -1033,9 +1046,9 @@ app.controller("phoneEditerController",["$scope", "$route", "$http", "transporte
           })
       }
 
-self.phoneTypes = [{type : "Mobile",icon : "phone"},
-{type : "Office",  icon : "business"},
-{type : "Land Line", icon : "phone"}];
+      self.phoneTypes = [{type : "Mobile",icon : "phone"},
+      {type : "Office",  icon : "business"},
+      {type : "Land Line", icon : "phone"}];
 
       self.addPhone = function(){
         self.phones.push({type : "", number : "", icon : ""});
@@ -1066,7 +1079,7 @@ app.controller("userProfileController", ["$scope", "$http", "$q", "session", "im
       self.organizerId = "";
 
       self.initialize = function(data){
-          self.organizationId = data.organizationId;
+          self.organizationId = data.company.organizationId;
           self.organizerId = data.organizerId;
           self.organizer.email = data.email;
           self.organizer.birthdate = data.birthdate;
@@ -1076,15 +1089,16 @@ app.controller("userProfileController", ["$scope", "$http", "$q", "session", "im
           self.organizer.prefix = data.title;
           self.organizer.position = data.organizerPosition;
           self.organizer.bio = data.aboutOrganizer;
-          self.company.name = data.organizationName;
-          self.company.registeredOn = data.registeredOn;
-          self.company.service = data.service;
-          self.company.website = data.website;
-          self.company.discription = data.aboutOrganization;
-          self.company.phoneNumbers = JSON.parse(data.phoneNumber);
-          self.company.socials = JSON.parse(data.social);
-          self.company.address = JSON.parse(data.address);
-          self.company.establishedOn = JSON.parse(data.establishedOn);
+          self.company.name = data.company.organizationName;
+          self.company.registeredOn = data.company.registeredOn;
+          self.company.service = data.company.service;
+          self.billingAddresses = data.billings;
+
+          self.company.discription = data.company.aboutOrganization;
+          self.company.phoneNumbers = JSON.parse(data.company.phoneNumber);
+          self.company.socials = JSON.parse(data.company.social);
+          self.company.address = JSON.parse(data.company.address);
+          self.company.establishedOn = JSON.parse(data.company.establishedOn);
           console.log(data);
 
 
@@ -1140,7 +1154,8 @@ app.controller("userProfileController", ["$scope", "$http", "$q", "session", "im
       }
 
       self.updateBillingAddress = function(){
-        
+        transporter.set(self.billingAddresses);
+        $location.path("/editCompany/billing/"+self.organizerId);
       }
 
 
@@ -1156,6 +1171,61 @@ app.controller("userProfileController", ["$scope", "$http", "$q", "session", "im
 
 
 }]);
+
+app.controller("biilingAddressUpdateController", ["$scope", "$http", "$route", "$location", "$httpParamSerializerJQLike",
+                                          "transporter", "notifier", "session", "eventCatagory",
+                                      function($scope, $http, $route, $location, $httpParamSerializerJQLike, transporter,
+                                      notifier, session, eventCatagory){
+
+          if($route.current.params.organizerId === undefined ){
+            $location.path("/userProfile");
+          }
+        var billingAddress = transporter.get();
+
+
+    var self = this;
+    var organizer = $route.current.params.organizerId;
+
+    self.subscriptions = [];
+
+    self.paymentProviders = eventCatagory.getMobileBanks();
+
+
+
+
+      function initialize(data) {
+
+        angular.forEach(data, function(billingAdd){
+          billingAdd.status = "updated";
+          self.subscriptions.push(billingAdd);
+        });
+      }
+
+      initialize(billingAddress);
+
+      self.saveChanges = function(){
+        $http({
+          method : "POST",
+          url : "includes/systemController.php",
+          data : httpParamSerializerJQLike(
+                  {form : "updateCompanyBillingAddrs",
+                  organizerId : organizer,
+                                              data : self.subscriptions})
+        }).then(function(response){
+          if(response.data.success){
+            notifier.basic("Billing address updated Successfuly");
+            $location.path("/userProfile");
+          } else {
+            notifier.basic("Billing address update failed");
+            console.log(response);
+          }
+        })
+      }
+
+
+}]);
+
+
 
 app.controller("websiteEditerController", ["$scope", "$http", "$route", "$location", "$httpParamSerializerJQLike",
                                           "transporter", "notifier", "session",

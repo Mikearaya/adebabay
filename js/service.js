@@ -131,6 +131,8 @@ app.factory('shareService',["$http", function($http){
 app.factory('eventCatagory',["$http", "$q",
                             function($http, $q){
 
+    var self = this;
+    self.banks = {};
       function availableEventCatagories(){
 
         return $q(function(resolve, reject){
@@ -163,11 +165,29 @@ app.factory('eventCatagory',["$http", "$q",
                   });
                 });
       };
+      function mobileBanks(){
 
+
+                  $http({
+                    method : 'GET',
+                    url : "includes/systemController.php",
+                    params : {get : "mobileBanks" }
+                  })
+                  .then(function (response){
+                        self.banks = response.data;
+                        console.log(response.data);
+                  });
+
+      };
+      function getMobileBanks() {
+        return self.banks;
+      }
+      mobileBanks();
 
   return {
     availableEventCatagories : availableEventCatagories,
-    catagories : catagories
+    catagories : catagories,
+    getMobileBanks : getMobileBanks
   };
 
 }]);

@@ -51,6 +51,7 @@ $x["organizerId"] = $SESSION->get_session_id();
 if($get_request == "closeSession") {
     $SESSION->close_session();
     $SESSION->reset_session();
+    exit;
 }
 
 if($get_request == "eventCatagory" ) {
@@ -58,13 +59,17 @@ if($get_request == "eventCatagory" ) {
   $list = DB_CONNECTION::get_event_categories();
 
   echo json_encode($list);
+  exit;
 }
 if($get_request == "catagory" ) {
 
   $list = DB_CONNECTION::get_catagories();
 
   echo json_encode($list);
+  exit;
 }
+
+
 if($get_request == "searchEvent" && isset($_GET['value']) ) {
 
   $list = DB_CONNECTION::search_Event($_GET['value']);
@@ -476,6 +481,17 @@ if($ERROR_HANDLER->get_error_count() == 0 && $organizer->add_event($event) ) {
 	exit;
 
 }
+
+if($get_request === 'mobileBanks'){
+
+	$x = DB_CONNECTION::get_mobile_banks();
+
+echo json_encode($x);
+
+  exit;
+
+}
+
 
 
 
@@ -1384,6 +1400,7 @@ if($get_request === 'event_tickets' && isset($_GET['event_id'])){
 		}
 
 		echo $result->message;
+    exit;
 	}
 
 
@@ -1391,7 +1408,7 @@ if($get_request === 'organizer_info' && $_GET['organizerId']  == $SESSION->get_s
 
 	$info = DB_CONNECTION::get_organizer_info($SESSION->get_session_id());
 	echo	json_encode($info);
-
+exit;
 }
 
 
@@ -1402,7 +1419,7 @@ if($get_request === 'event_statstics' && $_GET['organizer_id'] == $SESSION->get_
 			$result =DB_CONNECTION::get_event_booking_stat($SESSION->get_session_id(),  $_GET['event_id']);
 			echo json_encode($result);
 
-
+exit;
 }
 
 

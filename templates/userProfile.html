@@ -219,21 +219,18 @@
           <md-icon class="md-primary"> payment
             </md-icon>Billing Acounts</md-subheader>
         <md-list-item class="md-2-line"
-          ng-repeat="billingAddress in profileCtrl.organization.billingAddressess">
-          <md-icon>{{billingAddress.logo}}</md-icon>
+          ng-repeat="billingAddress in profileCtrl.billingAddresses">
+          <md-icon>{{billingAddress.bankLogo}}</md-icon>
         <div class="md-list-item-text">
-        <div class="md-body-2">{{billingAddress.phone}}</div>
-        <span class="md-subhead">{{billingAddress.serviceProvider}}</span>
+        <div class="md-body-2">{{billingAddress.mobileNumber}}</div>
+        <span class="md-subhead">{{billingAddress.providerName}}</span>
         </div>
-         <md-button  ng-click="profileCtrl.updateBillingAddress()" class="md-secondary md-warn md-icon-button" aria-label="delete">
-          <md-icon   >delete</md-icon>
-        </md-button>
         </md-list-item>
 
       </md-list>
       <md-divider></md-divider>
-      <div layout="row" layout-align="end end" >
-        <md-button class="md-primary"><md-icon>edit</md-icon> edit</md-button>
+      <div layout="row"  layout-align="end end" >
+        <md-button ng-click="profileCtrl.updateBillingAddress()"  class="md-primary"><md-icon>edit</md-icon> edit</md-button>
       </div>
       </div>
       <div class="md-whiteframe-z2" flex="50" flex-xs="100">
