@@ -218,17 +218,15 @@ abstract class Organization implements Event_interface {
 						trigger_error("when updating Billing Address account Id Cant be Null", E_USER_ERROR);
 						if(!($updatedAddr[$updated]["mobileNumber"] = $this->get_billing_address($count)->get_mobile_number()) && $error = 1)
 						trigger_error("Billing Address Mobile number Cant be Null", E_USER_ERROR);
+						if(!($updatedAddr[$updated]["bankId"] = $this->get_billing_address($count)->get_bank_id()) && $error = 1)
+						trigger_error("when adding Billing Address bank Id Cant be Null", E_USER_ERROR);
 
 						$updated++;
 				}else	if($this->get_billing_address($count)->get_status() == "deleted") {
 						if(!($deletedAddr[$deleted]["accountId"] = $this->get_billing_address($count)->get_id()) && $error = 1)
 						trigger_error("when updating Billing Address account Id Cant be Null", E_USER_ERROR);
-						if(!($deletedAddr[$deleted]["mobileNumber"] = $this->get_billing_address($count)->get_mobile_number()) && $error = 1)
-						trigger_error("Billing Address Mobile number Cant be Null", E_USER_ERROR);
-
 						$deleted++;
 				} else if($this->get_billing_address($count)->get_status() == "new") {
-
 						if(!($newAddr[$new]["bankId"] = $this->get_billing_address($count)->get_bank_id()) && $error = 1)
 						trigger_error("when adding Billing Address bank Id Cant be Null", E_USER_ERROR);
 						if(!($newAddr[$new]["mobileNumber"] = $this->get_billing_address($count)->get_mobile_number()) && $error = 1)
@@ -242,7 +240,9 @@ abstract class Organization implements Event_interface {
 
 			}
 
+
 			if($error == 0) {
+
 					try {
 
 						if($updated > 0) {
@@ -252,6 +252,7 @@ abstract class Organization implements Event_interface {
 					$statement->execute();
 					}
 					if($new > 0) {
+
 						$newAddr = json_encode($newAddr);
 						$sql = "CALL addMobileBankingAccount(".$this->get_id().", ".json_encode($newAddr).")";
 						$statement = $this->DB_Driver->prepare_query($sql);

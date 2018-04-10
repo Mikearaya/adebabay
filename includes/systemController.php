@@ -1123,7 +1123,7 @@ if($submitted_form === 'updateCompanyBillingAddrs' &&
             $billingAddress = new BillingAddress();
             $new++;
           } else if(strtolower($billings[$i]["status"]) == "updated") {
-      
+
             $billingAddress = new BillingAddress($billings[$i]["accountId"], "updated");
             $updated++;
           }
@@ -1137,19 +1137,10 @@ if($submitted_form === 'updateCompanyBillingAddrs' &&
             $i++;
       }
 
-      if($new > 0 && $updated > 0 &&
-        $ERROR_HANDLER->get_error_count() == 0 && $organizer->update_billing_address() &&
-        $organizer->add_billing_address()) {
-
-          $result->success = true;
-      } else if($new > 0 &&
-                  $ERROR_HANDLER->get_error_count() == 0 && $organizer->add_billing_address()) {
-          $result->success = true;
-      } else if($updated > 0 &&
-
+      if(($new > 0 || $updated > 0) &&
         $ERROR_HANDLER->get_error_count() == 0 && $organizer->update_billing_address()) {
-        $result->success = true;
-        } else {
+          $result->success = true;
+      } else {
           $result->success = false;
           $result->message = generate_message("error updating billing address");
         }
