@@ -1,4 +1,7 @@
 
+
+
+
 h1 {
   padding: 0;
   margin: 10px 0;
@@ -15,9 +18,13 @@ table#orderTable {
   margin : 0px;
 }
 
-table#orderTable tr td , table#orderTable tr th {
-  border-bottom: 1px solid grey;
-}
+table#ticket-table thead tr,
+table#ticket-table tbody tr {
+        display: block;
+        margin: 0;
+        padding: 0;
+      }
+
 
 
 
@@ -104,18 +111,11 @@ table#ticket-table thead tr th {
   height: 30px;
   font-weight: bold;
 }
-table#ticket-table tbody tr td ,
-table#ticket-table thead tr th {
-  padding: 0px;
-  margin: 0px;
-text-align: center;
-}
+
+
 table#ticket-table thead tr  {
 background-color: grey;
 color: white;
-}
-table#ticket-table tbody tr  {
-  border-top:  1px solid ;
 }
 
 
@@ -126,25 +126,21 @@ table.ticket-manage {
 }
 
 
-table.ticket-manage thead tr th:last-child {
+table.ticket-manage thead tr th:last-child,  table#ticket-table thead tr th:last-child {
   position: absolute;
   top: -9999px;
   left: -9999px;
 }
 
-
-table.ticket-manage tbody tr td:last-child {
-  display: block;
-  width: 100%;
-  text-align: left;
+table#ticket-table tbody tr td:not(:last-child),
+table#ticket-table thead tt th:not(:last-child) {
+  display: inline;
   margin-top: 0px;
-    margin-bottom:  0px;
+  margin-bottom:  0px;
 }
 table.ticket-manage tbody tr:nth-of-type(odd){
   background: #eee;
-}
-table#ticket-table{
-  width: 100%;
+
 }
 
 .ticket-type {
@@ -160,35 +156,30 @@ table#ticket-table{
 .ticket-price {
   width : 20%;
 }
+
 .ticket-action {
   width: 10%;
   height: 10%;
-}
-
-table#ticket-table tbody tr td:last-child, table#ticket-table thead tr th:last-child {
-  display: block;
-  width: 100%;
-  text-align: left;
-  margin-top: 0px;
-    margin-bottom:  0px;
-}
-
-
-table#ticket-table tbody tr td.ticket-action > * {
-  display: inline;
-  left : 0;
+  left: 0;
   right: 0;
+}
+
+table#ticket-table tbody tr td:last-child {
+  clear: both;
+  display: block;
+  border: 1px dotted grey;
+  width: 100%;
+  height: auto;
 
 
 }
+
 
 table#ticket-table tbody tr td{
   height: 100px;
 }
 
-table#ticket-table tbody tr  td:last-child{
-  height: auto;
-}
+
 .hint {
   font-size: smaller;
 }
@@ -253,6 +244,9 @@ table.ticket-manage tbody tr 	td:not(:last-child):before {
 		padding-right: 10px;
 		white-space: nowrap;
 	}
+  table#ticket-table tbody tr td{
+    height: auto;
+  }
 
 table#ticket-table,
 table#ticket-table tfoot,
@@ -294,7 +288,7 @@ table#ticket-table tbody tr  td {
 
 table#ticket-table tbody tr td.ticket-action,
 table#ticket-table tbody tr td.ticket-advanced-setting {
-
+clear: both;
 display: block;
 width: 100%;
 

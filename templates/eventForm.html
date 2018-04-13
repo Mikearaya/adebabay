@@ -169,8 +169,11 @@
       </div>
       </div>
 
-      <div layout-padding    layout="row" layout-xs="column">
-        <md-input-container class="md-whiteframe-z2" flex flex-xs="100">
+      <div     layout="row" layout-xs="column">
+        <div class="md-whiteframe-z2">
+
+
+        <md-input-container layout-padding  flex flex-xs="100">
           <label>Discription </label>
           <textarea ng-model="ctrl.event.eventDiscription" rows="3" name="discription" required ></textarea>
           <div ng-messages="eventForm.discription.$error">
@@ -180,9 +183,10 @@
             </div>
           </div>
         </md-input-container>
+      </div>
 <div flex flex-xs="100">
 
-  <lf-ng-md-file-input name="eventImage"   lf-files="ctrl.event.eventImage" lf-required lf-browse-label="Upload Image" lf-remove-label="Remove"
+  <lf-ng-md-file-input name="eventImage"   lf-files="ctrl.event.eventImage" lf-browse-label="Upload Image" lf-remove-label="Remove"
   lf-filesize="2MB"  lf-mimetype="image/*" preview>
 </lf-ng-md-file-input>
 <div ng-messages="eventForm.eventImage.$error" style="color:red;">
@@ -193,13 +197,13 @@
       </div>
       </div>
 
-      <md-toolbar class="md-primary md-hue-1">
-        <div class="md-toolbar-tools">
-          <h4>2. Ticket</h4>
-        </div>
-    </md-toolbar>
+      <md-subheader class="md-primary ">
+        <span class="md-headline"> 2. Tickets </span>
 
-      <md-content layout-padding flex>
+
+    </md-subheader>
+
+      <div  flex>
         <table id="ticket-table" >
           <thead class="md-accent md-hue-2">
             <tr>
@@ -211,8 +215,8 @@
               <th class="ticket-advanced-setting">Discription </th>
             </tr>
           </thead>
-          <tbody>
-            <tr ng-repeat="ticket in ctrl.event.eventTickets">
+          <tbody class="md-whiteframe-z2">
+            <tr ng-repeat="ticket in ctrl.event.eventTickets" >
               <td class="ticket-type">
                 <md-input-container flex >
                   <label>Type</label>
@@ -269,8 +273,8 @@
                 <md-checkbox aria-label="remove current ticket " ng-click="ctrl.event.removeTicket($index)"  name="removeTicket" flex  />  </md-checkbox>
 
               </td>
-              <td ng-show="ticket.showAdvanced" class="ticket-advanced-setting">
-                <strong class="md-accent"> Advanced Setting </strong>
+              <td ng-show="ticket.showAdvanced" class="ticket-advanced-setting md-whiteframe-z1">
+                <md-subheader class="md-accent"> Advanced Ticket Setting </md-subheader>
                 <div layout="row" layout-xs="column">
                   <md-input-container class="md-accent" flex-gt-xs="50" flex-xs="100"  >
                     <label>Discription</label>
@@ -280,8 +284,9 @@
                     <label>Sale Start</label>
                     <md-datepicker
                                   md-max-date="ctrl.maxTicketDate()"
-                                  md-min-date="ctrl.minTicketDate()"
+                                  md-min-date="ctrl.minStart()"
                                   ng-model="ticket.saleStart"
+                                  ng-required="!ctrl.isDefaltStartSet()"
                                   name="ticketSaleStart"
                                   ng-change="ctrl.ticketDateChanged()"
                                   ></md-datepicker>
@@ -292,40 +297,45 @@
                                   ng-model="ticket.saleEnd"
                                   name="ticketSaleEnd"
                                   md-max-date="ctrl.maxTicketDate()"
-                                  md-min-date="ctrl.minTicketDate()"
+                                  md-min-date="ctrl.minTicketEndDate()"
+                                  ng-required="!ctrl.isDefaltEndSet()"
                                   ng-change="ctrl.ticketDateChanged()"
                                   ></md-datepicker>
                   </md-input-container>
                 </div>
               </td>
             </tr>
-            <tr>
-              <td colspan="6">
-                <div layout="row" layout-align="space-between center">
-                <md-input-container flex flex-xs="50" class="md-accent"   >
-                  <label>Sale Start</label>
+            </tbody>
+            <tfoot class="md-whiteframe-z2" layout-padding layout-margin>
+
+
+            <tr  >
+              <td colspan="6" >
+                <md-subheader class="md-primary">Default Ticket Sale Time</md-subheader>
+                <div layout="row" layout-xs="column" layout-align="space-around" >
+                <md-input-container flex  class="md-accent"   >
+                  <label>Start</label>
                   <md-datepicker
                                 md-max-date="ctrl.maxTicketDate()"
-                                md-min-date="ctrl.minTicketDate()"
+                                md-min-date="ctrl.minStart()"
                                 ng-change="ctrl.minDelfaultTicketDateChanged()"
-                                required="required"
                                 ng-model="ctrl.saleStartDefault"
                                 name="ticketSaleStartDefault" ></md-datepicker>
                 </md-input-container>
-                <md-input-container class="md-accent" flex-xs="50" flex  >
-                  <label>Sale End</label>
+                <md-input-container class="md-accent" flex  >
+                  <label>End</label>
                   <md-datepicker
                                   md-max-date="ctrl.maxTicketDate()"
-                                  md-min-date="ctrl.minTicketDate()"
+                                  md-min-date="ctrl.minTicketEndDate()"
                                   ng-change="ctrl.minDelfaultTicketDateChanged()"
-                                  required="required"
                                   ng-model="ctrl.saleEndDefault"
                                   name="ticketSaleEndDefault" ></md-datepicker>
                 </md-input-container>
               </div>
               </td>
             </tr>
-          </tbody>
+            </tfoot>
+
         </table>
 
         <div layout="row" layout-wrap layout-align="center center">
@@ -337,7 +347,7 @@
             Add Ticket
           </md-button>
         </div>
-</md-content>
+</div>
 
       <md-toolbar class="md-primary md-hue-1" flex layout="row">
         <div class="md-toolbar-tools" >
@@ -437,11 +447,14 @@
 
 
       <md-content layout-padding layout-align="space-between center" layout-gt-xs="row">
-        <md-button type="submit" class="md-raised  md-primary"
+        <md-button type="submit"
+                  ng-disabled="eventForm.$invalid || eventForm.$submitted"
+          class="md-raised  md-primary"
          >
           <md-icon>upload</md-icon>Post
          </md-button>
-        <md-button type="button" class="md-raised  md-accent md-hue-3" ng-disabled="eventForm.$invalid && eventForm.$submitted" ng-disabled="eventForm.$submited">
+        <md-button ng-disabled="eventForm.$submitted"
+                    type="button" class="md-raised  md-accent md-hue-3" ng-disabled="eventForm.$invalid && eventForm.$submitted" ng-disabled="eventForm.$submited">
           <md-icon>save</md-icon>Save
         </md-button>
         <span flex></span>

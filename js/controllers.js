@@ -1524,9 +1524,9 @@ app.controller("commentController", ["$scope","$http",
 
 }]);
 //event creation page Controller
-app.controller('eventCtrl',["$http", "address", "session", "eventCatagory",
+app.controller('eventCtrl',["$scope", "$http", "address", "session", "eventCatagory",
                             "$httpParamSerializerJQLike", "$route", "$location","$mdpTimePicker","notifier",
-                            function($http, address, session, eventCatagory,
+                            function($scope, $http, address, session, eventCatagory,
                               $httpParamSerializerJQLike, $route,$location, $mdpTimePicker, notifier) {
 
 
@@ -1536,12 +1536,15 @@ app.controller('eventCtrl',["$http", "address", "session", "eventCatagory",
             $location.path("/");
           }
     var self = this;
-    self.message = {
-      hour : "Hourse is required",
+    self.saleStartDefault;
+    self.saleEndDefault;
+
+    $scope.message = {
+      hour : "Hour is required",
       minite : "miniter is required"
     }
-    self.required = true;
-    self.readOnly = false;
+    $scope.required = true;
+    $scope.readOnly = false;
     var organizer = session.getUserId();
 
 self.timeChanged = function(data){
@@ -1557,6 +1560,12 @@ self.timeChanged = function(data){
       console.log(self.event.eventEndTime);
 
       angular.forEach(self.event.eventTickets, function(ticket){
+        if(ticket.saleStart === undefined){
+          ticket.saleStart = self.defaultSaleStart;
+        }
+        if(ticket.saleEnd === undefined){
+          ticket.saleStart = self.defaultSaleEnd;
+        }
           ticket.saleStart = moment(ticket.saleStart).format("YYYY-MM-DD");
           ticket.saleEnd = moment(ticket.saleEnd).format("YYYY-MM-DD");
       });
@@ -1654,13 +1663,18 @@ self.timeChanged = function(data){
                 self.minEndDate = function() {
                   return self.event.eventStartDate;
                 }
-
-                self.minTicketDate =function() {
-                  return self.event.eventStartDate;
-                }
                 self.maxTicketDate =function() {
                   return self.event.eventEndDate;
                 }
+
+              self.isDefaltStartSet = function() {
+                return (self.saleStartDefault !== undefined) ? true : false;
+              }
+              self.isDefaltEndSet = function() {
+                return (self.saleEndDefault !== undefined) ? true : false;
+              }
+
+
 
     eventCatagory.catagories()
                               .then(function(catagory){
