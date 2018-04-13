@@ -1,7 +1,7 @@
 
 <section ng-controller="eventCtrl as ctrl" ng-cloak >
 
-    <form name="eventForm" ng-submit="ctrl.submitEvent()"  novalidate >
+    <form name="eventForm" ng-submit="ctrl.submitEvent()"  ng-controller="dynamicFieldController as dynamicCtrl" >
       <md-content layout-padding  layout="row" >
         <md-input-container class="md-accent" flex >
           <label>Event Name</label>
@@ -91,11 +91,22 @@
       <div   layout-xs="column" layout="row">
         <md-input-container  flex flex-xs="60" >
           <label>Start Date</label>
-          <md-datepicker md-min-date="ctrl.minDate" md-date-locale="" md-placeholder="Start Date"  ng-model="ctrl.event.eventStartDate" name="eventStartDate" required></md-datepicker>
+          <md-datepicker
+                        md-date-filter="ctrl.startDateFilter(ctrl.event.eventStartDate)"
+                        md-min-date="ctrl.minStart()"
+                        ng-change="ctrl.eventDateChanged()"
+                        md-placeholder="Start Date"
+                        ng-model="ctrl.event.eventStartDate"
+                        name="eventStartDate"
+                        ng-required="true"></md-datepicker>
+              <div ng-messages="eventForm.eventStartDate.$invalid">
+                <div ng-message="required">  Event End Date is Required   </div>
+                <div ng-message="minDate">  Event end date can't be less than start Date  </div>
+              </div>
         </md-input-container>
         <md-input-container flex flex-xs="30">
           <label>Time</label>
-          <md-select ng-model="ctrl.event.eventStartTime"  ng-change="ctrl.seeTime(ctrl.event.eventStartTime)"  md-pl ="Start Time" name="eventStartTime" required>
+          <md-select ng-model="ctrl.event.eventStartTime"   md-placeholder ="Start Time" name="eventStartTime" required>
             <md-option value="01:00">01:00</md-option>
             <md-option value="01:30">01:30</md-option>
             <md-option value="02:00">02:00</md-option>
@@ -105,7 +116,18 @@
 
         <md-input-container  flex flex-xs="60" >
           <label>End Date</label>
-          <md-datepicker  md-min-date="ctrl.event.eventStartDate" md-placeholder="End Date"  ng-model="ctrl.event.eventEndDate" name="eventEndDate"required ></md-datepicker>
+          <md-datepicker
+                        md-min-date="ctrl.minEndDate()"
+                        ng-change="ctrl.eventDateChanged()"
+                        md-placeholder="End Date"
+                        ng-model="ctrl.event.eventEndDate"
+                        name="eventEndDate"
+                        md-date-filter="ctrl.endDateFilter(ctrl.event.eventEndDate)"
+                        ng-required="true" ></md-datepicker>
+              <div ng-messages="eventForm.eventEndDate.$invalid">
+                <div ng-message="required">  Event End Date is Required   </div>
+                <div ng-message="minDate">  Event end date can't be less than start Date  </div>
+              </div>
         </md-input-container>
         <md-input-container  flex flex-xs="30" >
           <label>Time</label>
@@ -222,11 +244,23 @@
                   </md-input-container>
                   <md-input-container  flex flex-xs="50"    >
                     <label>Sale Start</label>
-                    <md-datepicker  ng-model="ticket.saleStart" name="ticketSaleStart" ></md-datepicker>
+                    <md-datepicker
+                                  md-max-date="ctrl.maxTicketDate()"
+                                  md-min-date="ctrl.minTicketDate()"
+                                  ng-model="ticket.saleStart"
+                                  name="ticketSaleStart"
+                                  ng-change="ctrl.ticketDateChanged()"
+                                  ></md-datepicker>
                   </md-input-container>
                   <md-input-container flex-xs="50" flex  >
                     <label>Sale End</label>
-                    <md-datepicker   ng-model="ticket.saleEnd" name="ticketSaleEnd" ></md-datepicker>
+                    <md-datepicker
+                                  ng-model="ticket.saleEnd"
+                                  name="ticketSaleEnd"
+                                  md-max-date="ctrl.maxTicketDate()"
+                                  md-min-date="ctrl.minTicketDate()"
+                                  ng-change="ctrl.ticketDateChanged()"
+                                  ></md-datepicker>
                   </md-input-container>
                 </div>
               </td>
@@ -236,11 +270,23 @@
                 <div layout="row" layout-align="space-between center">
                 <md-input-container flex flex-xs="50" class="md-accent"   >
                   <label>Sale Start</label>
-                  <md-datepicker required="required" ng-model="ctrl.saleStartDefault" name="ticketSaleStartDefault" ></md-datepicker>
+                  <md-datepicker
+                                md-max-date="ctrl.maxTicketDate()"
+                                md-min-date="ctrl.minTicketDate()"
+                                ng-change="ctrl.minDelfaultTicketDateChanged()"
+                                required="required"
+                                ng-model="ctrl.saleStartDefault"
+                                name="ticketSaleStartDefault" ></md-datepicker>
                 </md-input-container>
                 <md-input-container class="md-accent" flex-xs="50" flex  >
                   <label>Sale End</label>
-                  <md-datepicker required="required"   ng-model="ctrl.saleEndDefault" name="ticketSaleEndDefault" ></md-datepicker>
+                  <md-datepicker
+                                  md-max-date="ctrl.maxTicketDate()"
+                                  md-min-date="ctrl.minTicketDate()"
+                                  ng-change="ctrl.minDelfaultTicketDateChanged()"
+                                  required="required"
+                                  ng-model="ctrl.saleEndDefault"
+                                  name="ticketSaleEndDefault" ></md-datepicker>
                 </md-input-container>
               </div>
               </td>
@@ -249,7 +295,11 @@
         </table>
 
         <div layout="row" layout-wrap layout-align="center center">
-          <md-button   class="md-raised md-accent md-hue-2" type="button" ng-click="ctrl.addTicket()"  name="addTicket"   >
+          <md-button
+                      class="md-primary"
+                      type="button"
+                      ng-click="dynamicCtrl.addTicket(ctrl.event.eventTickets)"
+                      >
             Add Ticket
           </md-button>
         </div>
@@ -261,7 +311,10 @@
             <span>3. Special Guests</span>
           </h4>
           <span flex></span>
-          <md-button class="md-icon-button md-accent md-hue-1" ng-click="ctrl.addGuest()" aria-label="Add Guest">
+          <md-button
+                      class="md-primary"
+                      ng-click="dynamicCtrl.addGuest(ctrl.event.eventGuests)"
+                      aria-label="Add Guest">
             <md-icon>add </md-icon>
           </md-button>
         </div>
@@ -313,7 +366,9 @@
       <md-toolbar class="md-primary md-hue-1" flex layout="row">
       <div class="md-toolbar-tools" >
           <h4>4. Sponsors <span flex> </span>
-            <md-button ng-click="ctrl.addSponsor()" class="md-accent md-hue-1">
+            <md-button
+                        ng-click="dynamicCtrl.addSponsor(ctrl.event.eventSponsors)"
+                        class="md-primary">
               <md-icon>add</md-icon>
             </md-button></h4>
         </div>
@@ -348,7 +403,8 @@
 
 
       <md-content layout-padding layout-align="space-between center" layout-gt-xs="row">
-        <md-button type="submit" class="md-raised  md-primary" ng-disabled="eventForm.$invalid && eventForm.$submitted">
+        <md-button type="submit" class="md-raised  md-primary"
+         >
           <md-icon>upload</md-icon>Post
          </md-button>
         <md-button type="button" class="md-raised  md-accent md-hue-3" ng-disabled="eventForm.$invalid && eventForm.$submitted" ng-disabled="eventForm.$submited">

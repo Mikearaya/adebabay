@@ -337,7 +337,7 @@ if($get_request === 'has_billing_address' && isset($_GET['organizer_id']) && $_G
 }
 
 
-if($submitted_form === 'new_event' && $_POST['organizer'] == $SESSION->get_session_id() ) {
+if($submitted_form === 'newEvent' && $_POST['organizer'] == $SESSION->get_session_id() ) {
 
 		$organizer = new Organizer();
 		$organizer->set_id($SESSION->get_session_id());
@@ -351,9 +351,9 @@ if($submitted_form === 'new_event' && $_POST['organizer'] == $SESSION->get_sessi
 				if(isset($postData["address"]["venueName"]))	$event->set_venue($postData["address"]["venueName"]);
 
 				if(isset($postData["eventStartDate"]) && isset($postData["eventStartTime"]) )
-					$event->set_start_datetime("2018-09-10", "09:00");
+					$event->set_start_datetime($postData["eventStartDate"], "09:00");
 				if(isset($postData["eventEndDate"]) && isset($postData["eventEndTime"]) )
-					$event->set_end_datetime("2018-10-10", "09:00");
+					$event->set_end_datetime($postData["eventEndDate"], "09:00");
 				if(isset($postData["eventDiscription"]))	$event->set_discription($postData["eventDiscription"]);
 				if(isset($postData["catagory"])) $event->set_category($postData["catagory"]);
 				//if(isset($_POST['option']))
@@ -399,8 +399,8 @@ if($submitted_form === 'new_event' && $_POST['organizer'] == $SESSION->get_sessi
 
 
 								if(isset($postTicket[$i]["ticketDiscription"]))	$ticket->set_discription($postTicket[$i]["ticketDiscription"]);
-								if(isset($postTicket[$i]["saleStart"]))	$ticket->set_sale_start("2018-06-10");
-								if(isset($postTicket[$i]["saleEnd"]))	$ticket->set_sale_end("2018-07-10");
+								if(isset($postTicket[$i]["saleStart"]))	$ticket->set_sale_start($postTicket[$i]["saleStart"]);
+								if(isset($postTicket[$i]["saleEnd"]))	$ticket->set_sale_end($postTicket[$i]["saleEnd"]);
 
 							$i++;
 
@@ -472,12 +472,13 @@ $i= 0;
 			}
 
 if($ERROR_HANDLER->get_error_count() == 0 && $organizer->add_event($event) ) {
-		echo json_encode(generate_message("event Created Successfuly"));
+  $result->success = true;
 
 	} else {
-		echo json_encode(generate_message("Event was not created!!!"));
+	$result->success = false;
+  $result->message = json_encode(generate_message("Event was not created!!!"));
 	}
-
+echo json_encode($result);
 	exit;
 
 }

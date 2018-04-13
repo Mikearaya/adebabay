@@ -5,6 +5,7 @@ app.config(["$httpProvider"  , function ($httpProvider) {
     $httpProvider.useApplyAsync(true);
 
 }]);
+
 //post request header config end
 
 //configure default app theme

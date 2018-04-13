@@ -1337,7 +1337,7 @@ app.controller("addressEditerController", ["$scope", "$http", "$httpParamSeriali
 
       var organizer = $route.current.params.organizerId;
       var organization = $route.current.params.organizationId;
-self.address = [];
+      self.address = [];
       if(transporter.get() === undefined){
         self.address = [];
       } else {
@@ -1457,9 +1457,9 @@ app.controller("comanySocialEditerController", ["$scope", "$route", "$http", "$l
 app.controller('signUpController', ["$scope", "$http", "$httpParamSerializerJQLike", "notifier", "session", "$mdDialog", "$route", "$location",
                             function($scope, $http, $httpParamSerializerJQLike, notifier, session, $mdDialog,$route, $location){
 
-var action = $route.current.params.action;
+          var action = $route.current.params.action;
 
-console.log($route.current.params.action);
+
 
     var self = this;
     self.user = {
@@ -1529,28 +1529,31 @@ app.controller('eventCtrl',["$scope", "$http", "address", "session", "eventCatag
                             function($scope, $http, address, session, eventCatagory,
                               $httpParamSerializerJQLike, $route,$location) {
 
-                                $scope.$watch('eventImage.length',function(newVal,oldVal){
-                                           console.log($scope.eventImage);
-                                       });
+
 
 
           if($route.current.params.organizer != session.getUserId()) {
             $location.path("/");
           }
     var self = this;
+
     var organizer = session.getUserId();
+
+
     self.submitEvent = function() {
-      console.log(self.event.eventImage);
-      var formdata = new FormData();
-/*
-      angular.forEach(self.event, function(value, key){
 
-          formdata.append(key, value);
-            console.log(key+ "  "+value);
+      self.event.eventStartDate = moment(self.event.eventStartDate).format("YYYY-MM-DD");
+      self.event.eventEndDate = moment(self.event.eventEndDate).format("YYYY-MM-DD");
 
+      angular.forEach(self.event.eventTickets, function(ticket){
+          ticket.saleStart = moment(ticket.saleStart).format("YYYY-MM-DD");
+          ticket.saleEnd = moment(ticket.saleEnd).format("YYYY-MM-DD");
       });
 
-      */
+      var formdata = new FormData();
+
+
+
       angular.forEach(self.event.eventImage,function(obj){
                      if(!obj.isRemote){
                          formdata.append('eventImage', obj.lfFile);
@@ -1568,7 +1571,7 @@ app.controller('eventCtrl',["$scope", "$http", "address", "session", "eventCatag
                      }
               });
 
-      formdata.append("form", "new_event");
+      formdata.append("form", "newEvent");
       formdata.append("organizer", organizer);
       formdata.append("data", JSON.stringify(self.event));
 
@@ -1579,7 +1582,12 @@ app.controller('eventCtrl',["$scope", "$http", "address", "session", "eventCatag
           headers : {"Content-Type" : undefined, "Process-Data" : false },
           transformRequest : angular.identity
         }).then(function(response){
-          console.log(response);
+          if(response.success) {
+            notifier.basic("Event Created Successfuly");
+          } else {
+            notifier.basic("Event Creation Failed");
+          }
+
         }, function(error){
           console.log(error);
         });
@@ -1587,25 +1595,14 @@ app.controller('eventCtrl',["$scope", "$http", "address", "session", "eventCatag
 
 
     }
-    self.saleStartDefault = "";
-    self.saleEndDefault = "";
 
-    self.seeTime = function(t) {
-
-      var d = new Date();
-      d.setHours(t.substr(0, t.indexOf(":")));
-      d.setMinutes(t.substr( t.indexOf(":")+1));
-        d.setSeconds(0);
-
-
-    };
     self.event = {
                   eventName : "",
                   eventDiscription : "",
                   catagory : "",
                   eventEndDate : "",
                   eventEndTime : "",
-                  eventStartDate : new Date(),
+                  eventStartDate : "",
                   eventStartTime : "",
                   eventImage : [],
                   address : { city : "",
@@ -1630,34 +1627,29 @@ app.controller('eventCtrl',["$scope", "$http", "address", "session", "eventCatag
 
                 };
 
-        self.addTicket = function() {
-                          self.event.eventTickets.push({type : "" , ticketName : "", quantity : "",
-                                    price : "", ticketDiscription : "",  saleStart : "", saleEnd : "", showAdvanced : false});
-                        };
-        self.removeTicket = function(index) {
-                            self.event.eventTickets.splice(index, 1);
-                        };
-        self.addGuest = function() {
+              var date = new Date();
+                self.minStart = function() {
+                  return date;
+                }
 
-                        self.event.eventGuests.push({firstName : "", lastName : "", akaName : "", guestImage : [] } );
+                self.eventDateChanged = function(){
 
-                      };
-        self.removeGuest = function(index) {
-                            self.event.eventGuest.splice(index, 1);
-                        };
-        self.addSponsor = function() {
-                          self.event.eventSponsors.push({sponsorName : "", sponsorImage : []});
-                        };
-        self.removeSponsor = function(index) {
-                          self.event.eventSponsors.splice(index, 1);
-                        };
+                  var moments = moment(self.event.eventStartDate);
+                  var momentFormat = moment(self.event.eventStartDate).format("YYYY-MM-DD");
 
+                }
+                var minEnd = moment().format();
 
-    self.minDate = new Date(
-                            this.event.eventStartDate.getFullYear(),
-                            this.event.eventStartDate.getMonth(),
-                            this.event.eventStartDate.getDate()
-                          );
+                self.minEndDate = function() {
+                  return self.event.eventStartDate;
+                }
+
+                self.minTicketDate =function() {
+                  return self.event.eventStartDate;
+                }
+                self.maxTicketDate =function() {
+                  return self.event.eventEndDate;
+                }
 
     eventCatagory.catagories()
                               .then(function(catagory){
