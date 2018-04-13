@@ -4,6 +4,7 @@ var app = angular.module('myApp', ['ngMaterial',
 'ngMessages',
 'ngAria',
 'ngAnimate',
+'md.time.picker',
 
 'lfNgMdFileInput'
 

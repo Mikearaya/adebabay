@@ -351,9 +351,9 @@ if($submitted_form === 'newEvent' && $_POST['organizer'] == $SESSION->get_sessio
 				if(isset($postData["address"]["venueName"]))	$event->set_venue($postData["address"]["venueName"]);
 
 				if(isset($postData["eventStartDate"]) && isset($postData["eventStartTime"]) )
-					$event->set_start_datetime($postData["eventStartDate"], "09:00");
+					$event->set_start_datetime($postData["eventStartDate"], $postData["eventStartTime"]);
 				if(isset($postData["eventEndDate"]) && isset($postData["eventEndTime"]) )
-					$event->set_end_datetime($postData["eventEndDate"], "09:00");
+					$event->set_end_datetime($postData["eventEndDate"], $postData["eventEndTime"]);
 				if(isset($postData["eventDiscription"]))	$event->set_discription($postData["eventDiscription"]);
 				if(isset($postData["catagory"])) $event->set_category($postData["catagory"]);
 				//if(isset($_POST['option']))
@@ -409,8 +409,6 @@ if($submitted_form === 'newEvent' && $_POST['organizer'] == $SESSION->get_sessio
 
 
 				}
-
-
 
 
 		$i= 0;

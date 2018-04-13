@@ -1524,10 +1524,10 @@ app.controller("commentController", ["$scope","$http",
 
 }]);
 //event creation page Controller
-app.controller('eventCtrl',["$scope", "$http", "address", "session", "eventCatagory",
-                            "$httpParamSerializerJQLike", "$route", "$location",
-                            function($scope, $http, address, session, eventCatagory,
-                              $httpParamSerializerJQLike, $route,$location) {
+app.controller('eventCtrl',["$http", "address", "session", "eventCatagory",
+                            "$httpParamSerializerJQLike", "$route", "$location","$mdpTimePicker","notifier",
+                            function($http, address, session, eventCatagory,
+                              $httpParamSerializerJQLike, $route,$location, $mdpTimePicker, notifier) {
 
 
 
@@ -1536,14 +1536,25 @@ app.controller('eventCtrl',["$scope", "$http", "address", "session", "eventCatag
             $location.path("/");
           }
     var self = this;
-
+    self.message = {
+      hour : "Hourse is required",
+      minite : "miniter is required"
+    }
+    self.required = true;
+    self.readOnly = false;
     var organizer = session.getUserId();
 
+self.timeChanged = function(data){
+  console.log(data);
+}
 
     self.submitEvent = function() {
 
       self.event.eventStartDate = moment(self.event.eventStartDate).format("YYYY-MM-DD");
       self.event.eventEndDate = moment(self.event.eventEndDate).format("YYYY-MM-DD");
+      self.event.eventStartTime = moment(self.event.eventStartTime).format("HH:mm");
+      self.event.eventEndTime = moment(self.event.eventEndTime).format("HH:mm");
+      console.log(self.event.eventEndTime);
 
       angular.forEach(self.event.eventTickets, function(ticket){
           ticket.saleStart = moment(ticket.saleStart).format("YYYY-MM-DD");
@@ -1582,7 +1593,7 @@ app.controller('eventCtrl',["$scope", "$http", "address", "session", "eventCatag
           headers : {"Content-Type" : undefined, "Process-Data" : false },
           transformRequest : angular.identity
         }).then(function(response){
-          if(response.success) {
+          if(response.data.success) {
             notifier.basic("Event Created Successfuly");
           } else {
             notifier.basic("Event Creation Failed");

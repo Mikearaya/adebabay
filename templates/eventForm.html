@@ -1,8 +1,9 @@
 
-<section ng-controller="eventCtrl as ctrl" ng-cloak >
-
+<section layout-margin class="md-whiteframe-z1" ng-controller="eventCtrl as ctrl" ng-cloak >
+<md-subheader class="md-headline md-primary">Create Event</md-subheader>
     <form name="eventForm" ng-submit="ctrl.submitEvent()"  ng-controller="dynamicFieldController as dynamicCtrl" >
-      <md-content layout-padding  layout="row" >
+      <div class="md-whiteframe-z2">
+      <div layout-padding  layout="row" >
         <md-input-container class="md-accent" flex >
           <label>Event Name</label>
           <input ng-model="ctrl.event.eventName" name="eventName" required >
@@ -13,8 +14,8 @@
             <div ng-message="required" > Event Name is Required </div>
           </div>
         </md-input-container>
-      </md-content>
-      <md-content layout="row" layout-padding>
+      </div>
+      <div layout="row" layout-padding>
         <md-input-container class="md-accent" flex >
           <label>Catagory</label>
           <md-select ng-model="ctrl.event.catagory" required name="catagory" required>
@@ -29,8 +30,12 @@
             <div ng-message="required" >  Event Catagory Is Required </div>
           </div>
         </md-input-container>
-      </md-content>
-      <md-content layout="row" layout-padding layout-xs="column">
+      </div>
+    </div>
+      <div class="md-whiteframe-z2" >
+        <md-subheader class="md-primary">Location</md-subheader>
+
+      <div layout="row" layout-margin>
         <md-input-container class="md-accent"  flex >
           <label>Venue Name</label>
           <input ng-model="ctrl.event.address.venueName" name="venue" required >
@@ -41,9 +46,30 @@
             <div ng-message="required" > Event Venue is required </div>
           </div>
         </md-input-container>
-      </md-content>
+      </div>
+      <div layout="row" layout-align="space-between center" layout-margin layout-xs="column">
+        <md-input-container class="md-accent"  flex>
+          <label>Location (common name)</label>
+          <input ng-model="ctrl.event.address.location" name="location" required >
+          <div class="hint" ng-show="eventForm.location.$pristine" >
+            Common name of event venue neborehood
+          </div>
+          <div ng-messages="eventForm.location.$error" >
+            <div ng-message="required" > Event Location is required </div>
+          </div>
+        </md-input-container>
+      <md-input-container class="md-accent"  flex>
+        <label>Sub-city</label>
+        <input  ng-model="ctrl.event.address.subCity" name="subCity" required >
+        <div class="hint" ng-show="eventForm.subCity.$pristine" > </div>
+        <div ng-messages="eventForm.subCity.$error" >
+          <div ng-message="required" >  Sub-City field is required </div>
+        </div>
+      </md-input-container>
+
+    </div>
       <div layout="row" layout-align="space-between center"  layout-xs="column">
-        <md-input-container class="md-accent" flex>
+        <md-input-container class="md-accent" flex flex-xs="100">
           <label>Country</label>
           <md-select ng-model="ctrl.event.address.country" required name="country">
             <md-option ng-repeat="country in ctrl.countries" value="{{country.code}}">
@@ -55,7 +81,7 @@
             <div ng-message="required" >   Country field is required </div>
           </div>
         </md-input-container>
-        <md-input-container class="md-accent" flex>
+        <md-input-container flex flex-xs="100">
           <label>City</label>
           <md-select  ng-model="ctrl.event.address.city" name=city required>
             <md-option ng-repeat="city in ctrl.cities" value="{{city}}">
@@ -67,30 +93,20 @@
             <div ng-message="required" >  City Field is required  </div>
           </div>
         </md-input-container>
-        <md-input-container class="md-accent"  flex>
-          <label>Sub-city</label>
-          <input  ng-model="ctrl.event.address.subCity" name="subCity" required >
-          <div class="hint" ng-show="eventForm.subCity.$pristine" > </div>
-          <div ng-messages="eventForm.subCity.$error" >
-            <div ng-message="required" >  Sub-City field is required </div>
-          </div>
-        </md-input-container>
-        <md-input-container class="md-accent"  flex>
-          <label>Location (common name)</label>
-          <input ng-model="ctrl.event.address.location" name="location" required >
-          <div class="hint" ng-show="eventForm.location.$pristine" >
-            Common name of event venue neborehood
-          </div>
-          <div ng-messages="eventForm.location.$error" >
-            <div ng-message="required" > Event Location is required </div>
-          </div>
-        </md-input-container>
       </div>
+</div>
 
 
-      <div   layout-xs="column" layout="row">
-        <md-input-container  flex flex-xs="60" >
-          <label>Start Date</label>
+      <div class="md-whiteframe-z2">
+        <md-subheader class="md-primary">Schedule</md-subheader>
+
+      <div layout-xs="column" layout="row"   layout-margin  >
+
+
+        <div  layout="row" layout-xs="column" flex >
+
+        <md-input-container  flex="50" flex-xs="100">
+
           <md-datepicker
                         md-date-filter="ctrl.startDateFilter(ctrl.event.eventStartDate)"
                         md-min-date="ctrl.minStart()"
@@ -99,22 +115,31 @@
                         ng-model="ctrl.event.eventStartDate"
                         name="eventStartDate"
                         ng-required="true"></md-datepicker>
-              <div ng-messages="eventForm.eventStartDate.$invalid">
+              <div ng-messages="eventForm.eventStartDate.$error">
                 <div ng-message="required">  Event End Date is Required   </div>
                 <div ng-message="minDate">  Event end date can't be less than start Date  </div>
               </div>
         </md-input-container>
-        <md-input-container flex flex-xs="30">
-          <label>Time</label>
-          <md-select ng-model="ctrl.event.eventStartTime"   md-placeholder ="Start Time" name="eventStartTime" required>
-            <md-option value="01:00">01:00</md-option>
-            <md-option value="01:30">01:30</md-option>
-            <md-option value="02:00">02:00</md-option>
-            <md-option value="02:30">02:30</md-option>
-          </md-select>
-        </md-input-container>
 
-        <md-input-container  flex flex-xs="60" >
+
+          <md-time-picker flex="50" flex-xs="100"
+                          name="eventStartTime"
+                          message="message"
+                          ng-model="ctrl.event.eventStartTime"
+                          mandatory="true"
+                          no-meridiem
+                          ng-change="ctrl.timeChanged()"
+                          >
+
+
+                        </md-time-picker>
+
+
+      </div>
+      <md-divider></md-divider>
+      <div layout="row" layout-xs="column" flex  >
+
+        <md-input-container  flex="50" flex-xs="100" >
           <label>End Date</label>
           <md-datepicker
                         md-min-date="ctrl.minEndDate()"
@@ -124,19 +149,28 @@
                         name="eventEndDate"
                         md-date-filter="ctrl.endDateFilter(ctrl.event.eventEndDate)"
                         ng-required="true" ></md-datepicker>
-              <div ng-messages="eventForm.eventEndDate.$invalid">
+              <div ng-messages="eventForm.eventEndDate.$error">
                 <div ng-message="required">  Event End Date is Required   </div>
                 <div ng-message="minDate">  Event end date can't be less than start Date  </div>
               </div>
         </md-input-container>
-        <md-input-container  flex flex-xs="30" >
-          <label>Time</label>
-          <md-datepicker ng-model="ctrl.event.eventEndTime" md-placeholder="End Time" name="eventEndTime" required></md-datepicker>
-        </md-input-container>
+
+        <md-time-picker flex="50" flex-xs="100"
+                      name="eventEndTime"
+                      mandatory="true"
+                      message="message"
+                      ng-model="ctrl.event.eventEndTime"
+                      no-meridiem
+                      ng-change="ctrl.timeChanged(ctrl.event.eventEndTime)">
+        </md-time-picker>
+
+
+      </div>
+      </div>
       </div>
 
-      <div layout-padding  layout="row" layout-xs="column">
-        <md-input-container class="md-accent" flex flex-xs="100">
+      <div layout-padding    layout="row" layout-xs="column">
+        <md-input-container class="md-whiteframe-z2" flex flex-xs="100">
           <label>Discription </label>
           <textarea ng-model="ctrl.event.eventDiscription" rows="3" name="discription" required ></textarea>
           <div ng-messages="eventForm.discription.$error">
