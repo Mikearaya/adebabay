@@ -8,14 +8,12 @@ abstract class Organization implements Event_interface {
 		protected $name;
 		protected $service;
 		protected $established;
-
 		protected $SOCIALS;
 		protected $website;
 		protected $info;
 		protected $po_num;
 		protected $date_created;
 		protected $organizationLogoLocation = '../uploads/organizersImage/companyLogos/';
-
 		protected $mobile_number;
 		protected $office_number;
 		protected $ADDRESS = array();
