@@ -1548,6 +1548,7 @@ app.controller('eventCtrl',["$scope", "$http", "address", "session", "eventCatag
     var organizer = session.getUserId();
 
     self.timeChanged = function(){
+<<<<<<< HEAD
 alert("changed");
 }
 
@@ -1559,6 +1560,19 @@ alert("changed");
       self.event.eventEndTime = moment(self.event.eventEndTime).format("HH:mm");
       console.log(self.event.eventEndTime);
 
+=======
+  alert("changed");
+  }
+
+      self.submitEvent = function() {
+
+      self.event.eventStartDate = moment(self.event.eventStartDate).format("YYYY-MM-DD");
+      self.event.eventEndDate = moment(self.event.eventEndDate).format("YYYY-MM-DD");
+      self.event.eventStartTime = moment(self.event.eventStartTime).format("HH:mm");
+      self.event.eventEndTime = moment(self.event.eventEndTime).format("HH:mm");
+      console.log(self.event.eventEndTime);
+
+>>>>>>> ticketUpdateFix
       angular.forEach(self.event.eventTickets, function(ticket){
         if(ticket.saleStart === undefined){
           ticket.saleStart = self.defaultSaleStart;

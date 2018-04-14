@@ -122,6 +122,19 @@ app.directive("telephoneDisplay", function(){
 });
 
 
+app.directive("adTicketControl", function(){
+
+    return {
+      restrict : "E",
+      scope : {
+        tickets : "="
+      },
+      templateUrl : "directiveTemplates/ticketInputs.html"
+    };
+
+});
+
+
 
 app.directive("defaultControlles", function(){
 
