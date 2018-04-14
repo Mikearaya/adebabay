@@ -128,6 +128,7 @@
                           ng-model="ctrl.event.eventStartTime"
                           mandatory="true"
                           no-meridiem
+
                           ng-change="ctrl.timeChanged()"
                           >
 
@@ -159,9 +160,9 @@
                       name="eventEndTime"
                       mandatory="true"
                       message="message"
-                      ng-model="ctrl.event.eventEndTime"
                       no-meridiem
-                      ng-change="ctrl.timeChanged(ctrl.event.eventEndTime)">
+                      ng-model="ctrl.event.eventEndTime"
+                      ng-change="ctrl.timeChanged()">
         </md-time-picker>
 
 
@@ -258,7 +259,7 @@
               <td class="ticket-price">
                 <md-input-container  flex  >
                   <label>Price</label>
-                  <input  ng-model="ticket.price" size="10" type="number" value="{{$index}}" name="price" ng-disabled="ticket.type == 'Free'"  min="0" required >
+                  <input  ng-model="ticket.price" size="10" type="number"  name="price" ng-disabled="ticket.type == 'Free'"  min="0" required >
                   <div class="hint" ng-show="eventForm.price.$pristine" >  Cost of Ticket </div>
                   <div ng-messages="eventForm.price.$error"  >
                     <div ng-message="required" >  Price is required </div>
@@ -283,7 +284,7 @@
                   <md-input-container  flex flex-xs="50"    >
                     <label>Sale Start</label>
                     <md-datepicker
-                                  md-max-date="ctrl.maxTicketDate()"
+                                  md-max-date="ctrl.maxTicketEndDate()"
                                   md-min-date="ctrl.minStart()"
                                   ng-model="ticket.saleStart"
                                   ng-required="!ctrl.isDefaltStartSet()"
@@ -296,7 +297,7 @@
                     <md-datepicker
                                   ng-model="ticket.saleEnd"
                                   name="ticketSaleEnd"
-                                  md-max-date="ctrl.maxTicketDate()"
+                                  md-max-date="ctrl.maxTicketEndDate($index)"
                                   md-min-date="ctrl.minTicketEndDate()"
                                   ng-required="!ctrl.isDefaltEndSet()"
                                   ng-change="ctrl.ticketDateChanged()"
@@ -316,7 +317,7 @@
                 <md-input-container flex  class="md-accent"   >
                   <label>Start</label>
                   <md-datepicker
-                                md-max-date="ctrl.maxTicketDate()"
+                                md-max-date="ctrl.maxTicketEndDate(-1)"
                                 md-min-date="ctrl.minStart()"
                                 ng-change="ctrl.minDelfaultTicketDateChanged()"
                                 ng-model="ctrl.saleStartDefault"
@@ -325,7 +326,7 @@
                 <md-input-container class="md-accent" flex  >
                   <label>End</label>
                   <md-datepicker
-                                  md-max-date="ctrl.maxTicketDate()"
+                                  md-max-date="ctrl.maxTicketEndDate()"
                                   md-min-date="ctrl.minTicketEndDate()"
                                   ng-change="ctrl.minDelfaultTicketDateChanged()"
                                   ng-model="ctrl.saleEndDefault"

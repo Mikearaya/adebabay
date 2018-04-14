@@ -432,8 +432,8 @@ app.controller("eventGeneralUpdateController", ["$http","$location", "$route", "
 
 }]);
 
-app.controller("eventScheduleUpdateController", ["$http","$location", "$route", "$httpParamSerializerJQLike","transporter", "notifier", "session",
-                                          function($http,$location, $route, $httpParamSerializerJQLike, transporter, notifier, session){
+app.controller("eventScheduleUpdateController", ["$scope","$http","$location", "$route", "$httpParamSerializerJQLike","transporter", "notifier", "session", "$mdpTimePicker",
+                                          function($scope,$http,$location, $route, $httpParamSerializerJQLike, transporter, notifier, session, $mdpTimePicker){
         var eventData = transporter.get();
         var self = this;
 
@@ -1547,11 +1547,11 @@ app.controller('eventCtrl',["$scope", "$http", "address", "session", "eventCatag
     $scope.readOnly = false;
     var organizer = session.getUserId();
 
-self.timeChanged = function(data){
-  console.log(data);
+    self.timeChanged = function(){
+alert("changed");
 }
 
-    self.submitEvent = function() {
+      self.submitEvent = function() {
 
       self.event.eventStartDate = moment(self.event.eventStartDate).format("YYYY-MM-DD");
       self.event.eventEndDate = moment(self.event.eventEndDate).format("YYYY-MM-DD");
@@ -1654,18 +1654,27 @@ self.timeChanged = function(data){
 
                 self.eventDateChanged = function(){
 
-                  var moments = moment(self.event.eventStartDate);
-                  var momentFormat = moment(self.event.eventStartDate).format("YYYY-MM-DD");
-
                 }
                 var minEnd = moment().format();
 
                 self.minEndDate = function() {
                   return self.event.eventStartDate;
                 }
-                self.maxTicketDate =function() {
-                  return self.event.eventEndDate;
+                self.minTicketEndDate =function(index) {
+                      if(index >= 0 && self.event.eventTickets[index].saleStart !== undefined) {
+                        console.log(self.event.eventTickets[index].saleStart);
+                        return self.event.eventTickets[index].saleStart;
+                      } else if(self.saleStartDefault !== undefined) {
+                        return self.saleStartDefault;
+                      } else {
+                        return date;
+                      }
                 }
+
+                self.maxTicketEndDate =function() {
+                    return self.event.eventEndDate;
+                }
+
 
               self.isDefaltStartSet = function() {
                 return (self.saleStartDefault !== undefined) ? true : false;
