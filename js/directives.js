@@ -126,10 +126,55 @@ app.directive("adTicketControl", function(){
 
     return {
       restrict : "E",
+      require : "^form",
       scope : {
         tickets : "="
       },
-      templateUrl : "directiveTemplates/ticketInputs.html"
+      templateUrl : "directiveTemplates/ticketInputs.html",
+      link : function(scope, element, attr, form) {
+        console.log("SCOPE");
+
+        scope.form = form;
+console.log(scope);
+
+        var date = new Date();
+          scope.minStart = function() {
+            return date;
+          }
+
+          var minEnd = moment().format();
+console.log("ELEMENTS");
+console.log(element);
+          scope.minTicketEndDate =function(index) {
+                if(index >= 0 && scope.tickets[index].saleStart) {
+                  console.log(scope.tickets[index].saleStart);
+                  return scope.tickets[index].saleStart;
+                } else if(scope.form.saleStartDefault.$modelValue) {
+                  return scope.form.saleStartDefault.$modelValue;
+                } else {
+                  return date;
+                }
+          }
+          scope.isDefaltStartSet = function() {
+            if(scope.form.saleStartDefault.$modelValue !== undefined) {
+              console.log("TRUE"+scope.form.saleStartDefault);
+              console.log(scope);
+            } else {
+              console.log("FALSE");
+              console.log(scope);
+            }
+            return (scope.form.saleStartDefault.$modelValue !== undefined &&
+            scope.form.saleStartDefault.$modelValue !== null &&
+          scope.form.saleStartDefault.$valid === true) ? true : false;
+          }
+          scope.isDefaltEndSet = function() {
+            return (scope.form.saleEndDefault.$modelValue !== undefined &&
+              scope.form.saleEndDefault.$modelValue !== null &&
+            scope.form.saleEndDefault.$valid === true) ? true : false;
+          }
+
+
+      }
     };
 
 });

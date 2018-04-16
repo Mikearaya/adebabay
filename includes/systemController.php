@@ -963,86 +963,62 @@ exit;
 
 
 
-if($submitted_form === 'event_ticket_update' && $_POST['organizer_id'] == $SESSION->get_session_id() && isset($_POST['event_id'])){
+if($submitted_form === 'eventTicketsUpdate' &&
+ $_POST['organizerId'] == $SESSION->get_session_id() &&
+ isset($_POST['eventId']) &&
+isset($_POST["data"])){
+
+
+
+$data = json_decode($_POST["data"], true);
 
 			$organizer = new Organizer();
 			$organizer->set_id($SESSION->get_session_id());
 			$event = new Event();
-			$event->set_id($_POST['event_id']);
+			$event->set_id($_POST['eventId']);
 
 			$success = true;
 
 				$i = 0;
-				if(isset($_POST['ticket-type']) 	) {
+        $updated = 0;
+        $new = 0;
+$ticket;
+							while($i < count($data)){
+                if($data[$i]["status"] == "updated") {
+                $ticket = new Ticket($data[$i]['ticketId'], 'updated');
+              } else {
+                $ticket = new Ticket();
+              }
 
 
-							while($i < count($_POST['ticket-type'])){
-								$ticket = new Ticket();
-								if(isset($_POST['ticket-name'][$i]))	$ticket->set_name($_POST['ticket-name'][$i]);
-								if(isset($_POST['ticket-type'][$i]))	$ticket->set_type($_POST['ticket-type'][$i]);
-								if(isset($_POST['ticket-quantity'][$i]))	$ticket->set_quantity($_POST['ticket-quantity'][$i]);
+								if(isset($data[$i]['ticketName']))	$ticket->set_name($data[$i]['ticketName']);
+								if(isset($data[$i]['type']))	$ticket->set_type($data[$i]['type']);
+								if(isset($data[$i]['quantity']))	$ticket->set_quantity($data[$i]['quantity']);
 
-								if(isset($_POST['ticket-price'][$i])) {
-									$ticket->set_price($_POST['ticket-price'][$i]);
+								if(isset($data[$i]['price'])) {
+									$ticket->set_price($data[$i]['price']);
 								} else {
 									$ticket->set_price(0);
 								}
-								if(isset($_POST['ticket-discription'][$i])) $ticket->set_discription($_POST['ticket-discription'][$i]);
-								if(isset($_POST['ticket-sales-start-update']))	$ticket->set_sale_start($_POST['ticket-sales-start-update']);
-								if(isset($_POST['ticket-sales-end-update']))	$ticket->set_sale_end($_POST['ticket-sales-end-update']);
+								if(isset($data[$i]['ticketDiscription'])) $ticket->set_discription($data[$i]['ticketDiscription']);
+								if(isset($data[$i]['saleStart']))	$ticket->set_sale_start($data[$i]['saleStart']);
+								if(isset($data[$i]['saleEnd']))	$ticket->set_sale_end($data[$i]['saleEnd']);
 								$i++;
 
 							$event->set_ticket($ticket);
 						}
 
-							$success = ($ERROR_HANDLER->get_error_count() == 0  && $organizer->add_event_ticket($event)) ? true : false;
+			if($ERROR_HANDLER->get_error_count() == 0  && $organizer->update_event_ticket($event)) {
+        $result->success = true;
+      } else {
+        $result->success = false;
+        $result->message = generate_message("Error Updating Tickets");
+      }
 
-				}
-
-		$i = 0;
-					if(isset($_POST['ticket_id'])){
-
-							while($i < count($_POST['ticket_id'])){
-
-								if(isset($_POST['ticket_id'][$i])){
-
-									$ticket = new Ticket($_POST['ticket_id'][$i], 'updated');
-
-									if(isset($_POST['ticket-name-update'][$i]))		$ticket->set_name($_POST['ticket-name-update'][$i]);
-									if(isset($_POST['ticket-type-update'][$i]))		$ticket->set_type($_POST['ticket-type-update'][$i]);
-									if(isset($_POST['ticket-quantity-update'][$i]))	$ticket->set_quantity($_POST['ticket-quantity-update'][$i]);
-									if(isset($_POST['ticket-price-update'][$i])) {
-										$ticket->set_price($_POST['ticket-price-update'][$i]);
-									} else {
-										$ticket->set_price(0);
-									}
-									if(isset($_POST['ticket-name-update'][$i]))		$ticket->set_discription($_POST['ticket-discription-update'][$i]);
-									if(isset($_POST['ticket-sales-start-update']))	$ticket->set_sale_start($_POST['ticket-sales-start-update']);
-									if(isset($_POST['ticket-sales-end-update']))	$ticket->set_sale_end($_POST['ticket-sales-end-update']);
-
-
-									$event->set_ticket($ticket);
-
-
-							}
-								$i++;
-
-							}
-
-							$success = ($ERROR_HANDLER->get_error_count() == 0 && $organizer->update_event_ticket($event)) ? true : false;
-				}
-
-
-								if($success) {
-
-							 		$result = generate_message(" Ticket Updated Successfuly!! ");
-								} else {
-									$result = generate_message(" Failed to updated Tickets!! ");
-								}
 
 		echo json_encode($result);
 
-
+exit;
 
 }
 

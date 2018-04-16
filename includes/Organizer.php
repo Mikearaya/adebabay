@@ -1105,31 +1105,39 @@ class Organizer extends Organization {
 		 		$error = 0;
 				$count = 0;
 				$ticket = null;
-				$updated = 0;
 
+				$updatedTicket;
+				$deletedTicket;
+				$newTicket;
 				while($count < $this->get_event($last_index)->get_ticket_count() ){
 
-					if( $this->get_event($last_index)->get_ticket($count + 1 )->get_status() == "updated" ){
-
-						if((!$ticket[$updated]["ticketId"] = $this->get_event($last_index)->get_ticket($count + 1)->get_id()) && $error = 1 )
-								trigger_error("REQUIRED, Ticket ID not specified, the default value will be the one set before ", E_USER_ERROR);
-
-							if((!$ticket[$updated]["ticketName"] = $this->get_event($last_index)->get_ticket($count + 1)->get_name()))
+							if((!$ticket["ticketName"] = $this->get_event($last_index)->get_ticket($count + 1)->get_name()))
 								trigger_error("Ticket name not specified, the default value will be the one set before ", E_USER_WARNING);
-							if((!$ticket[$updated]["ticketType"] = $this->get_event($last_index)->get_ticket($count + 1)->get_type()))
+							if((!$ticket["ticketType"] = $this->get_event($last_index)->get_ticket($count + 1)->get_type()))
 								trigger_error("Ticket Type not specified, the default value will be the one set before ", E_USER_WARNING);
-							if((!$ticket[$updated]["aboutTicket"] = $this->get_event($last_index)->get_ticket($count + 1)->get_discription()))
+							if((!$ticket["aboutTicket"] = $this->get_event($last_index)->get_ticket($count + 1)->get_discription()))
 								trigger_error("Ticket Discription not specified, the default value will be the one set before ", E_USER_WARNING);
-							if((is_null($ticket[$updated]["ticketPrice"] = $this->get_event($last_index)->get_ticket($count + 1)->get_price())))
+							if((is_null($ticket["ticketPrice"] = $this->get_event($last_index)->get_ticket($count + 1)->get_price())))
 								trigger_error("Ticket Price not specified, the default value will be the one set before ", E_USER_WARNING);
-							if((!$ticket[$updated]["quantity"] = $this->get_event($last_index)->get_ticket($count + 1)->get_quantity()))
+							if((!$ticket["quantity"] = $this->get_event($last_index)->get_ticket($count + 1)->get_quantity()))
 								trigger_error("Ticket quantity not specified, the default value will be the one set before ", E_USER_WARNING);
-							if((!$ticket[$updated]["saleStart"] = $this->get_event($last_index)->get_ticket($count + 1)->get_sale_start()))
+							if((!$ticket["saleStart"] = $this->get_event($last_index)->get_ticket($count + 1)->get_sale_start()))
 								trigger_error("Ticket Sale Start date not specified, the default value will be the one set before ", E_USER_WARNING);
-							if((!$ticket[$updated]["saleEnd"] = $this->get_event($last_index)->get_ticket($count + 1)->get_sale_end()))
+							if((!$ticket["saleEnd"] = $this->get_event($last_index)->get_ticket($count + 1)->get_sale_end()))
 								trigger_error("Ticket Sale End date not specified, the default value will be the one set before ", E_USER_WARNING);
-						$updated++;
-					}
+
+
+								if( $this->get_event($last_index)->get_ticket($count + 1 )->get_status() == "updated" ){
+									if((!$ticket["ticketId"] = $this->get_event($last_index)->get_ticket($count + 1)->get_id()) && $error = 1 )
+											trigger_error("REQUIRED, Ticket ID not specified, the default value will be the one set before ", E_USER_ERROR);
+									$updatedTicket["updated"][] = $ticket;
+									var_dump($updatedTicket);
+								} else if($this->get_event($last_index)->get_ticket($count + 1 )->get_status() == "deleted" ) {
+									$updatedTicket["deleted"][] = $ticket;
+								} else if($this->get_event($last_index)->get_ticket($count + 1 )->get_status() == "new" ) {
+									$updatedTicket["new"][] = $ticket;
+								}
+
 
 				$count++;
 
@@ -1138,10 +1146,10 @@ class Organizer extends Organization {
 				if($error == 0 ) {
 
 					try {
-							$tickets = json_encode($ticket);
+							$tickets = json_encode($updatedTicket);
+			
 
 							$sql = "CALL updateEventTicket(".$this->get_event($last_index)->get_id().",".json_encode($tickets).")";
-
 							$statement = $this->DB_Driver->prepare_query($sql);
 							$statement->execute();
 

@@ -508,6 +508,7 @@ app.controller("eventTicketUpdateController", ["$http","$location", "$route", "$
 
           angular.forEach(data, function(ticket, i){
             ticket.price = parseInt(ticket.price);
+            ticket.status = "updated";
             ticket.quantity = parseInt(ticket.quantity);
               self.tickets.push(ticket);
 
@@ -1548,9 +1549,7 @@ app.controller('eventCtrl',["$scope", "$http", "address", "session", "eventCatag
     $scope.readOnly = false;
     var organizer = session.getUserId();
 
-    self.timeChanged = function(){
-alert("changed");
-}
+
 
       self.submitEvent = function() {
 

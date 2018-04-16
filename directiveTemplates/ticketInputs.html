@@ -1,112 +1,147 @@
-<div class="md-whiteframe-z2" >
+<div class="md-whiteframe-z2"  flex>
 
-    <table id="ticket-table" ng-if="tickets && tickets.length" >
-      <thead class="md-accent md-hue-2">
-        <tr>
-          <th class="ticket-type">Ticket Type  </th>
-          <th class="ticket-name">Ticket Name </th>
-          <th class="ticket-quantity">Avilable Quantity </th>
-          <th class="ticket-price">Price </th>
-          <th class="ticket-action">Action </th>
-          <th class="ticket-advanced-setting">Discription </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="ticket in tickets">
-          <td class="ticket-type">
-            <md-input-container >
-              <label>Type</label>
-              <md-select ng-model="ticket.type" md-placeholder="type"
-               name="ticketType" required>
-                <md-option  value="FREE">Free </md-option>
-                <md-option  value="PAID">Paid </md-option>
-              </md-select>
-              <div class="hint" ng-show="ticketUpdater.ticketType.$pristine" ></div>
-              <div ng-messages="ticketUpdater.ticketType.$error" >
-                <div ng-message="required" >  Ticket Type is Required  </div>
-              </div>
-            </md-input-container>
-          </td>
-          <td class="ticket-name">
-            <md-input-container  >
-              <label>Ticket Name</label>
-              <input ng-model="ticket.ticketName" ng-disabled="isFree" type="text" name="ticketName" required >
-              <div class="hint" ng-show="ticketUpdater.ticketName.$pristine" >
-                That explains its purpose
-              </div>
-              <div ng-messages="ticketUpdater.ticketName.$error" >
-                <div ng-message="required" >  Ticket Name is Required  </div>
-              </div>
-            </md-input-container>
-          </td>
-          <td class="ticket-quantity">
-            <md-input-container >
-              <label>Quantity</label>
-              <input ng-model="ticket.quantity" type="number" size="10" name="quantity"  min="0" required >
-              <div class="hint" ng-show="ticketUpdater.quantity.$pristine" >  Available Tickets </div>
-              <div ng-messages="ticketUpdater.quantity.$error" >
-                <div ng-message="required" >  Quantity is required </div>
-                <div ng-message="number" > Only number value  </div>
-                <div ng-message="min" > Quantity can't be less than 0  </div>
-              </div>
-            </md-input-container>
-          </td>
-          <td class="ticket-price">
-            <md-input-container   >
-              <label>Price</label>
-              <input  ng-model="ticket.price" size="10" type="number" name="price" ng-disabled="ticket.type == 'Free'"  min="0" required >
-              <div class="hint" ng-show="ticketUpdater.price.$pristine" >  Cost of Ticket </div>
-              <div ng-messages="ticketUpdater.price.$error"  >
-                <div ng-message="required" >  Price is required </div>
-                <div ng-message="number" > Only number value  </div>
-                <div ng-message="min" > Price can't be less than 0 </div>
-              </div>
-            </md-input-container>
-          </td>
-          <td class="ticket-action">
 
-            <md-checkbox aria-label="avanced ticket setting "  ng-model="ticket.showAdvanced" name="showAdvanced" flex  />  </md-checkbox>
-            <md-checkbox aria-label="remove current ticket " ng-click="ctrl.event.removeTicket($index)"  name="removeTicket" flex  />  </md-checkbox>
+        <table id="ticket-table"  ng-if="tickets && tickets.length">
+          <thead class="md-accent md-hue-2">
+            <tr>
+              <th class="ticket-type">Ticket Type  </th>
+              <th class="ticket-name">Ticket Name </th>
+              <th class="ticket-quantity">Avilable Quantity </th>
+              <th class="ticket-price">Price </th>
+              <th class="ticket-action">Action </th>
+              <th class="ticket-advanced-setting">Discription </th>
+            </tr>
+          </thead>
+          <tbody class="md-whiteframe-z2">
+            <tr ng-repeat="ticket in tickets" >
+              <td class="ticket-type">
+                <md-input-container flex >
+                  <label>Type</label>
+                  <md-select ng-model="ticket.type" md-placeholder="type"
+                   name="ticketType" required>
+                    <md-option  value="FREE">Free </md-option>
+                    <md-option  value="PAID">Paid </md-option>
+                  </md-select>
+                  <div class="hint" ng-show="form.ticketType.$pristine" ></div>
+                  <div ng-messages="form.ticketType.$error" >
+                    <div ng-message="required" >  Ticket Type is Required  </div>
+                  </div>
+                </md-input-container>
+              </td>
+              <td class="ticket-name">
+                <md-input-container  flex >
+                  <label>Ticket Name</label>
+                  <input ng-model="ticket.ticketName" ng-disabled="isFree" type="text" name="ticketName" required >
+                  <div class="hint" ng-show="form.ticketName.$pristine" >
+                    That explains its purpose
+                  </div>
+                  <div ng-messages="form.ticketName.$error" >
+                    <div ng-message="required" >  Ticket Name is Required  </div>
+                  </div>
+                </md-input-container>
+              </td>
+              <td class="ticket-quantity">
+                <md-input-container  flex >
+                  <label>Quantity</label>
+                  <input ng-model="ticket.quantity" type="number" size="10" name="quantity"  min="0" required >
+                  <div class="hint" ng-show="form.quantity.$pristine" >  Available Tickets </div>
+                  <div ng-messages="form.quantity.$error" >
+                    <div ng-message="required" >  Quantity is required </div>
+                    <div ng-message="number" > Only number value  </div>
+                    <div ng-message="min" > Quantity can't be less than 0  </div>
+                  </div>
+                </md-input-container>
+              </td>
+              <td class="ticket-price">
+                <md-input-container  flex  >
+                  <label>Price</label>
+                  <input  ng-model="ticket.price" size="10" type="number"  name="price" ng-disabled="ticket.type == 'Free'"  min="0" required >
+                  <div class="hint" ng-show="form.price.$pristine" >  Cost of Ticket </div>
+                  <div ng-messages="form.price.$error"  >
+                    <div ng-message="required" >  Price is required </div>
+                    <div ng-message="number" > Only number value  </div>
+                    <div ng-message="min" > Price can't be less than 0 </div>
+                  </div>
+                </md-input-container>
+              </td>
+              <td class="ticket-action">
 
-          </td>
-          <td ng-show="ticket.showAdvanced" class="ticket-advanced-setting">
-            <strong class="md-accent"> Advanced Setting </strong>
-            <div layout="row" layout-xs="column">
-              <md-input-container class="md-accent" flex-gt-xs="50" flex-xs="100"  >
-                <label>Discription</label>
-                <textarea ng-model="ticket.ticketDiscription" rows="3" md-select-on-focus></textarea>
-              </md-input-container>
-              <md-input-container  flex flex-xs="50"    >
-                <label>Sale Start</label>
-                <md-datepicker  ng-model="ticket.saleStart" name="ticketSaleStart" ></md-datepicker>
-              </md-input-container>
-              <md-input-container flex-xs="50" flex  >
-                <label>Sale End</label>
-                <md-datepicker   ng-model="ticket.saleEnd" name="ticketSaleEnd" ></md-datepicker>
-              </md-input-container>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="6">
-            <div layout="row" layout-align="space-between center">
-            <md-input-container flex flex-xs="50" class="md-accent"   >
-              <label>Sale Start</label>
-              <md-datepicker required="required" ng-model="ctrl.saleStartDefault" name="ticketSaleStartDefault" ></md-datepicker>
-            </md-input-container>
-            <md-input-container class="md-accent" flex-xs="50" flex  >
-              <label>Sale End</label>
-              <md-datepicker required="required"   ng-model="ctrl.saleEndDefault" name="ticketSaleEndDefault" ></md-datepicker>
-            </md-input-container>
-          </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+                <md-checkbox aria-label="avanced ticket setting "  ng-model="ticket.showAdvanced" name="showAdvanced" flex  />  </md-checkbox>
+                <md-checkbox aria-label="remove current ticket " ng-click="event.removeTicket($index)"  name="removeTicket" flex  />  </md-checkbox>
 
-    <div layout="row" layout-wrap layout-align="center center">
-      <md-button   class="md-accent" type="button" ng-click="ctrl.addTicket()"  name="addTicket"   >
-        Add Ticket
-      </md-button>
-    </div>
+              </td>
+              <td ng-show="ticket.showAdvanced" class="ticket-advanced-setting md-whiteframe-z1">
+                <md-subheader class="md-accent"> Advanced Ticket Setting </md-subheader>
+                <div layout="row" layout-xs="column">
+                  <md-input-container class="md-accent" flex-gt-xs="50" flex-xs="100"  >
+                    <label>Discription</label>
+                    <textarea ng-model="ticket.ticketDiscription" rows="3" md-select-on-focus></textarea>
+                  </md-input-container>
+                  <md-input-container  flex flex-xs="50"    >
+                    <label>Sale Start</label>
+                    <md-datepicker
+                                  md-max-date="maxTicketEndDate()"
+                                  md-min-date="minStart()"
+                                  ng-model="ticket.saleStart"
+                                  ng-required="!isDefaltStartSet()"
+                                  name="ticketSaleStart"
+                                  ng-change="ticketDateChanged()"
+                                  ></md-datepicker>
+                  </md-input-container>
+                  <md-input-container flex-xs="50" flex  >
+                    <label>Sale End</label>
+                    <md-datepicker
+                                  ng-model="ticket.saleEnd"
+                                  name="ticketSaleEnd"
+                                  md-max-date="maxTicketEndDate($index)"
+                                  md-min-date="minTicketEndDate()"
+                                  ng-required="!isDefaltEndSet()"
+                                  ng-change="ticketDateChanged()"
+                                  ></md-datepicker>
+                  </md-input-container>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+            <tfoot class="md-whiteframe-z2" layout-padding layout-margin>
+
+
+            <tr  >
+              <td colspan="6" >
+                <md-subheader class="md-primary">Default Ticket Sale Time</md-subheader>
+                <div layout="row" layout-xs="column" layout-align="space-around" >
+                <md-input-container flex  class="md-accent"   >
+                  <label>Start</label>
+                  <md-datepicker
+                                md-max-date="maxTicketEndDate(-1)"
+                                md-min-date="minStart()"
+                                ng-change="minDelfaultTicketDateChanged()"
+                                ng-model="saleStartDefault"
+                                name="saleStartDefault" ></md-datepicker>
+                </md-input-container>
+                <md-input-container class="md-accent" flex  >
+                  <label>End</label>
+                  <md-datepicker
+                                  md-max-date="maxTicketEndDate()"
+                                  md-min-date="minTicketEndDate()"
+                                  ng-change="minDefaultTicketDateChanged()"
+                                  ng-model="saleEndDefault"
+                                  name="saleEndDefault" ></md-datepicker>
+                </md-input-container>
+              </div>
+              </td>
+            </tr>
+            </tfoot>
+
+        </table>
+
+        <div layout="row" ng-controller="dynamicFieldController as dynamicCtrl" layout-wrap layout-align="center center">
+          <md-button
+                      class="md-primary"
+                      type="button"
+                      ng-click="dynamicCtrl.addTicket(tickets)"
+                      >
+            Add Ticket
+          </md-button>
+        </div>
 </div>
