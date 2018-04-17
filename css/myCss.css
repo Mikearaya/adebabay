@@ -18,13 +18,6 @@ table#orderTable {
   margin : 0px;
 }
 
-table#ticket-table thead tr,
-table#ticket-table tbody tr {
-        display: block;
-        margin: 0;
-        padding: 0;
-      }
-
 
 
 
@@ -106,14 +99,27 @@ md-list md-item:hover {
   margin-top: -25px;
 }
 
+table#ticket-table thead tr,
+table#ticket-table tbody tr,
+table.ticket-manage thead tr,
+table.ticket-manage tbody tr {
+        display: block;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+}
 
-table#ticket-table thead tr th {
+
+
+table#ticket-table thead tr th,
+table.ticket-manage thead tr th {
   height: 30px;
   font-weight: bold;
 }
 
 
-table#ticket-table thead tr  {
+table#ticket-table thead tr,
+table.ticket-manage thead tr  {
 background-color: grey;
 color: white;
 }
@@ -132,15 +138,33 @@ table.ticket-manage thead tr th:last-child,  table#ticket-table thead tr th:last
   left: -9999px;
 }
 
+table.ticket-manage tbody tr td:not(:last-child) {
+  display: inline-block;
+  margin-top: 0px;
+  margin-bottom:  0px;
+
+
+}
+
+table.ticket-manage thead tr th:first-child ,table.ticket-manage  tbody tr td:first-child{
+  width: 40%;
+}
+
+
+table.ticket-manage thead tr th:not(:first-child) ,table.ticket-manage  tbody tr td:not(:first-child){
+  width: 7%;
+}
+
 table#ticket-table tbody tr td:not(:last-child),
-table#ticket-table thead tt th:not(:last-child) {
+table#ticket-table thead tt th:not(:last-child){
   display: inline;
   margin-top: 0px;
   margin-bottom:  0px;
+
 }
+
 table.ticket-manage tbody tr:nth-of-type(odd){
   background: #eee;
-
 }
 
 .ticket-type {
@@ -164,13 +188,14 @@ table.ticket-manage tbody tr:nth-of-type(odd){
   right: 0;
 }
 
-table#ticket-table tbody tr td:last-child {
+table#ticket-table tbody tr td:last-child, table.ticket-manage tbody tr td:last-child {
   clear: both;
   display: block;
-  border: 1px dotted grey;
   width: 100%;
   height: auto;
-
+  border: 1px solid;
+  margin: 1px;
+  padding: 1px;
 
 }
 
@@ -268,6 +293,8 @@ table.ticket-manage tbody tr td:nth-of-type(4)::before{ content: "Quantity";    
 table.ticket-manage tbody tr td:nth-of-type(5)::before{ content: "Sold";     }
 table.ticket-manage tbody tr td:nth-of-type(6)::before{ content: "Available";     }
 table.ticket-manage tbody tr td:nth-of-type(7)::before{ content: "Status";     }
+table.ticket-manage tbody tr td:nth-of-type(7)::before{ content: "Discription";
+display: block;  }
 
 
 table#ticket-table thead tr,

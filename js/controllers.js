@@ -521,6 +521,15 @@ app.controller("eventTicketUpdateController", ["$http","$location", "$route", "$
 
       self.saveChanges = function(){
 
+        angular.forEach(self.tickets, function(ticket){
+          ticket.saleStart = moment(ticket.saleStart).format("YYYY-MM-DD");
+          ticket.saleEnd = moment(ticket.saleEnd).format("YYYY-MM-DD");
+
+          if(ticket.type.toUpperCase() === "FREE") {
+            ticket.price = 0;
+          }
+
+        });
         $http({
           method : "POST",
           url : "includes/systemController.php",

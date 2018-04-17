@@ -132,9 +132,9 @@
               <th>Discription</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="body">
             <tr ng-repeat="ticket in ctrl.event.tickets">
-              <td ng-bind="ticket.ticketName"></td>
+              <td ng-bind="ticket.ticketName" ></td>
               <td ng-bind="ticket.type"></td>
               <td ng-bind="ticket.price"></td>
               <td ng-bind="ticket.quantity"></td>
@@ -149,7 +149,7 @@
             <tr>
               <td colspan="8">
                   <md-button ng-click="ctrl.updateTickets()" class="md-primary">
-                  <md-icon>edit</md-icon>
+                  <md-icon>edit</md-icon> Edit
                 </md-button>
               </td>
             </tr>
@@ -162,7 +162,8 @@
         <p ng-bind="ctrl.event.aboutEvent"> </p>
         <md-divider></md-divider>
         <div layout="row" layout-align="end center">
-          <md-button ng-click="ctrl.updateDiscription()" class="md-primary"><md-icon>edit</md-icon>edit </md-button>
+          <md-button ng-click="ctrl.updateDiscription()" class="md-primary">
+            <md-icon>edit</md-icon>edit </md-button>
         </div>
       </md-content>
 
