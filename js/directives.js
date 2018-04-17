@@ -59,7 +59,7 @@ app.directive('organizerControlles', function(){
       return {
         restrict : "E",
         replace : true,
-        transclude : true,
+
         template : "<md-toolbar class='md-tall'> "+
                 "<div layout='column' class='md-toolbar-tools-bottom' layout-align='start center'>"+
             "<img ng-src='img/placeholder2.jpg' height='64' width='64'  class='user-avatar'/>"+
@@ -79,7 +79,6 @@ app.directive("eventManagmentControlles", function(){
       return{
         restrict : "E",
         replace : true,
-        transclude : true,
         template :  "<div>" +
         "<md-item ng-click='main.showUserDashboard()' >"+
           "<a>"+
@@ -126,25 +125,21 @@ app.directive("adTicketControl", function(){
 
     return {
       restrict : "E",
-      require : "^form",
+      require : "^^form",
       scope : {
         tickets : "="
       },
       templateUrl : "directiveTemplates/ticketInputs.html",
       link : function(scope, element, attr, form) {
-        console.log("SCOPE");
-
         scope.form = form;
-console.log(scope);
 
-        var date = new Date();
+          var date = new Date();
           scope.minStart = function() {
             return date;
           }
 
           var minEnd = moment().format();
-console.log("ELEMENTS");
-console.log(element);
+
           scope.minTicketEndDate =function(index) {
                 if(index >= 0 && scope.tickets[index].saleStart) {
                   console.log(scope.tickets[index].saleStart);
@@ -156,13 +151,7 @@ console.log(element);
                 }
           }
           scope.isDefaltStartSet = function() {
-            if(scope.form.saleStartDefault.$modelValue !== undefined) {
-              console.log("TRUE"+scope.form.saleStartDefault);
-              console.log(scope);
-            } else {
-              console.log("FALSE");
-              console.log(scope);
-            }
+
             return (scope.form.saleStartDefault.$modelValue !== undefined &&
             scope.form.saleStartDefault.$modelValue !== null &&
           scope.form.saleStartDefault.$valid === true) ? true : false;
@@ -179,6 +168,19 @@ console.log(element);
 
 });
 
+app.directive("adDefaultSubmitOptions", function(){
+        return {
+          restrict : "E",
+          require : "^^form",
+          scope : {},
+          templateUrl : "directiveTemplates/defaultSubmitButtonTemplate.html",
+          link : function(scope, element, attr, form) {
+            scope.form = form;
+
+          }
+        }
+
+});
 
 
 app.directive("defaultControlles", function(){

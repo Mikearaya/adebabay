@@ -49,10 +49,8 @@
   <md-icon>add</md-icon>Add</md-button>
 </div>
   </md-content>
-  <div layout="row" layout-align="space-around center" ng-if="ctrl.guests.length">
-    <md-button type="submit" class="md-primary md-raised" ng-disabled="guestUpdater.$invalid">
-      <md-icon>save</md-icon>Save</md-button>
-    <md-button class="md-warn md-raised"><md-icon>cancel</md-icon>Cancel</md-button>
-  </div>
+
+  <ad-default-submit-options></ad-default-submit-options>
+
 </form>
 </section>

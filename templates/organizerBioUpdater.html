@@ -12,20 +12,7 @@
             </md-input-container>
 
         </md-content>
-        <div layout="row" layout-align="space-around center">
-          <md-button
-                    type="submit"
-                    ng-disabled="bioUpdater.$invalid || bioUpdater.$pristine || bioUpdated.$submitted"
-                    class="md-primary md-raised">
-                <md-icon>save</md-icon>
-                Save
-          </md-button>
-          <md-button class="md-warn md-raised" ng-disabled="bioUpdater.$submitted">
-            <md-icon>cancel</md-icon>
-            Cancel
-          </md-button>
-
-        </div>
+        <ad-default-submit-options></ad-default-submit-options>
     </form>
 
 </section>

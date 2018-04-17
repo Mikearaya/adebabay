@@ -1,6 +1,6 @@
 <section ng-controller="websiteEditerController as ctrl" layout-margin>
 
-    <ng-form ng-submit="ctrl.saveChanges()" name="websiteEditer">
+    <form ng-submit="ctrl.saveChanges()" name="websiteEditer">
       <div
             layout="row"
             layout-xs="column"
@@ -21,17 +21,10 @@
         </md-input-container>
 
       </div>
-      <div layout="row" layout-align="space-around center">
-        <md-button
-                  class="md-primary md-raised "
-                  type="submit"
-                  ng-disabled="websiteEditer.$invalid">
-                  <md-icon>save</md-icon>
-        Save </md-button>
-        <md-button class="md-warn md-raised" ng-disabled="wesiteEditer.$submitted">
-        <md-icon>cancel</md-icon> cancel</md-button>
-      </div>
-    </ng-form>
+
+      <ad-default-submit-options></ad-default-submit-options>
+
+    </form>
 
 
 </section>

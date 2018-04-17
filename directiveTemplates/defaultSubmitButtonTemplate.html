@@ -1,0 +1,19 @@
+<div layout="row" layout-align="space-around center">
+  <md-button
+            type="submit"
+            ng-disabled="form.$invalid ||
+                         form.$pristine ||
+                        form.$submitted"
+            class="md-primary md-raised">
+      <md-icon>save</md-icon>
+        Save
+  </md-button>
+  <md-button
+            class="md-warn md-raised"
+            ng-disabled="form.$submitted"
+            >
+    <md-icon>cancel</md-icon>
+    Cancel
+  </md-button>
+
+</div>

@@ -4,20 +4,7 @@
 
         <ad-ticket-control flex tickets="ctrl.tickets"></ad-ticket-control>
 
-
-        <div layout="row" layout-align="space-around center">
-          <md-button
-                    type="submit"
-                    class="md-primary md-raised"
-                    ng-disabled="ticketUpdater.$invalid">
-                <md-icon>save</md-icon>
-                Save
-          </md-button>
-          <md-button class="md-warn md-raised" ng-disabled="ticketUpdater.$submitted">
-            <md-icon> cancel</md-icon>
-            Cancel
-          </md-button>
-        </div>
+        <ad-default-submit-options></ad-default-submit-options>
 
 
       </form>

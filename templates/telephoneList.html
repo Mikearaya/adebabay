@@ -1,12 +1,15 @@
-<md-list  >
+
+
+<md-list  flex>
   <md-subheader >
     <md-icon class="md-primary">phone</md-icon>
     Telephone Address</md-subheader>
+<md-divider></md-divider>
     <md-list-item class="md-2-line" ng-repeat="phone in phones track by $index">
-      <md-icon>{{phone.icon}}</md-icon>
+      <md-icon ng-bind="phone.icon"></md-icon>
     <div class="md-list-item-text">
-    <div class="md-body-2">{{phone.number}}</div>
-    <span class="md-subheader">{{phone.type}}</span >
+    <div class="md-body-2" ng-bind="phone.number"></div>
+    <span class="md-subheader" ng-bind="phone.type"></span >
     </div>
     </md-list-item>
   </md-list>
